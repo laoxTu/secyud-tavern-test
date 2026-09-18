@@ -1,0 +1,79 @@
+{
+  "air": "urn:air:krea2:diffusionmodel:civitai:958009@3139241",
+  "baseModel": "Krea 2",
+  "baseModelType": "Standard",
+  "createdAt": "2026-07-17T18:17:56.808Z",
+  "description": "test desc",
+  "files": [
+    {
+      "downloadUrl": "https://civitai.com/api/download/models/test",
+      "hashes": {
+        "AutoV1": "82E0F90B",
+        "AutoV2": "F6088960C0",
+        "AutoV3": "1FDDA7C805DE",
+        "BLAKE3": "C0661E9E2F7629451F65F39BEE9C12994F81EEFCBF039797E748BEC699DBFF2C",
+        "CRC32": "5A93E5CC",
+        "SHA256": "F6088960C0FEBD27CBD372FC758BB07D012F2D8AE3CD10C45C903D48B94409EA",
+        "SHA256_12": "F6088960C0FE"
+      },
+      "id": 3019490,
+      "metadata": { "format": "SafeTensor", "fp": "fp8" },
+      "name": "redcraftHybridH3A2A_30Krea2.safetensors",
+      "pickleScanMessage": null,
+      "pickleScanResult": "Success",
+      "primary": true,
+      "scannedAt": "2026-07-17T19:41:22.257",
+      "sizeKB": 12833814.8125,
+      "type": "Diffusion Model",
+      "virusScanMessage": null,
+      "virusScanResult": "Success"
+    }
+  ],
+  "id": 3139241,
+  "images": [
+    {
+      "availability": "Public",
+      "hasMeta": true,
+      "hasPositivePrompt": true,
+      "hash": "UAJQ+e8wG^Mw9Fj]Osx]03Di~VD%-Q?b$MM{",
+      "height": 2880,
+      "meta": {
+        "Model": "test",
+        "cfgScale": 1,
+        "denoise": 1,
+        "engine": "ComfyUI",
+        "height": 2160,
+        "models": ["test.safetensors"],
+        "sampler": "Euler",
+        "scheduler": "simple",
+        "seed": 486071801727172,
+        "steps": 12,
+        "vaes": ["qwen_image_vae.safetensors"],
+        "width": 1440
+      },
+      "metadata": {
+        "hash": "UAJQ+e8wG^Mw9Fj]Osx]03Di~VD%-Q?b$MM{",
+        "height": 2880,
+        "size": 8323255,
+        "width": 1920
+      },
+      "minor": false,
+      "nsfwLevel": 2,
+      "onSite": false,
+      "poi": false,
+      "remixOfId": null,
+      "type": "image",
+      "url": "https://image.civitai.com/test.jpeg",
+      "width": 1920
+    }
+  ],
+  "licensingFee": null,
+  "model": {
+    "name": "test",
+    "nsfw": false,
+    "poi": false,
+    "type": "Checkpoint"
+  },
+  "modelId": 958009,
+  "name": "test"
+}
