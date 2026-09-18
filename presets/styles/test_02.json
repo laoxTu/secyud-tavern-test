@@ -1,0 +1,8 @@
+{
+  "code": "test_link",
+  "disabled": false,
+  "entryId": 1,
+  "name": "样式链接",
+  "priority": 100,
+  "type": "link"
+}

@@ -1,0 +1,13 @@
+{
+  "histories": [],
+  "id": "00000000-0000-0000-0000-000000000000",
+  "model": {
+    "builder": "default",
+    "id": "00000000-0000-0000-0000-000000000000",
+    "iterations": 20,
+    "name": "test_model",
+    "stream": true
+  },
+  "name": "test_realm",
+  "presets": []
+}

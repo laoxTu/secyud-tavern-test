@@ -1,0 +1,8 @@
+{
+  "code": "test_css",
+  "disabled": false,
+  "entryId": 1,
+  "name": "CSS测试",
+  "priority": 100,
+  "type": "css/text"
+}
