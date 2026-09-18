@@ -9,8 +9,7 @@ describe('civitai', () => {
   it('应当获取模型', async () => {
     const models: ComfyUIModel[] = [];
     const json = await import('./model-version.json');
-    console.info('data: ', json);
     civitais.extract(json, json.model ?? {}, models, '');
-    console.info('models: ', models);
+    expect(models).toHaveLength(1);
   });
 });
