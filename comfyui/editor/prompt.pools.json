@@ -1,0 +1,127 @@
+{
+  "_template": [["{main_template}"]],
+  "accessory": [
+    ["gold necklace"],
+    ["red ribbon bow"],
+    ["blue gem earrings"],
+    ["silver hairpin"],
+    ["jade bracelet"],
+    ["pearl necklace"]
+  ],
+  "accessory_optional": [[", {accessory}"]],
+  "back_hair_length": [["short"], ["medium-length"], ["long"], ["very-long"]],
+  "back_hair_style": [
+    ["bobbed"],
+    ["braided"],
+    ["bunned"],
+    ["curly"],
+    ["ponytailed"],
+    ["straight"],
+    ["twin-tailed"],
+    ["wavy"]
+  ],
+  "back_hair_template": [
+    ["{back_hair_total_style}", 50],
+    ["{back_hair_style} {back_hair_length}", 50]
+  ],
+  "back_hair_total_style": [
+    ["short bob"],
+    ["long straight"],
+    ["twin tails"],
+    ["high ponytail"],
+    ["braided bun"],
+    ["hime cut"]
+  ],
+  "blush": [["blush"], ["blushing cheeks"]],
+  "clothing": [["{clothing_color} {clothing_type}, {clothing_detail:0.7}"]],
+  "clothing_color": [
+    ["white"],
+    ["black"],
+    ["blue"],
+    ["red"],
+    ["gold"],
+    ["purple"]
+  ],
+  "clothing_detail": [
+    ["gold trim"],
+    ["wide sleeves"],
+    ["sheer sleeves"],
+    ["embroidered hem"],
+    ["floral pattern"],
+    ["fur collar"]
+  ],
+  "clothing_type": [
+    ["robe"],
+    ["dress"],
+    ["cheongsam"],
+    ["cloak"],
+    ["bodice"],
+    ["layered robe"]
+  ],
+  "combination_template": [
+    [
+      "{hair_color} hair, {front_hair_style} front hair, {back_hair_template}, {face}, {clothing}{accessory_optional:0.6}, {pose}, {style}"
+    ]
+  ],
+  "expression": [
+    ["faint smile"],
+    ["gentle smile"],
+    ["calm expression"],
+    ["confident smirk"],
+    ["shy smile"]
+  ],
+  "eyes": [
+    ["dark eyes"],
+    ["blue eyes"],
+    ["red eyes"],
+    ["green eyes"],
+    ["golden eyes"]
+  ],
+  "face": [["{skin}, {eyes}, {lips}, {blush:0.7}, {expression}, {gaze}"]],
+  "front_hair_style": [
+    ["blunt"],
+    ["see-through"],
+    ["side-swept"],
+    ["curtain"],
+    ["center-parted"],
+    ["wispy"]
+  ],
+  "gaze": [
+    ["downcast eyes"],
+    ["gentle gaze"],
+    ["piercing gaze"],
+    ["serene gaze"]
+  ],
+  "hair_color": [
+    ["black"],
+    ["brown"],
+    ["blonde"],
+    ["red"],
+    ["silver"],
+    ["blue"]
+  ],
+  "lips": [["red lips"], ["pink lips"], ["pale lips"]],
+  "lower_pose": [["leaning"], ["walking pose"], ["one hip out"]],
+  "main_template": [
+    ["{combination_template}", 50],
+    ["{single_template}", 50]
+  ],
+  "object": [["fan"], ["sword"], ["flower"], ["flute"], ["scroll"]],
+  "pose": [["{upper_pose}, {lower_pose:0.3}"]],
+  "single_template": [
+    [
+      "{hair_color} hair, {front_hair_style} front hair, {back_hair_style}, {face}, {clothing}, {pose}, {style}"
+    ]
+  ],
+  "skin": [["fair skin"], ["pale skin"], ["tan skin"]],
+  "style": [["{style1}, {style2:0.7}"]],
+  "style1": [["elegant"], ["graceful"], ["cute"], ["mysterious"], ["noble"]],
+  "style2": [["beautiful"], ["charming"], ["serene"], ["fierce"]],
+  "upper_pose": [
+    ["hands clasped in front"],
+    ["one hand on hip"],
+    ["hand near face"],
+    ["arms crossed"],
+    ["holding {object}"]
+  ]
+}
