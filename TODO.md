@@ -2,6 +2,9 @@
 
 > 目录与 `src/` 一一对应，文件名对应同名源码模块。
 > `[x]` = 已有用例（可补强），`[ ]` = 待写。
+> 写用例前先看 `GUIDELINES.md`（数据一律 json 动态 import、mock 边界、jsdom 限制、未确认行为先不加断言）。
+> 用例数据统一放 json、用 `(await import('./xxx.json')).default` 动态加载；需要改动时先 `structuredClone` 克隆一份。
+> 当前：26 文件 / 272 用例通过（无 `it.fails`）。
 
 ```text
 tests/
@@ -91,36 +94,36 @@ tests/
 │   └── [ ] pager.test.tsx
 │
 ├── presets/
-│   ├── [ ] index.test.ts
+│   ├── [x] index.test.ts
 │   ├── client/
-│   │   ├── [ ] factory.test.ts
-│   │   ├── [ ] state.test.ts
-│   │   ├── [ ] proxy.test.ts
+│   │   ├── [x] factory.test.ts
+│   │   ├── [x] state.test.ts
+│   │   ├── [x] proxy.test.ts
 │   │   └── [ ] content.test.tsx
 │   ├── server/
-│   │   ├── [ ] factory.test.ts
-│   │   ├── [ ] storage.test.ts
-│   │   ├── [ ] repository.test.ts
-│   │   └── [ ] api.test.ts
+│   │   ├── [x] factory.test.ts
+│   │   ├── [x] storage.test.ts
+│   │   ├── [x] repository.test.ts
+│   │   └── [x] api.test.ts
 │   ├── macros/
 │   │   ├── [x] index.test.ts               # 只测 Eta 库
-│   │   ├── [ ] realm.test.ts
-│   │   ├── [ ] property.test.ts
+│   │   ├── [x] realm.test.ts
+│   │   ├── [x] property.test.ts
 │   │   ├── [ ] feature.test.tsx
 │   │   └── server/
-│   │       └── [ ] storage.test.ts
+│   │       └── [x] storage.test.ts
 │   ├── regexes/
-│   │   ├── [ ] realm.test.ts
+│   │   ├── [x] realm.test.ts
 │   │   └── server/
-│   │       └── [ ] storage.test.ts
+│   │       └── [x] storage.test.ts
 │   ├── scripts/
-│   │   ├── [ ] realm.test.ts
+│   │   ├── [x] realm.test.ts
 │   │   └── server/
-│   │       └── [ ] storage.test.ts
+│   │       └── [x] storage.test.ts
 │   └── styles/
 │       ├── [x] realm.test.ts
 │       └── server/
-│           └── [ ] storage.test.ts
+│           └── [x] storage.test.ts
 │
 ├── lorebooks/
 │   ├── [ ] index.test.ts
@@ -282,3 +285,19 @@ tests/
 * 注册 / 编排：各模块 client/index.tsx 的注册函数、comfyui/{index.ts,tool.ts,select/index.ts}
 * 生成物：app/api/**/route.ts
 ```
+
+## 进度
+
+### presets：已完成
+- 用例：`presets/**` 共 18 个文件（`macros/index.test.ts` 与 `styles/realm.test.ts` 为原有，其余新增），数据落在 13 个 fixture json。
+- 剩余展示层未做：`presets/client/content.test.tsx`、`presets/macros/feature.test.tsx`。
+
+### 已按确认的预期改动源码
+- `src/presets/regexes/server/storage.ts`：meta 写 `item`（原来传的是函数，序列化后内容丢失），正则条目现在可以正常归档往返。
+- `src/presets/server/storage.ts`：重建封面沿用 meta 里的原始 MIME（原来又拼了一次 `image/`）。
+- `src/presets/macros/client/realm.ts`：单选条件改 `&&`（没有选择时取第一个，已有选择时保留）；残留的已删除 code 跳过而不是抛错。
+- `src/presets/macros/client/feature.tsx`：删掉被 setter 立即覆盖的死赋值。
+
+### 已确认为设计、不加断言
+- 同 code 的样式/脚本条目重复注入属既定软处理，重复 id 由页面报错暴露。
+

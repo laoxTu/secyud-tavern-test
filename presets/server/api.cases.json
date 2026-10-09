@@ -1,0 +1,86 @@
+{
+  "preset": {
+    "id": "p1",
+    "name": "预设",
+    "requires": [],
+    "tags": [],
+    "version": "1.0.0"
+  },
+  "cachedPresets": [
+    {
+      "id": "p1",
+      "name": "预设",
+      "requires": [],
+      "tags": [],
+      "version": "1.0.0"
+    },
+    {
+      "id": "p2",
+      "name": "预设二",
+      "requires": [],
+      "tags": [],
+      "version": "1.0.0"
+    }
+  ],
+  "cloneBody": {
+    "name": "副本"
+  },
+  "updateBody": {
+    "name": "新名字"
+  },
+  "entry": {
+    "data": {
+      "code": "m"
+    },
+    "disabled": false,
+    "entryId": 1,
+    "entryType": "macros",
+    "masterId": "p1",
+    "name": "条目"
+  },
+  "entries": [
+    {
+      "entryId": 1,
+      "entryType": "macros",
+      "masterId": "p1",
+      "name": "宏条目"
+    },
+    {
+      "entryId": 2,
+      "entryType": "styles",
+      "masterId": "p1",
+      "name": "样式条目"
+    },
+    {
+      "entryId": 3,
+      "entryType": "macros",
+      "masterId": "p1",
+      "name": "宏条目二"
+    }
+  ],
+  "entryBody": {
+    "name": "条目"
+  },
+  "entryCloneBody": {
+    "masterId": "p2",
+    "name": "副本"
+  },
+  "entryWithoutMaster": {
+    "name": "副本"
+  },
+  "importSelection": ["p1"],
+  "listRequest": {
+    "size": 10,
+    "skip": 5
+  },
+  "entryListRequest": {
+    "size": 5
+  },
+  "sessionId": "s1",
+  "uploadBytes": [1, 2, 3],
+  "archiveNode": {
+    "name": "p1",
+    "nodes": {},
+    "type": "folder"
+  }
+}

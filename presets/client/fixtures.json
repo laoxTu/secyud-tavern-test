@@ -1,0 +1,91 @@
+{
+  "preset": {
+    "id": "p1",
+    "name": "预设",
+    "requires": [],
+    "tags": [],
+    "version": "1.0.0"
+  },
+  "nameValues": [
+    {
+      "name": "预设-1.0.0",
+      "value": "p1"
+    }
+  ],
+  "entry": {
+    "data": {
+      "code": "m"
+    },
+    "disabled": false,
+    "entryId": 1,
+    "entryType": "macros",
+    "masterId": "p1",
+    "name": "条目"
+  },
+  "entryPatch": {
+    "name": "条目"
+  },
+  "entryClone": {
+    "masterId": "p2",
+    "name": "副本"
+  },
+  "presetPatch": {
+    "name": "预设"
+  },
+  "presetClone": {
+    "name": "副本"
+  },
+  "listRequest": {
+    "search": {
+      "fuzzy": "风"
+    },
+    "size": 20,
+    "skip": 0
+  },
+  "entryListRequest": {
+    "size": 5,
+    "skip": 5
+  },
+  "listResponse": {
+    "items": [
+      {
+        "id": "a",
+        "name": "预设 A"
+      }
+    ],
+    "length": 12
+  },
+  "emptyResponse": {
+    "items": [],
+    "length": 0
+  },
+  "largeResponse": {
+    "items": [],
+    "length": 100
+  },
+  "shortResponse": {
+    "items": [],
+    "length": 8
+  },
+  "entryResponse": {
+    "items": [
+      {
+        "entryId": 1,
+        "name": "条目"
+      }
+    ],
+    "length": 1
+  },
+  "defaultData": {
+    "code": ""
+  },
+  "overrideSearch": {
+    "entryType": "other",
+    "filter": "x"
+  },
+  "defaultPageSize": 7,
+  "entryPageSize": 5,
+  "sessionId": "session-1",
+  "fileName": "preset.zip",
+  "uploadContent": "zip"
+}

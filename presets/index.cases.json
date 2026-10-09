@@ -1,0 +1,31 @@
+{
+  "cases": [
+    {
+      "preset": {
+        "id": "preset",
+        "name": "测试预设",
+        "requires": [],
+        "tags": ["test"],
+        "version": "1.0.0"
+      },
+      "expected": {
+        "name": "测试预设-1.0.0",
+        "value": "preset"
+      }
+    },
+    {
+      "preset": {
+        "id": "p-1",
+        "name": "风格包",
+        "requires": [],
+        "tags": ["theme"],
+        "version": "2.1"
+      },
+      "expected": {
+        "name": "风格包-2.1",
+        "value": "p-1"
+      }
+    }
+  ],
+  "requiredTags": ["theme", "story", "preset", "agent", "tool"]
+}

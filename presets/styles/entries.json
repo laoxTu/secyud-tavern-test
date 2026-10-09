@@ -1,0 +1,94 @@
+{
+  "single": [
+    {
+      "code": "a",
+      "content": "body{}",
+      "disabled": false,
+      "name": "样式",
+      "priority": 100,
+      "type": "text/css"
+    }
+  ],
+  "enabledOnly": [
+    {
+      "code": "on",
+      "content": "body{color:red}",
+      "disabled": false,
+      "name": "启用样式",
+      "priority": 100,
+      "type": "text/css"
+    },
+    {
+      "code": "off",
+      "content": "body{color:blue}",
+      "disabled": true,
+      "name": "停用样式",
+      "priority": 100,
+      "type": "text/css"
+    }
+  ],
+  "ordered": [
+    {
+      "code": "later",
+      "content": "body{a:1}",
+      "disabled": false,
+      "name": "后注入",
+      "priority": 200,
+      "type": "text/css"
+    },
+    {
+      "code": "first",
+      "content": "body{a:2}",
+      "disabled": false,
+      "name": "先注入",
+      "priority": 10,
+      "type": "text/css"
+    },
+    {
+      "code": "middle",
+      "content": "body{a:3}",
+      "disabled": false,
+      "name": "中间注入",
+      "priority": 100,
+      "type": "text/css"
+    }
+  ],
+  "duplicate": [
+    {
+      "code": "dup",
+      "content": "a{}",
+      "disabled": false,
+      "name": "重复一",
+      "priority": 100,
+      "type": "text/css"
+    },
+    {
+      "code": "dup",
+      "content": "b{}",
+      "disabled": false,
+      "name": "重复二",
+      "priority": 100,
+      "type": "text/css"
+    }
+  ],
+  "link": [
+    {
+      "code": "ext",
+      "content": "  https://cdn.example.com/a.css  ",
+      "disabled": false,
+      "name": "外链样式",
+      "priority": 100,
+      "type": "link"
+    }
+  ],
+  "css": [
+    {
+      "code": "css",
+      "content": "body{color:red}",
+      "disabled": false,
+      "name": "内联样式",
+      "priority": 100,
+      "type": "text/css"
+    }
+  ]
+}

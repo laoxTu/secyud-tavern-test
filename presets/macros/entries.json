@@ -1,0 +1,188 @@
+{
+  "single": [
+    {
+      "code": "a",
+      "disabled": false,
+      "hidden": false,
+      "json": false,
+      "key": "style",
+      "multiple": false,
+      "name": "A 方案",
+      "value": "A"
+    },
+    {
+      "code": "b",
+      "disabled": false,
+      "hidden": false,
+      "json": false,
+      "key": "style",
+      "multiple": false,
+      "name": "B 方案",
+      "value": "B"
+    }
+  ],
+  "multiple": [
+    {
+      "code": "x",
+      "disabled": false,
+      "hidden": false,
+      "json": false,
+      "key": "gear",
+      "multiple": true,
+      "name": "X 装备",
+      "value": "X"
+    },
+    {
+      "code": "y",
+      "disabled": false,
+      "hidden": false,
+      "json": false,
+      "key": "gear",
+      "multiple": true,
+      "name": "Y 装备",
+      "value": "Y"
+    }
+  ],
+  "jsonMerge": [
+    {
+      "code": "j",
+      "disabled": false,
+      "hidden": false,
+      "json": true,
+      "key": "cfg",
+      "multiple": true,
+      "name": "配置 JSON",
+      "value": "{\"a\":1}"
+    },
+    {
+      "code": "t",
+      "disabled": false,
+      "hidden": false,
+      "json": false,
+      "key": "cfg",
+      "multiple": true,
+      "name": "配置文本",
+      "value": "note"
+    }
+  ],
+  "jsonOnly": [
+    {
+      "code": "j1",
+      "disabled": false,
+      "hidden": false,
+      "json": true,
+      "key": "cfg",
+      "multiple": true,
+      "name": "配置一",
+      "value": "{\"a\":1,\"b\":2}"
+    },
+    {
+      "code": "j2",
+      "disabled": false,
+      "hidden": false,
+      "json": true,
+      "key": "cfg",
+      "multiple": true,
+      "name": "配置二",
+      "value": "{\"b\":3,\"c\":4}"
+    }
+  ],
+  "jsonObject": [
+    {
+      "code": "j",
+      "disabled": false,
+      "hidden": false,
+      "json": true,
+      "key": "cfg",
+      "multiple": false,
+      "name": "配置 JSON",
+      "value": "{\"a\":1}"
+    },
+    {
+      "code": "p",
+      "disabled": false,
+      "hidden": false,
+      "json": false,
+      "key": "text",
+      "multiple": false,
+      "name": "纯文本",
+      "value": "plain"
+    }
+  ],
+  "hidden": [
+    {
+      "code": "h",
+      "disabled": false,
+      "hidden": true,
+      "json": false,
+      "key": "hidden_key",
+      "multiple": false,
+      "name": "隐藏项",
+      "value": "H"
+    },
+    {
+      "code": "m1",
+      "disabled": false,
+      "hidden": true,
+      "json": false,
+      "key": "multi_key",
+      "multiple": true,
+      "name": "复选隐藏项",
+      "value": "M1"
+    },
+    {
+      "code": "m2",
+      "disabled": false,
+      "hidden": false,
+      "json": false,
+      "key": "multi_key",
+      "multiple": true,
+      "name": "复选可见项",
+      "value": "M2"
+    }
+  ],
+  "simple": [
+    {
+      "code": "m",
+      "disabled": false,
+      "hidden": false,
+      "json": false,
+      "key": "greet",
+      "multiple": false,
+      "name": "问候",
+      "value": "hello"
+    }
+  ],
+  "stale": [
+    {
+      "code": "x",
+      "disabled": false,
+      "hidden": false,
+      "json": false,
+      "key": "gear",
+      "multiple": true,
+      "name": "X 装备",
+      "value": "X"
+    }
+  ],
+  "history": {
+    "masterId": "realm",
+    "output": 0,
+    "outputs": [],
+    "prompts": [],
+    "sequence": 0,
+    "summary": false,
+    "variables": {}
+  },
+  "richHistory": {
+    "masterId": "realm",
+    "output": 0,
+    "outputs": [],
+    "prompts": [],
+    "sequence": 0,
+    "summary": false,
+    "variables": {
+      "hp": 10
+    }
+  }
+}

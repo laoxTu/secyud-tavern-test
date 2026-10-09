@@ -1,0 +1,165 @@
+{
+  "scenarios": {
+    "single": {
+      "codes": ["p1"],
+      "presets": [
+        {
+          "entries": {},
+          "id": "p1",
+          "name": "预设一",
+          "requires": [],
+          "tags": [],
+          "version": "1.0.0"
+        }
+      ]
+    },
+    "chain": {
+      "codes": ["p1"],
+      "presets": [
+        {
+          "entries": {},
+          "id": "p1",
+          "name": "预设一",
+          "requires": [
+            {
+              "name": "预设二-1.0.0",
+              "value": "p2"
+            }
+          ],
+          "tags": [],
+          "version": "1.0.0"
+        },
+        {
+          "entries": {},
+          "id": "p2",
+          "name": "预设二",
+          "requires": [],
+          "tags": [],
+          "version": "1.0.0"
+        }
+      ]
+    },
+    "duplicate": {
+      "codes": ["p1"],
+      "presets": [
+        {
+          "entries": {},
+          "id": "p1",
+          "name": "预设一",
+          "requires": [
+            {
+              "name": "预设二-1.0.0",
+              "value": "p2"
+            },
+            {
+              "name": "预设二-1.0.0",
+              "value": "p2"
+            },
+            {
+              "name": "预设三-1.0.0",
+              "value": "p3"
+            }
+          ],
+          "tags": [],
+          "version": "1.0.0"
+        },
+        {
+          "entries": {},
+          "id": "p2",
+          "name": "预设二",
+          "requires": [
+            {
+              "name": "预设一-1.0.0",
+              "value": "p1"
+            }
+          ],
+          "tags": [],
+          "version": "1.0.0"
+        },
+        {
+          "entries": {},
+          "id": "p3",
+          "name": "预设三",
+          "requires": [],
+          "tags": [],
+          "version": "1.0.0"
+        }
+      ]
+    },
+    "ghost": {
+      "codes": ["p1"],
+      "presets": [
+        {
+          "entries": {},
+          "id": "p1",
+          "name": "预设一",
+          "requires": [
+            {
+              "name": "不存在的预设",
+              "value": "ghost"
+            }
+          ],
+          "tags": [],
+          "version": "1.0.0"
+        }
+      ]
+    }
+  },
+  "emptyCodes": ["", ""],
+  "types": ["macros", "styles"],
+  "requests": {
+    "paged": {
+      "size": 20,
+      "skip": 0
+    },
+    "fuzzy": {
+      "search": {
+        "fuzzy": "风"
+      }
+    },
+    "tags": {
+      "search": {
+        "tags": ["a", "b"]
+      }
+    }
+  },
+  "create": {
+    "blankName": {
+      "name": "  "
+    },
+    "duplicate": {
+      "id": "p1",
+      "name": "预设"
+    },
+    "noId": {
+      "id": "",
+      "name": "预设"
+    },
+    "noName": {
+      "id": "p1",
+      "name": ""
+    },
+    "renamed": {
+      "id": "p2",
+      "name": "新名字"
+    },
+    "withEntries": {
+      "entries": {
+        "macros": [
+          {
+            "code": "m",
+            "name": "宏"
+          }
+        ]
+      },
+      "id": "p1",
+      "name": "预设"
+    }
+  },
+  "entry": {
+    "entryId": 1,
+    "entryType": "macros",
+    "masterId": "p1",
+    "name": "条目"
+  }
+}

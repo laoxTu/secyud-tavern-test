@@ -1,0 +1,43 @@
+{
+  "plain": {
+    "code": "s",
+    "content": "body{}",
+    "disabled": false,
+    "name": "样式",
+    "priority": 100,
+    "type": "text/css"
+  },
+  "link": {
+    "code": "s",
+    "content": "https://cdn.example.com/a.css",
+    "disabled": false,
+    "name": "样式",
+    "priority": 100,
+    "type": "link"
+  },
+  "second": {
+    "code": "b",
+    "content": "b{}",
+    "disabled": false,
+    "name": "样式二",
+    "priority": 100,
+    "type": "text/css"
+  },
+  "criteria": {
+    "entry": {
+      "data": {
+        "code": "s",
+        "content": "",
+        "priority": 5,
+        "type": "link"
+      },
+      "disabled": false,
+      "entryId": 0,
+      "entryType": "styles",
+      "masterId": "p",
+      "name": "样式"
+    },
+    "sorter": "样式s",
+    "filter": "link00005样式"
+  }
+}

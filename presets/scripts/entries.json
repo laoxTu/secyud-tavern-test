@@ -1,0 +1,130 @@
+{
+  "single": [
+    {
+      "code": "a",
+      "content": "window.a = 1",
+      "disabled": false,
+      "name": "模块脚本",
+      "priority": 100,
+      "type": "module"
+    }
+  ],
+  "ordered": [
+    {
+      "code": "later",
+      "content": "window.later = 1",
+      "disabled": false,
+      "name": "后加载",
+      "priority": 200,
+      "type": "application/javascript"
+    },
+    {
+      "code": "first",
+      "content": "window.first = 1",
+      "disabled": false,
+      "name": "先加载",
+      "priority": 10,
+      "type": "application/javascript"
+    },
+    {
+      "code": "middle",
+      "content": "window.middle = 1",
+      "disabled": false,
+      "name": "中间加载",
+      "priority": 100,
+      "type": "application/javascript"
+    }
+  ],
+  "enabledOnly": [
+    {
+      "code": "on",
+      "content": "window.on = 1",
+      "disabled": false,
+      "name": "启用脚本",
+      "priority": 100,
+      "type": "application/javascript"
+    },
+    {
+      "code": "off",
+      "content": "window.off = 1",
+      "disabled": true,
+      "name": "停用脚本",
+      "priority": 100,
+      "type": "application/javascript"
+    }
+  ],
+  "importmap": [
+    {
+      "code": "map1",
+      "content": "{\"a\":\"1\",\"b\":\"2\"}",
+      "disabled": false,
+      "name": "映射一",
+      "priority": 100,
+      "type": "importmap"
+    },
+    {
+      "code": "map2",
+      "content": "{\"b\":\"3\",\"c\":\"4\"}",
+      "disabled": false,
+      "name": "映射二",
+      "priority": 100,
+      "type": "importmap"
+    }
+  ],
+  "badImportmap": [
+    {
+      "code": "bad",
+      "content": "not json",
+      "disabled": false,
+      "name": "坏的映射",
+      "priority": 100,
+      "type": "importmap"
+    },
+    {
+      "code": "ok",
+      "content": "window.ok = 1",
+      "disabled": false,
+      "name": "正常脚本",
+      "priority": 100,
+      "type": "application/javascript"
+    }
+  ],
+  "duplicate": [
+    {
+      "code": "dup",
+      "content": "window.__dup = 1",
+      "disabled": false,
+      "name": "重复一",
+      "priority": 100,
+      "type": "application/javascript"
+    },
+    {
+      "code": "dup",
+      "content": "window.__dup = 2",
+      "disabled": false,
+      "name": "重复二",
+      "priority": 100,
+      "type": "application/javascript"
+    }
+  ],
+  "importmapOnly": [
+    {
+      "code": "map",
+      "content": "{\"a\":\"1\"}",
+      "disabled": false,
+      "name": "映射",
+      "priority": 100,
+      "type": "importmap"
+    }
+  ],
+  "link": [
+    {
+      "code": "ext",
+      "content": "  https://cdn.example.com/a.js  ",
+      "disabled": false,
+      "name": "外链脚本",
+      "priority": 100,
+      "type": "link"
+    }
+  ]
+}

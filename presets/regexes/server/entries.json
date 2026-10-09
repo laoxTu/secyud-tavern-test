@@ -1,0 +1,34 @@
+{
+  "plain": {
+    "code": "r",
+    "disabled": false,
+    "name": "规则",
+    "pattern": "a",
+    "replacement": "b",
+    "target": "input"
+  },
+  "second": {
+    "code": "r2",
+    "disabled": false,
+    "name": "规则二",
+    "pattern": "c",
+    "replacement": "d",
+    "target": "output"
+  },
+  "criteria": {
+    "entry": {
+      "data": {
+        "pattern": "a",
+        "replacement": "b",
+        "target": "input"
+      },
+      "disabled": false,
+      "entryId": 0,
+      "entryType": "regexes",
+      "masterId": "p",
+      "name": "规则"
+    },
+    "sorter": "规则",
+    "filter": "input规则"
+  }
+}

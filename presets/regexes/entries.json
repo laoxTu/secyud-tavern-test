@@ -1,0 +1,105 @@
+{
+  "scoped": [
+    {
+      "code": "in",
+      "disabled": false,
+      "name": "输入规则",
+      "pattern": "a",
+      "replacement": "b",
+      "target": "input"
+    },
+    {
+      "code": "out",
+      "disabled": false,
+      "name": "输出规则",
+      "pattern": "a",
+      "replacement": "b",
+      "target": "output"
+    },
+    {
+      "code": "both",
+      "disabled": false,
+      "name": "双向规则",
+      "pattern": "a",
+      "replacement": "b",
+      "target": "both"
+    }
+  ],
+  "enabledOnly": [
+    {
+      "code": "on",
+      "disabled": false,
+      "name": "启用规则",
+      "pattern": "a",
+      "replacement": "b",
+      "target": "both"
+    },
+    {
+      "code": "off",
+      "disabled": true,
+      "name": "停用规则",
+      "pattern": "a",
+      "replacement": "b",
+      "target": "both"
+    }
+  ],
+  "firstPreset": [
+    {
+      "code": "a",
+      "disabled": false,
+      "name": "规则 A",
+      "pattern": "a",
+      "replacement": "b",
+      "target": "both"
+    }
+  ],
+  "secondPreset": [
+    {
+      "code": "b",
+      "disabled": false,
+      "name": "规则 B",
+      "pattern": "a",
+      "replacement": "b",
+      "target": "both"
+    }
+  ],
+  "thirdPreset": [
+    {
+      "code": "c",
+      "disabled": false,
+      "name": "规则 C",
+      "pattern": "a",
+      "replacement": "b",
+      "target": "both"
+    }
+  ],
+  "chain": [
+    {
+      "code": "a2b",
+      "disabled": false,
+      "name": "a 转 b",
+      "pattern": "a",
+      "replacement": "b",
+      "target": "both"
+    },
+    {
+      "code": "b2c",
+      "disabled": false,
+      "name": "b 转 c",
+      "pattern": "b",
+      "replacement": "c",
+      "target": "both"
+    }
+  ],
+  "firstOnly": [
+    {
+      "code": "a2X",
+      "disabled": false,
+      "name": "首个替换",
+      "pattern": "a",
+      "replacement": "X",
+      "target": "both"
+    }
+  ],
+  "empty": []
+}

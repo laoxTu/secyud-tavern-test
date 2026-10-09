@@ -1,0 +1,66 @@
+{
+  "plain": {
+    "code": "s",
+    "content": "console.log(1)",
+    "disabled": false,
+    "name": "脚本",
+    "priority": 100,
+    "type": "application/javascript"
+  },
+  "module": {
+    "code": "s",
+    "content": "export default 1",
+    "disabled": false,
+    "name": "脚本",
+    "priority": 100,
+    "type": "module"
+  },
+  "link": {
+    "code": "s",
+    "content": "https://cdn.example.com/a.js",
+    "disabled": false,
+    "name": "脚本",
+    "priority": 100,
+    "type": "link"
+  },
+  "importmap": {
+    "code": "s",
+    "content": "{\"a\":\"1\"}",
+    "disabled": false,
+    "name": "脚本",
+    "priority": 100,
+    "type": "importmap"
+  },
+  "untyped": {
+    "code": "s",
+    "content": "console.log(2)",
+    "disabled": false,
+    "name": "脚本",
+    "priority": 100
+  },
+  "second": {
+    "code": "b",
+    "content": "b()",
+    "disabled": false,
+    "name": "脚本二",
+    "priority": 100,
+    "type": "application/javascript"
+  },
+  "criteria": {
+    "entry": {
+      "data": {
+        "code": "s",
+        "content": "",
+        "priority": 20,
+        "type": "link"
+      },
+      "disabled": false,
+      "entryId": 0,
+      "entryType": "scripts",
+      "masterId": "p",
+      "name": "脚本"
+    },
+    "sorter": "脚本s",
+    "filter": "link00020脚本"
+  }
+}

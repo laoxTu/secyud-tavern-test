@@ -1,0 +1,53 @@
+{
+  "preset": {
+    "entries": {},
+    "id": "p",
+    "name": "测试预设",
+    "requires": [],
+    "tags": ["test"],
+    "version": "1.0.0"
+  },
+  "entry": {
+    "data": {
+      "code": "c",
+      "value": "v"
+    },
+    "disabled": false,
+    "entryId": 0,
+    "entryType": "fake",
+    "masterId": "p",
+    "name": "条目"
+  },
+  "loadedEntry": {
+    "data": {
+      "code": "c",
+      "value": "v"
+    },
+    "disabled": true,
+    "entryId": 1,
+    "entryType": "fake",
+    "masterId": "p",
+    "name": "条目"
+  },
+  "savedEntry": {
+    "code": "c",
+    "disabled": true,
+    "masterId": "old",
+    "name": "条目",
+    "value": "v"
+  },
+  "archiveEntries": [
+    {
+      "code": "a"
+    },
+    {
+      "code": "b"
+    }
+  ],
+  "archiveFileNames": ["a-0.meta.json", "a-0.value.txt", "b-0.meta.json"],
+  "singleArchiveFileNames": ["a-0.meta.json"],
+  "criteria": {
+    "filter": "c条目",
+    "sorter": "c-条目"
+  }
+}

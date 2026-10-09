@@ -1,0 +1,60 @@
+{
+  "plain": {
+    "code": "greet",
+    "disabled": false,
+    "hidden": false,
+    "json": false,
+    "key": "greet",
+    "multiple": false,
+    "name": "问候",
+    "value": "hello"
+  },
+  "json": {
+    "code": "greet",
+    "disabled": false,
+    "hidden": false,
+    "json": true,
+    "key": "greet",
+    "multiple": false,
+    "name": "问候 JSON",
+    "value": "{\"a\":1}"
+  },
+  "multiple": {
+    "code": "greet",
+    "disabled": false,
+    "hidden": false,
+    "json": false,
+    "key": "greet",
+    "multiple": true,
+    "name": "问候",
+    "value": "hello"
+  },
+  "second": {
+    "code": "k2",
+    "disabled": false,
+    "hidden": false,
+    "json": false,
+    "key": "k2",
+    "multiple": false,
+    "name": "第二项",
+    "value": "world"
+  },
+  "criteria": {
+    "name": "问候",
+    "entry": {
+      "data": {
+        "code": "greet",
+        "hidden": false,
+        "key": "greet",
+        "multiple": true
+      },
+      "disabled": false,
+      "entryId": 0,
+      "entryType": "macros",
+      "masterId": "p",
+      "name": "问候"
+    },
+    "sorter": "greet10",
+    "filter": "greet问候"
+  }
+}
