@@ -1,0 +1,23 @@
+{
+  "name": "min-date",
+  "full": {
+    "fields": {
+      "min-date-year": "2024",
+      "min-date-month": "07",
+      "min-date-day": "15"
+    },
+    "expected": { "year": 2024, "month": 7, "day": 15 }
+  },
+  "negative": {
+    "fields": {
+      "min-date-year": "-3",
+      "min-date-month": "1",
+      "min-date-day": "1"
+    },
+    "expected": { "year": -3, "month": 1, "day": 1 }
+  },
+  "partial": {
+    "fields": { "min-date-year": "2024" },
+    "missing": ["month", "day"]
+  }
+}

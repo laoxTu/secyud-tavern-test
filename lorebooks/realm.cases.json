@@ -1,0 +1,179 @@
+{
+  "entries": {
+    "all": [
+      {
+        "code": "sys",
+        "name": "系统条目",
+        "disabled": false,
+        "match": "always",
+        "type": "plaintext",
+        "content": "系统内容",
+        "priority": 0,
+        "layer": 90,
+        "role": "system",
+        "expression": { "last": false }
+      },
+      {
+        "code": "last",
+        "name": "末尾条目",
+        "disabled": false,
+        "match": "always",
+        "type": "plaintext",
+        "content": "末尾内容",
+        "priority": 0,
+        "layer": 100,
+        "role": "user",
+        "expression": { "last": true }
+      },
+      {
+        "code": "off",
+        "name": "禁用条目",
+        "disabled": true,
+        "match": "always",
+        "type": "plaintext",
+        "content": "不会注入",
+        "priority": 0,
+        "layer": 100,
+        "role": "system",
+        "expression": { "last": false }
+      },
+      {
+        "code": "json",
+        "name": "JSON 条目",
+        "disabled": false,
+        "match": "always",
+        "type": "json",
+        "content": "{\n  \"a\": 1,\n  \"b\": 2\n}",
+        "priority": 0,
+        "layer": 100,
+        "role": "knowledge",
+        "expression": { "last": false }
+      },
+      {
+        "code": "norm",
+        "name": "关键词条目",
+        "disabled": false,
+        "match": "normal",
+        "type": "plaintext",
+        "content": "关键词内容",
+        "priority": 0,
+        "layer": 100,
+        "role": "system",
+        "expression": { "keywordsLength": 1, "fitCount": 1, "keywords": [["英雄"]] }
+      },
+      {
+        "code": "vec",
+        "name": "向量条目",
+        "disabled": false,
+        "match": "vector",
+        "type": "plaintext",
+        "content": "向量内容",
+        "priority": 0,
+        "layer": 100,
+        "role": "system",
+        "expression": {}
+      },
+      {
+        "code": "offnorm",
+        "name": "禁用关键词条目",
+        "disabled": true,
+        "match": "normal",
+        "type": "plaintext",
+        "content": "不会分析",
+        "priority": 0,
+        "layer": 100,
+        "role": "system",
+        "expression": {}
+      }
+    ],
+    "macro": [
+      {
+        "code": "m1",
+        "name": "绑定宏",
+        "disabled": false,
+        "match": "always",
+        "type": "plaintext",
+        "content": "宏内容",
+        "priority": 0,
+        "layer": 100,
+        "role": "assistant",
+        "expression": { "last": false, "macro": "gear" }
+      },
+      {
+        "code": "m2",
+        "name": "其它宏",
+        "disabled": false,
+        "match": "always",
+        "type": "plaintext",
+        "content": "其它宏内容",
+        "priority": 0,
+        "layer": 100,
+        "role": "assistant",
+        "expression": { "last": false, "macro": "other" }
+      }
+    ],
+    "layered": [
+      {
+        "code": "l90",
+        "name": "九十层",
+        "disabled": false,
+        "match": "always",
+        "type": "plaintext",
+        "content": "九十层内容",
+        "priority": 0,
+        "layer": 90,
+        "role": "system",
+        "expression": { "last": false }
+      },
+      {
+        "code": "l100",
+        "name": "百层",
+        "disabled": false,
+        "match": "always",
+        "type": "plaintext",
+        "content": "百层内容",
+        "priority": 0,
+        "layer": 100,
+        "role": "system",
+        "expression": { "last": false }
+      }
+    ]
+  },
+  "expected": {
+    "before": ["sys", "json"],
+    "after": ["last"],
+    "entryCodes": ["norm", "vec"],
+    "jsonContent": "{\"a\":1,\"b\":2}",
+    "systemContent": "系统内容",
+    "promptContent": "末尾内容",
+    "assistJoined": "宏内容\n\n其它宏内容",
+    "otherMacroContent": "其它宏内容",
+    "knowledgeArgs": "{\"type\":\"lorebook\"}",
+    "knowledgeResult": "{\"a\":1,\"b\":2}",
+    "layeredInjected": "九十层内容"
+  },
+  "history": {
+    "masterId": "realm",
+    "sequence": 0,
+    "summary": false,
+    "variables": {},
+    "prompts": [],
+    "output": 0,
+    "outputs": []
+  },
+  "outputHistory": {
+    "masterId": "realm",
+    "sequence": 1,
+    "summary": false,
+    "variables": {},
+    "prompts": [],
+    "output": 0,
+    "outputs": [
+      [
+        { "content": "英雄出现了", "thought": "", "variables": [] },
+        { "content": "毫无关联", "thought": "", "variables": [] }
+      ]
+    ]
+  },
+  "outputExpected": [["norm"], []]
+}

@@ -1,0 +1,123 @@
+{
+  "content": {
+    "outputWithCallings": {
+      "message": {
+        "content": "正文",
+        "callings": [{ "result": "-结果一" }, { "result": "-结果二" }]
+      },
+      "properties": {},
+      "output": true,
+      "expected": "正文-结果一-结果二"
+    },
+    "outputWithoutCallings": {
+      "message": { "content": "正文" },
+      "properties": {},
+      "output": true,
+      "expected": "正文"
+    },
+    "outputWithEmptyCallingResult": {
+      "message": { "content": "", "callings": [{ "result": "" }, { "result": "R" }] },
+      "properties": {},
+      "output": true,
+      "expected": "R"
+    },
+    "promptIgnoresCallings": {
+      "message": { "content": "用户输入", "callings": [{ "result": "R" }] },
+      "properties": {},
+      "output": false,
+      "expected": "用户输入"
+    },
+    "promptWithoutContent": {
+      "message": {},
+      "properties": {},
+      "output": false,
+      "expected": ""
+    },
+    "cached": {
+      "message": { "content": "正文" },
+      "properties": { "content": "缓存内容" },
+      "output": true,
+      "expected": "缓存内容"
+    },
+    "cachedEmpty": {
+      "message": { "content": "正文", "callings": [{ "result": "R" }] },
+      "properties": { "content": "" },
+      "output": true,
+      "expected": ""
+    }
+  },
+  "variables": {
+    "history": {
+      "masterId": "realm",
+      "output": 0,
+      "outputs": [
+        [
+          {
+            "content": "输出",
+            "thought": "",
+            "variables": [{ "op": "add", "path": "/extra", "value": true }]
+          }
+        ]
+      ],
+      "prompts": [
+        {
+          "content": "提示",
+          "variables": [{ "op": "replace", "path": "/hp", "value": 2 }]
+        }
+      ],
+      "sequence": 0,
+      "summary": false,
+      "variables": { "hp": 1, "nested": { "a": 1 } }
+    },
+    "withOutput": {
+      "hp": 2,
+      "nested": { "a": 1 },
+      "extra": true
+    },
+    "withoutOutput": {
+      "hp": 2,
+      "nested": { "a": 1 }
+    },
+    "cached": {
+      "properties": { "variables": { "cached": true } },
+      "expected": { "cached": true }
+    }
+  },
+  "analyze": {
+    "items": {
+      "first": {
+        "id": "first",
+        "name": "条目一",
+        "disabled": false,
+        "code": "a",
+        "match": "yes",
+        "content": "A"
+      },
+      "second": {
+        "id": "second",
+        "name": "条目二",
+        "disabled": false,
+        "code": "b",
+        "match": "no",
+        "content": "B"
+      },
+      "third": {
+        "id": "third",
+        "name": "条目三",
+        "disabled": false,
+        "code": "c",
+        "match": "yes",
+        "content": "C"
+      },
+      "fourth": {
+        "id": "fourth",
+        "name": "条目四",
+        "disabled": false,
+        "code": "d",
+        "match": "missing",
+        "content": "D"
+      }
+    },
+    "expected": ["first", "third"]
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "config": {
+    "full": {
+      "fields": { "keywordsLength": "2", "fitCount": "2" },
+      "keywords": {
+        "keywords-0": ["红", "蓝"],
+        "keywords-1": ["天空"]
+      },
+      "expected": {
+        "keywordsLength": 2,
+        "fitCount": 2,
+        "keywords": [["红", "蓝"], ["天空"]]
+      }
+    },
+    "emptyGroup": {
+      "fields": { "keywordsLength": "2", "fitCount": "1" },
+      "keywords": { "keywords-0": ["独有"] },
+      "expected": {
+        "keywordsLength": 2,
+        "fitCount": 1,
+        "keywords": [["独有"], []]
+      }
+    },
+    "fitCountClamped": {
+      "fields": { "keywordsLength": "1", "fitCount": "5" },
+      "keywords": { "keywords-0": ["a"] },
+      "expected": {
+        "keywordsLength": 1,
+        "fitCount": 1,
+        "keywords": [["a"]]
+      }
+    }
+  },
+  "match": [
+    {
+      "name": "命中组数达到 fitCount",
+      "content": "今天天空很蓝",
+      "expression": {
+        "keywordsLength": 2,
+        "fitCount": 2,
+        "keywords": [["蓝"], ["天空"]]
+      },
+      "expected": true
+    },
+    {
+      "name": "命中组数不足",
+      "content": "今天很蓝",
+      "expression": {
+        "keywordsLength": 2,
+        "fitCount": 2,
+        "keywords": [["蓝"], ["天空"]]
+      },
+      "expected": false
+    },
+    {
+      "name": "同一组内命中任意一个关键词即可",
+      "content": "只有红色",
+      "expression": {
+        "keywordsLength": 1,
+        "fitCount": 1,
+        "keywords": [["红", "蓝"]]
+      },
+      "expected": true
+    },
+    {
+      "name": "fitCount 为 1 时命中一组就提前返回",
+      "content": "红蓝",
+      "expression": {
+        "keywordsLength": 2,
+        "fitCount": 1,
+        "keywords": [["红"], ["蓝"]]
+      },
+      "expected": true
+    },
+    {
+      "name": "keywordsLength 为 0 时直接不匹配",
+      "content": "任意内容",
+      "expression": { "keywordsLength": 0, "fitCount": 1, "keywords": [] },
+      "expected": false
+    },
+    {
+      "name": "关键词匹配区分大小写",
+      "content": "HELLO",
+      "expression": {
+        "keywordsLength": 1,
+        "fitCount": 1,
+        "keywords": [["hello"]]
+      },
+      "expected": false
+    },
+    {
+      "name": "空关键词组不会命中",
+      "content": "abc",
+      "expression": { "keywordsLength": 1, "fitCount": 1, "keywords": [[]] },
+      "expected": false
+    },
+    {
+      "name": "没有表达式时不匹配",
+      "content": "abc",
+      "expression": null,
+      "expected": false
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "moduleInfo": {
+    "name": "lorebook",
+    "plural": "lorebooks"
+  },
+  "defaultEntry": {
+    "code": "",
+    "content": "",
+    "layer": 100,
+    "expression": {},
+    "match": "always",
+    "priority": 0,
+    "role": "knowledge",
+    "type": "plaintext"
+  },
+  "types": ["json", "plaintext", "markdown", "yaml", "xml"],
+  "sequenceCases": [
+    { "layer": 0, "priority": 0, "expected": 0 },
+    { "layer": 1, "priority": 5, "expected": 10005 },
+    { "layer": 2, "priority": 0, "expected": 20000 },
+    { "layer": 100, "priority": 9999, "expected": 1009999 }
+  ],
+  "sortCases": {
+    "items": [
+      { "code": "c", "layer": 1, "priority": 2 },
+      { "code": "a", "layer": 1, "priority": 1 },
+      { "code": "d", "layer": 0, "priority": 9 },
+      { "code": "b", "layer": 1, "priority": 1 },
+      { "code": "e", "layer": 2, "priority": 0 }
+    ],
+    "expected": ["d", "a", "b", "c", "e"]
+  },
+  "adjacentCases": [
+    { "left": { "layer": 1, "priority": 2 }, "right": { "layer": 1, "priority": 3 } },
+    { "left": { "layer": 1, "priority": 9999 }, "right": { "layer": 2, "priority": 0 } }
+  ],
+  "typeToExtCases": [
+    { "type": "json", "expected": "json" },
+    { "type": "plaintext", "expected": "txt" },
+    { "type": "markdown", "expected": "md" },
+    { "type": "yaml", "expected": "yaml" },
+    { "type": "xml", "expected": "xml" },
+    { "type": "unknown", "expected": "txt" },
+    { "type": "", "expected": "txt" }
+  ]
+}

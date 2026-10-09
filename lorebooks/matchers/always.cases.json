@@ -1,0 +1,37 @@
+{
+  "entry": {
+    "code": "w",
+    "content": "世界书内容",
+    "layer": 100,
+    "expression": {},
+    "match": "always",
+    "priority": 0,
+    "role": "knowledge",
+    "type": "plaintext"
+  },
+  "configureCases": [
+    {
+      "name": "勾选 last 并绑定宏",
+      "form": [
+        ["last", "on"],
+        ["macro", "style"]
+      ],
+      "expected": { "last": true, "macro": "style" }
+    },
+    {
+      "name": "未勾选 last 时保持 false",
+      "form": [["macro", "gear"]],
+      "expected": { "last": false, "macro": "gear" }
+    },
+    {
+      "name": "表单为空时宏为空值",
+      "form": [],
+      "expected": { "last": false, "macro": null }
+    }
+  ],
+  "replace": {
+    "expression": { "last": true, "macro": "旧宏" },
+    "form": [],
+    "expected": { "last": false, "macro": null }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "vectors": [
+    ["id-a", "id-b"],
+    ["id-c"]
+  ],
+  "match": [
+    {
+      "name": "向量命中且输出阶段应当激活",
+      "rag": true,
+      "output": true,
+      "vectors": [["id-a"]],
+      "entry": "id-a",
+      "expected": true
+    },
+    {
+      "name": "多组向量里的 id 也算命中",
+      "rag": true,
+      "output": true,
+      "vectors": [["id-x"], ["id-c"]],
+      "entry": "id-c",
+      "expected": true
+    },
+    {
+      "name": "不在向量里的条目不激活",
+      "rag": true,
+      "output": true,
+      "vectors": [["id-a"]],
+      "entry": "id-z",
+      "expected": false
+    },
+    {
+      "name": "提示词阶段不参与向量匹配",
+      "rag": true,
+      "output": false,
+      "vectors": [["id-a"]],
+      "entry": "id-a",
+      "expected": false
+    },
+    {
+      "name": "RAG 未启用时不参与向量匹配",
+      "rag": false,
+      "output": true,
+      "vectors": [["id-a"]],
+      "entry": "id-a",
+      "expected": false
+    },
+    {
+      "name": "没有收集到向量时不激活",
+      "rag": true,
+      "output": true,
+      "vectors": [],
+      "entry": "id-a",
+      "expected": false
+    }
+  ]
+}

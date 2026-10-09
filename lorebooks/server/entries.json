@@ -1,0 +1,83 @@
+{
+  "criteria": {
+    "entry": {
+      "data": {
+        "code": "w",
+        "content": "",
+        "layer": 100,
+        "expression": {},
+        "match": "normal",
+        "priority": 3,
+        "role": "system",
+        "type": "plaintext"
+      },
+      "disabled": false,
+      "entryId": 0,
+      "entryType": "lorebooks",
+      "masterId": "p",
+      "name": "世界"
+    },
+    "sorter": "normalw世界",
+    "filter": "normalw世界"
+  },
+  "plain": {
+    "code": "w",
+    "content": "世界书内容",
+    "disabled": false,
+    "expression": {},
+    "layer": 100,
+    "match": "normal",
+    "name": "世界",
+    "priority": 0,
+    "role": "system",
+    "type": "plaintext"
+  },
+  "json": {
+    "code": "j",
+    "content": "{\"a\":1}",
+    "disabled": false,
+    "expression": {},
+    "layer": 100,
+    "match": "always",
+    "name": "配置",
+    "priority": 0,
+    "role": "knowledge",
+    "type": "json"
+  },
+  "markdown": {
+    "code": "m",
+    "content": "# 标题",
+    "disabled": false,
+    "expression": {},
+    "layer": 100,
+    "match": "always",
+    "name": "文档",
+    "priority": 0,
+    "role": "user",
+    "type": "markdown"
+  },
+  "unknownType": {
+    "code": "u",
+    "content": "未知类型内容",
+    "disabled": false,
+    "expression": {},
+    "layer": 100,
+    "match": "always",
+    "name": "未知",
+    "priority": 0,
+    "role": "assistant",
+    "type": "unknown"
+  },
+  "second": {
+    "code": "k",
+    "content": "第二条",
+    "disabled": false,
+    "expression": {},
+    "layer": 90,
+    "match": "vector",
+    "name": "第二条",
+    "priority": 1,
+    "role": "system",
+    "type": "yaml"
+  }
+}

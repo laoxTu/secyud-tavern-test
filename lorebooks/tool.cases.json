@@ -1,0 +1,39 @@
+{
+  "documents": [
+    { "name": "p-hit", "title": "命中条目", "embedding": [1, 0, 0] },
+    { "name": "p-miss", "title": "无关条目", "embedding": [0, 1, 0] }
+  ],
+  "query": "怎么找到英雄",
+  "queryEmbedding": [1, 0, 0],
+  "expectedTitles": ["命中条目"],
+  "expectedCodes": [["p-hit"]],
+  "filter": {
+    "query": "另一个问题",
+    "embedding": [0, 1, 0],
+    "minRelevance": 0.5,
+    "expectedTitles": ["无关条目"]
+  },
+  "history": {
+    "masterId": "realm",
+    "sequence": 1,
+    "summary": false,
+    "variables": {},
+    "prompts": [],
+    "output": 0,
+    "outputs": [
+      [
+        {
+          "content": "输出",
+          "thought": "",
+          "variables": [],
+          "properties": {}
+        }
+      ]
+    ]
+  },
+  "toolName": "get_lorebook",
+  "result": {
+    "notFound": "error: output not found",
+    "noRag": "warn: RAG is not enabled"
+  }
+}

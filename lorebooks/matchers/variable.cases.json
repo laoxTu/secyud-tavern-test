@@ -1,0 +1,23 @@
+{
+  "variables": {
+    "hp": 10,
+    "flag": true,
+    "count": 0,
+    "role": { "name": "勇者", "tag": ["/slash"] },
+    "a/b": "斜杠键",
+    "a~b": "波浪键"
+  },
+  "match": [
+    { "name": "数字值按字符串比较", "path": "/hp", "value": "10", "expected": true },
+    { "name": "值不同则不匹配", "path": "/hp", "value": "11", "expected": false },
+    { "name": "路径可以省略前导斜杠", "path": "hp", "value": "10", "expected": true },
+    { "name": "支持多级对象路径", "path": "/role/name", "value": "勇者", "expected": true },
+    { "name": "支持数组下标", "path": "/role/tag/0", "value": "/slash", "expected": true },
+    { "name": "布尔值转字符串后比较", "path": "/flag", "value": "true", "expected": true },
+    { "name": "0 也算存在的值", "path": "/count", "value": "0", "expected": true },
+    { "name": "路径不存在时不匹配", "path": "/missing", "value": "x", "expected": false },
+    { "name": "深层路径不存在时也不匹配", "path": "/role/missing", "value": "x", "expected": false },
+    { "name": "~1 转义为斜杠", "path": "/a~1b", "value": "斜杠键", "expected": true },
+    { "name": "~0 转义为波浪号", "path": "/a~0b", "value": "波浪键", "expected": true }
+  ]
+}
