@@ -51,9 +51,9 @@
   "invalidSchemas": [
     { "name": "空串", "fields": { "schema": "" } },
     { "name": "缺字段", "fields": {} },
-    { "name": "非 json", "fields": { "schema": "not a json" } },
-    { "name": "字面量 null", "fields": { "schema": "null" } }
+    { "name": "非 json", "fields": { "schema": "not a json" } }
   ],
+  "falsySchema": "null",
   "realm": {
     "id": "realm-1",
     "model": { "id": "model-main", "name": "主模型" },

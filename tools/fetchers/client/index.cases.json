@@ -28,6 +28,10 @@
     "content": "0123456789abcdefghij",
     "contentType": "text/plain"
   },
+  "empty": {
+    "content": null,
+    "contentType": "text/plain"
+  },
   "html": {
     "contentType": "text/html; charset=utf-8",
     "content": "<!DOCTYPE html><html><head><title>抓取测试文章</title></head><body><nav><a href=\"/\">首页</a></nav><article><h1>抓取测试文章</h1><p>这是第一段正文，用来验证 Readability 能从 html 中提取出可读内容，而不是把整段标签原样返回给上层。</p><p>这是第二段正文，内容同样足够长，以便 Readability 判断它是一个正常的文章节点，而不是导航栏或者页脚。</p><p>这是第三段正文，包含了用于断言的标记句子：READABILITY_BODY_SENTENCE。</p></article><footer>版权信息</footer></body></html>",

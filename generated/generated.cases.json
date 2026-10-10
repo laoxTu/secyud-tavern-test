@@ -5,21 +5,5 @@
     "zh": ["file.id", "image.plural", "default.name", "theme.dark"],
     "en": ["file.id", "image.plural", "default.name", "theme.dark"]
   },
-  "allowedPlaceholders": ["id", "sequence", "entryType", "entryId"],
-  "knownKeyGaps": {
-    "zh": [
-      "tool.provider.elicit",
-      "elicit.custom.placeholder",
-      "elicit.title",
-      "importer.id",
-      "silly_tavern.import"
-    ],
-    "en": [
-      "default.importer",
-      "plugin.no_file",
-      "plugin.invalid_json",
-      "plugin.invalid_st_preset",
-      "plugin.invalid_st_char"
-    ]
-  }
+  "allowedPlaceholders": ["id", "sequence", "entryType", "entryId"]
 }

@@ -149,6 +149,43 @@
     "cardDescription": "角色描述 <%~ it.char %>",
     "cardKeywordContent": "关键词内容 <%~ it.char %>"
   },
+  "varCard": {
+    "spec": "chara_card_v2",
+    "spec_version": "2.0",
+    "data": {
+      "name": "变量角色",
+      "description": "甲{{setvar::hp::10}}乙",
+      "first_mes": "丙{{setvar::hp::20}}{{setvar::mp::30}}丁"
+    }
+  },
+  "varPreset": {
+    "name": "变量预设",
+    "prompts": [
+      {
+        "identifier": "var-one",
+        "name": "单次赋值",
+        "role": "system",
+        "content": "单次{{setvar::hp::10}}赋值"
+      },
+      {
+        "identifier": "var-two",
+        "name": "两次赋值",
+        "role": "system",
+        "content": "两次{{setvar::hp::20}}赋值"
+      }
+    ]
+  },
+  "varText": {
+    "description": "甲乙",
+    "firstMes": "丙丁",
+    "one": "单次赋值",
+    "two": "两次赋值",
+    "macros": [
+      { "code": "hp_0", "key": "hp", "value": "10" },
+      { "code": "hp_1", "key": "hp", "value": "20" },
+      { "code": "mp_0", "key": "mp", "value": "30" }
+    ]
+  },
   "openaiPreset": {
     "name": "酒馆预设",
     "temperature": 0.8,

@@ -125,6 +125,7 @@
     "patchedName": "\"villain\"",
     "notExists": "result: not exists",
     "success": "success",
+    "noOutput": "error: no output to operate.",
     "valueRequired": "error: value is not provided.",
     "pathRequired": "error: op or path is not provided."
   }

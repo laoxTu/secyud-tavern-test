@@ -434,6 +434,19 @@ describe('database server factory / repositories.entry make 与 add', () => {
     expect(manager.criteria).toHaveBeenCalledWith(data.entryType, data.entries[0]);
   });
 
+  it('entries 为空数组时应当直接返回，不查最大 entryId 也不写库', async () => {
+    const { data, repository } = await createRepository();
+
+    // drizzle 的 values([]) 会抛错，空数组必须提前返回
+    await expect(
+      repository.make(data.masterId, data.entryType, []),
+    ).resolves.toBeUndefined();
+
+    expect(mocks.calls.select).toEqual([]);
+    expect(mocks.calls.insert).toEqual([]);
+    expect(mocks.calls.values).toEqual([]);
+  });
+
   it('add 应当返回分配到的 entryId 并写入单条', async () => {
     const { data, repository } = await createRepository();
     mocks.state.queue = [[{ entryId: data.maxEntryId }]];

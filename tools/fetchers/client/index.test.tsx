@@ -240,6 +240,20 @@ describe('tools fetchers client / invoke', () => {
     );
   });
 
+  it('正文与错误都为空时结果里不应当出现字面量 undefined', async () => {
+    const { data, item } = await createTool();
+    mocks.post.mockResolvedValue(structuredClone(data.empty));
+    const [url] = data.urls;
+
+    const result = await item.invoke({
+      args: { urls: [url] },
+      controller: new AbortController(),
+    });
+
+    // 请求成功但没有正文（content 与 error 都是空），修复前会拼出 'undefined'
+    expect(result).toBe(`${url}\r\nno content`);
+  });
+
   it('html / xml 内容应当经 Readability 提取纯文本', async () => {
     const data = await loadCases();
 
@@ -345,12 +359,26 @@ describe('tools fetchers client / invoke', () => {
 });
 
 describe('tools fetchers client / Editor', () => {
-  // 注意顺序：Editor 用 jsonUtils.merge(defaultConfig, data.config)，
-  // 而 merge 是就地合并，带配置的渲染会改写模块级 defaultConfig。
-  // 这条「默认值」用例必须跑在带配置的渲染之前（见报告的未确认项）。
+  // Editor 现在先克隆 defaultConfig 再 merge，默认值不再被渲染改写，
+  // 「默认值」用例与带配置的渲染之间没有顺序依赖。
   it('没有条目配置时应当回落到默认配置', async () => {
     const data = await loadCases();
 
+    const { container } = renderEditor();
+
+    expect(fieldValues(container)).toEqual(
+      Object.fromEntries(
+        data.editor.defaultFields.map((u) => [u.name, u.value]),
+      ),
+    );
+  });
+
+  it('渲染带配置的编辑器后默认值不应当被改写', async () => {
+    const data = await loadCases();
+
+    // 先渲染一次带配置的编辑器，再渲染空配置：修复前 merge 就地合并会让第二次
+    // 渲染回落到上一个条目的配置，而不是 data.editor.defaultFields。
+    renderEditor(data.editor.config);
     const { container } = renderEditor();
 
     expect(fieldValues(container)).toEqual(

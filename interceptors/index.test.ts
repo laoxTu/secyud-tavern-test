@@ -26,7 +26,7 @@ function catchBusinessError(
 }
 
 beforeEach(() => {
-  // jsonUtils.parse 失败时会 console.warn，用例里静音
+  // 解析失败之类的告警只是噪声，用例里静音
   vi.spyOn(console, 'warn').mockImplementation(() => {});
 });
 
@@ -338,6 +338,18 @@ describe('interceptors / checker.validJson', () => {
 
     for (const value of data.checker.json.valid) {
       expect(checker.validJson(value, data.checker.json.name)).toBe(value);
+    }
+  });
+
+  it('解析结果为假值但合法的 json（0 / false / null）应当原样返回字符串', async () => {
+    const data = await loadCases();
+
+    // 修复前用解析结果的真值判断，这些合法 JSON 会被误判成 error.json_invalid
+    for (const value of data.checker.json.falsy) {
+      expect(checker.validJson(value, data.checker.json.name)).toBe(value);
+      expect(checker.validJsonOrEmpty(value, data.checker.json.name)).toBe(
+        value,
+      );
     }
   });
 

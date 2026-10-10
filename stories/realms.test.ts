@@ -679,7 +679,7 @@ describe('stories realms / generate', () => {
     expect(mocks.historySet).toHaveBeenCalledTimes(1);
   });
 
-  it('create 阶段保存失败时向上抛并复位输入状态', async () => {
+  it('create 阶段保存失败时向上抛并复位输入与生成状态', async () => {
     const data = await loadCases();
     setupRealm(data);
     realms.iframe = { contentWindow: {} } as any;
@@ -688,6 +688,9 @@ describe('stories realms / generate', () => {
 
     await expect(realms.generate(true)).rejects.toThrow('add boom');
 
+    // create 阶段在收尾的 try/finally 之前，出错时生成态必须自己复位，
+    // 否则会一直停在「生成中」，后续 generate 全部早退。
+    expect(useRealmState.getState().generating).toBe(false);
     expect(useRealmState.getState().summary).toBe(false);
     expect(useRealmState.getState().content).toBe('');
     expect(mocks.generate).not.toHaveBeenCalled();

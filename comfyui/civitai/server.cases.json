@@ -24,6 +24,7 @@
   "foreignDownload": "https://huggingface.co/example/model.safetensors",
   "token": "civitai-token",
   "whitespaceDownload": "   ",
+  "invalidDownload": "not-a-url",
   "curlError": "curl exited with code 1",
   "expectedField": "civitai.download"
 }

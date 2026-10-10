@@ -214,9 +214,10 @@ describe('files api / 按 id 读取', () => {
 });
 
 describe('files api / 删除', () => {
-  it('DELETE /[id] 应当把 id 交给仓库，并把仓库返回值当 json 返回', async () => {
+  it('DELETE /[id] 应当把 id 交给仓库，响应体固定为 null（与仓库返回值无关）', async () => {
     const data = await loadCases();
-    mocks.repo.delete.mockResolvedValue(null);
+    // 真实仓库的 delete 没有返回值，这里先按真实契约来
+    mocks.repo.delete.mockResolvedValue(undefined);
 
     const response = await call(handlers['[id]'].DELETE, {
       params: { id: data.file.id },
@@ -224,6 +225,13 @@ describe('files api / 删除', () => {
 
     expect(mocks.repo.delete).toHaveBeenCalledWith(data.file.id);
     await expect(response.json()).resolves.toBeNull();
+
+    // 仓库即便返回了东西，也不该被当作响应体
+    mocks.repo.delete.mockResolvedValue(data.file);
+    const again = await call(handlers['[id]'].DELETE, {
+      params: { id: data.file.id },
+    });
+    await expect(again.json()).resolves.toBeNull();
   });
 
   it('仓库报实体不存在时应当原样抛出', async () => {

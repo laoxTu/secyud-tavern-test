@@ -256,7 +256,7 @@ describe('comfyui editor 配置器', () => {
         { name: '空串', fields: { pools: '' } },
         { name: '缺字段', fields: {} },
         { name: '非 json', fields: { pools: 'not a json' } },
-        { name: '字面量 null', fields: { pools: 'null' } },
+        // 注意：字面量 'null' 是合法 JSON（解析结果是假值），由下面的「合法 json」用例正向覆盖
       ];
 
       for (const item of cases) {

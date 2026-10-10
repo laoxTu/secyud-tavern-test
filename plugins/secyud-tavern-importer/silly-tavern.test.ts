@@ -320,6 +320,56 @@ describe('silly-tavern / 酒馆宏转换', () => {
   });
 });
 
+describe('silly-tavern / 变量赋值宏', () => {
+  // 修复前两处分支都写成 entries[1]：单次赋值时 entries 只有一个元素，
+  // `entries[1].length` 直接抛 TypeError 让整个导入失败；写两次则按第二个值的字符拆宏。
+  // 现在 entries 就是该 key 的值数组，第 i 次赋值对应 `key_i`。
+  /** 只挑出变量赋值产生的宏（`key_序号`），按顺序比较 */
+  function assignmentMacros(macros: any[]) {
+    return macros
+      .filter((u) => /^(hp|mp)_\d+$/.test(u.code))
+      .map((u) => ({ code: u.code, key: u.key, value: u.value }));
+  }
+
+  it('角色卡：单次赋值一条宏，同 key 两次赋值各取自己的值', async () => {
+    const data = await loadCases();
+
+    const { entries } = await chara(data.varCard);
+
+    expect(assignmentMacros(entries.macros)).toEqual(data.varText.macros);
+  });
+
+  it('角色卡：赋值片段应当从正文里摘除', async () => {
+    const data = await loadCases();
+
+    const { entries } = await chara(data.varCard);
+
+    // 描述里摘掉 {{setvar::hp::10}}，开场白里摘掉两次赋值
+    expect(byCode(entries.macros, 'chara_desc').value).toBe(
+      data.varText.description,
+    );
+    expect(byCode(entries.macros, 'opening').value).toBe(data.varText.firstMes);
+  });
+
+  it('OpenAI 预设：赋值片段同样成宏并从 prompt 内容里摘除', async () => {
+    const data = await loadCases();
+
+    const { entries } = await preset(data.varPreset);
+
+    // 预设分支没有 mp，只比较 hp 的两条
+    const expected = data.varText.macros.filter(
+      (u: any) => u.key === 'hp',
+    );
+    expect(assignmentMacros(entries.macros)).toEqual(expected);
+    expect(byCode(entries.lorebooks, 'var-one').content).toBe(
+      data.varText.one,
+    );
+    expect(byCode(entries.lorebooks, 'var-two').content).toBe(
+      data.varText.two,
+    );
+  });
+});
+
 describe('silly-tavern / OpenAI 预设', () => {
   it('prompt 条目应当映射为 lorebook 并按注入位置计算 layer', async () => {
     const data = await loadCases();

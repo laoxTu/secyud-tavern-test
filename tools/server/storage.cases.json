@@ -15,6 +15,14 @@
       "config": {}
     }
   ],
+  "unknownProvider": [
+    {
+      "name": "未注册工具",
+      "disabled": false,
+      "type": "ghost",
+      "config": {}
+    }
+  ],
   "sameName": [
     {
       "name": "重复",

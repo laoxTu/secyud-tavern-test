@@ -19,6 +19,7 @@ vi.mock('@/tools/server/providers', () => ({
   providers: { registry: { records: providersMock.records } },
 }));
 
+import { BusinessError } from '@/interceptors';
 import type { Preset } from '@/presets';
 import type { PresetArchiveContext } from '@/presets/server/storage';
 import { storage } from '@/tools/server/storage';
@@ -220,5 +221,52 @@ describe('tools server storage / saveArchive', () => {
 
     expect(target.entries!.tools).toEqual([]);
     expect(alpha.saveArchive).not.toHaveBeenCalled();
+  });
+});
+
+describe('tools server storage / provider 未注册', () => {
+  // 修复前 provider() 只 console.error 再返回 undefined，调用点接着 .loadArchive/.saveArchive
+  // 会抛裸 TypeError；现在直接抛带 code 的 BusinessError，前端能翻译成提示。
+  /** 取回调 reject 出来的错误，断言它带上了 code 与插值用的 data */
+  async function catchProviderError(run: Promise<unknown>) {
+    const error = await run.then(
+      () => null,
+      (e) => e,
+    );
+    expect(error).toBeInstanceOf(BusinessError);
+    return error as BusinessError;
+  }
+
+  it('导出时 provider 未注册应当抛 BusinessError 而不是 TypeError', async () => {
+    const data = await loadCases();
+    const context = await createContext(data.unknownProvider);
+
+    const error = await catchProviderError(storage.loadArchive(context));
+
+    expect(error.code).toBe('error.tool.provider_not_registered');
+    expect(error.data).toEqual({ type: 'ghost' });
+    expect(error.message).toBe('tool provider ghost is not registered.');
+    // 抛在写 meta 之前，目录里不应当留下条目
+    expect(Object.keys(nodesOf(context))).toEqual([]);
+  });
+
+  it('导入时 provider 未注册也应当抛 BusinessError', async () => {
+    const context = await createContext([]);
+    const folder: ArchiveFolder = { type: 'folder', name: 'tools', nodes: {} };
+    context.cur['tools'] = folder;
+    archives.set.json(folder.nodes, `ghost-0.meta.json`, {
+      name: '未注册工具',
+      type: 'ghost',
+      config: {},
+    });
+    const target = await createTarget();
+
+    const error = await catchProviderError(
+      storage.saveArchive({ ...context, item: target }),
+    );
+
+    expect(error.code).toBe('error.tool.provider_not_registered');
+    expect(error.data).toEqual({ type: 'ghost' });
+    expect(target.entries!.tools).toBeUndefined();
   });
 });

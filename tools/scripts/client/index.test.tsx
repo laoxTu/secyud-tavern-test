@@ -122,8 +122,8 @@ afterEach(() => {
 });
 
 describe('tools scripts client / 注册契约', () => {
-  // 注意顺序：Editor 用 jsonUtils.merge(defaultConfig, data.config) 就地合并，
-  // 带配置的渲染会改写 scripts.default 本身，这条断言必须跑在渲染用例之前。
+  // Editor 用 jsonUtils.merge(structuredClone(defaultConfig), data.config)，
+  // 默认值不再被就地改写，这条断言与渲染用例之间没有顺序依赖。
   it('应当以 script 注册，并把默认配置挂在 default 上', async () => {
     const data = await loadCases();
 
@@ -257,9 +257,8 @@ describe('tools scripts client / 上下文注入', () => {
 });
 
 describe('tools scripts client / Editor', () => {
-  // 注意顺序：Editor 用 jsonUtils.merge(defaultConfig, data.config) 就地合并，
-  // scripts.default 与源码里的 defaultConfig 是同一个对象，带配置的渲染会把它改写。
-  // 这条「默认值」用例必须跑在带配置的渲染之前（见报告的未确认项）。
+  // Editor 现在先克隆 defaultConfig 再 merge，scripts.default 不再被渲染改写，
+  // 「默认值」用例与带配置的渲染之间没有顺序依赖。
   it('没有条目配置时应当回落到默认配置', async () => {
     const data = await loadCases();
 
@@ -267,6 +266,17 @@ describe('tools scripts client / Editor', () => {
 
     expect(fieldNames(container)).toEqual([...data.fieldNames].sort());
     expectFields(container, data.editor.defaultFields);
+  });
+
+  it('渲染带配置的编辑器后 scripts.default 不应当被改写', async () => {
+    const data = await loadCases();
+    const before = structuredClone(scripts.default);
+
+    renderEditor(data.editor.config);
+
+    // 修复前 merge 就地合并，渲染一次就会把上面这条用例的默认值污染成 editor.config
+    expect(scripts.default).toEqual(before);
+    expect(scripts.default).toEqual(data.defaultConfig);
   });
 
   it('渲染出来的字段名应当与 configureObject 读取的一致', async () => {

@@ -65,6 +65,7 @@
     "field": "code",
     "json": {
       "errorCode": "error.json_invalid",
+      "falsy": ["0", "false", "null"],
       "invalid": ["", "  ", "abc", "{"],
       "message": "Json is invalid",
       "name": "preset.content",

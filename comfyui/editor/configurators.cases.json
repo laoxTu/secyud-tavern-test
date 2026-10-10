@@ -231,9 +231,9 @@
       "target": "default.field"
     },
     {
-      "name": "字面量 null 应当拒绝",
+      "name": "字面量 null 应当接受（解析结果是假值，但合法 JSON）",
       "input": "null",
-      "target": "default.field"
+      "expected": "null"
     }
   ],
   "agentFields": {

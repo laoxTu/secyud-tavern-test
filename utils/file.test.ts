@@ -165,9 +165,7 @@ describe('fileUtils / 流', () => {
       controller.enqueue(encoder.encode('!'));
     });
 
-    await expect(readStream(stream)).resolves.toBe(
-      `${data.streams.onceText}!`,
-    );
+    await expect(readStream(stream)).resolves.toBe(`${data.streams.onceText}!`);
   });
 });
 
@@ -188,7 +186,10 @@ describe('fileUtils / download', () => {
   it('响应不 ok 时应当回调 failedAction 且不写文件', async () => {
     const data = await loadCases();
     const response = fakeResponse({ ok: false });
-    vi.stubGlobal('fetch', vi.fn(async () => response));
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => response),
+    );
     const failedAction = vi.fn();
     const target = tmpDir('failed.bin');
 
@@ -204,7 +205,10 @@ describe('fileUtils / download', () => {
       chunks: data.downloads.chunks,
       length: data.downloads.length,
     });
-    vi.stubGlobal('fetch', vi.fn(async () => response));
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => response),
+    );
     const progressAction = vi.fn();
     const finishAction = vi.fn();
     const startAction = vi.fn();
@@ -231,7 +235,10 @@ describe('fileUtils / download', () => {
   it('读取中途失败时应当回调 errorAction', async () => {
     const data = await loadCases();
     const response = fakeResponse(data.downloads.streamError);
-    vi.stubGlobal('fetch', vi.fn(async () => response));
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => response),
+    );
     const errorAction = vi.fn();
     const finishAction = vi.fn();
     const target = tmpDir('broken.bin');
@@ -248,7 +255,10 @@ describe('fileUtils / download', () => {
   it('没有 content-length 时不应触发进度回调', async () => {
     const data = await loadCases();
     const response = fakeResponse({ chunks: data.downloads.chunks });
-    vi.stubGlobal('fetch', vi.fn(async () => response));
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => response),
+    );
     const progressAction = vi.fn();
     const target = tmpDir('no-length.bin');
 

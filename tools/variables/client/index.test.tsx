@@ -216,4 +216,24 @@ describe('variables client / set_variable 与 del_variable', () => {
     expect(result).toBe(data.expected.pathRequired);
     expect(lastOutput(realm).variables).toEqual([]);
   });
+
+  it('没有本轮输出时应当报错而不是 success（修复前会静默返回 success）', async () => {
+    const data = await loadCases();
+    // plain 历史的 outputs 为空，realms.outputs 会返回 null
+    const realm = await createRealm([data.histories.plain]);
+    const [, set, del] = await createTools(realm);
+
+    expect(
+      await set.invoke({
+        args: data.patches.set,
+        controller: new AbortController(),
+      }),
+    ).toBe(data.expected.noOutput);
+    expect(
+      await del.invoke({
+        args: data.patches.del,
+        controller: new AbortController(),
+      }),
+    ).toBe(data.expected.noOutput);
+  });
 });

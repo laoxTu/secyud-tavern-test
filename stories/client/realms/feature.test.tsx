@@ -463,6 +463,32 @@ describe('realms feature / Editor', () => {
     expect(mocks.setIndex).toHaveBeenCalled();
   });
 
+  it('变量不是合法 JSON 时提交中断，不写回 history', async () => {
+    mocks.histories.push(makeHistory());
+    mocks.formData = { variables: '{not json', 'history_input-0': 'edited' };
+    const Editor = componentOf('history-editor');
+    const history = makeHistory();
+    mocks.historyGet.mockResolvedValue(history);
+
+    render(<Editor />);
+    clickAction('open');
+    await waitFor(() =>
+      expect(mocks.historyGet).toHaveBeenCalledWith(1, mocks.realm),
+    );
+
+    clickAction('submit');
+
+    // 抛出的 BusinessError 被 handler 收进 spy，提交在这里中断
+    await waitFor(() => expect(mocks.handlerError).toHaveBeenCalledTimes(1));
+    const error = mocks.handlerError.mock.calls[0][0] as Error;
+    expect(error.name).toBe('BusinessError');
+    expect(error.message).toBe('json invalid');
+    // 后续的输入覆盖与落盘都不会发生
+    expect(history.prompts[0].content).toBe('prompt-0');
+    expect(mocks.historySet).not.toHaveBeenCalled();
+    expect(mocks.setIndex).not.toHaveBeenCalled();
+  });
+
   it('index.cur=0 时打开与提交都提前返回，不碰 realms', async () => {
     mocks.histories.push(makeHistory());
     mocks.index.cur = 0;

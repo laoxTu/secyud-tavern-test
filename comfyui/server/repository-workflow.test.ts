@@ -484,6 +484,18 @@ describe('comfyui workflow repository / param.make', () => {
       mocks.values.mock.calls[0][0].map((u: ComfyUIParam) => u.sequence),
     ).toEqual(params.map((_, i) => i));
   });
+  it('参数为空数组时应当直接返回，不取最大序号也不写库', async () => {
+    const data = await loadCases();
+
+    // drizzle 的 values([]) 会抛错，空数组必须提前返回
+    await expect(
+      workflowRepository.param.make(data.workflow.id, []),
+    ).resolves.toBeUndefined();
+
+    expect(mocks.queryOne).not.toHaveBeenCalled();
+    expect(mocks.db.insert).not.toHaveBeenCalled();
+    expect(mocks.values).not.toHaveBeenCalled();
+  });
 });
 
 describe('comfyui workflow repository / param.set', () => {

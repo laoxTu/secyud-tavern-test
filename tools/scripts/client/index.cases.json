@@ -74,9 +74,16 @@
       "error": { "code": "error.json_invalid", "target": "default.schema" }
     },
     {
-      "name": "schema 是字面量 null",
+      "name": "schema 是合法 json 字面量 null（解析结果是假值，但不应当判非法）",
       "fields": { "schema": "null" },
-      "error": { "code": "error.json_invalid", "target": "default.schema" }
+      "expected": {
+        "enableDoc": false,
+        "enableVariable": false,
+        "script": null,
+        "code": null,
+        "schema": "null",
+        "description": null
+      }
     }
   ],
   "invoke": [
@@ -109,6 +116,12 @@
       "script": "return input;",
       "args": { "x": 1, "y": "z" },
       "expected": "{\"x\":1,\"y\":\"z\"}"
+    },
+    {
+      "name": "脚本没有 return 时返回空串而不是 undefined",
+      "script": "const a = input.x;",
+      "args": { "x": 1 },
+      "expected": ""
     }
   ],
   "contextScript": "return JSON.stringify({ doc: context.document ?? null, win: context.window ?? null, vars: context.variables ?? null });",

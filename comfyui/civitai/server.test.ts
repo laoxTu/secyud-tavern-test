@@ -123,8 +123,8 @@ describe('comfyui civitai server / download', () => {
     expect(error.message).toBe('No download provided');
     expect(error.code).toBe('error.empty_field');
     expect(error.data).toEqual({ field: data.expectedField });
-    // 目录在建之前就已经创建了
-    expect(mocks.mkdir).toHaveBeenCalledWith(data.directory);
+    // 参数校验在 mkdir 之前，缺 download 时不会留下空目录
+    expect(mocks.mkdir).not.toHaveBeenCalled();
     expect(mocks.execFileSync).not.toHaveBeenCalled();
   });
 
@@ -141,6 +141,31 @@ describe('comfyui civitai server / download', () => {
 
     expect(error).toBeInstanceOf(BusinessError);
     expect(error.data).toEqual({ field: data.expectedField });
+    expect(mocks.mkdir).not.toHaveBeenCalled();
+    expect(mocks.execFileSync).not.toHaveBeenCalled();
+  });
+
+  it('download 不是合法 URL 时应当包成 BusinessError，而不是裸 TypeError', async () => {
+    const data = await loadCases();
+    const model = {
+      ...data.model,
+      download: data.invalidDownload,
+    } as ComfyUIModel;
+    const errorLog = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+
+    const error = await importer
+      .download(model, data.filename)
+      .catch((err) => err);
+
+    expect(error).toBeInstanceOf(BusinessError);
+    expect(error.message).toBe('download failed');
+    expect(error.code).toBe('message.civitai.download.failed');
+    expect(error.innerError).toBeInstanceOf(TypeError);
+    expect(errorLog).toHaveBeenCalledWith(error.innerError);
+    // 参数合法，目录照建；但不会执行 curl
+    expect(mocks.mkdir).toHaveBeenCalledWith(data.directory);
     expect(mocks.execFileSync).not.toHaveBeenCalled();
   });
 

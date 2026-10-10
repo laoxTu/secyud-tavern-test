@@ -64,19 +64,15 @@ describe('generated resources / 语言包', () => {
     }
   });
 
-  it('两个语言包的键集合差异应当只有已知的那几个（缺翻译会被发现）', async () => {
-    const data = await loadCases();
+  it('两个语言包的键集合应当完全一致（没有单边键）', async () => {
     const zh = new Set(keyPaths(messagesOf(await resources.zh())));
     const en = new Set(keyPaths(messagesOf(await resources.en())));
 
+    // 只在一边存在的键会让该语言直接显示原始 key
     const zhOnly = [...zh].filter((u) => !en.has(u));
     const enOnly = [...en].filter((u) => !zh.has(u));
 
-    // 现状：zh / en 各有 5 个键只在一边存在（已记录在 fixture，待确认是否补齐翻译）
-    expect({ zhOnly, enOnly }).toEqual({
-      zhOnly: data.knownKeyGaps.zh,
-      enOnly: data.knownKeyGaps.en,
-    });
+    expect({ zhOnly, enOnly }).toEqual({ zhOnly: [], enOnly: [] });
   });
 
   it('两个语言包的键总数应当一致', async () => {

@@ -5,6 +5,8 @@
 > 写用例前先看 `GUIDELINES.md`（数据一律 json 动态 import、mock 边界、jsdom 限制、未确认行为先不加断言）。
 > 用例数据统一放 json、用 `(await import('./xxx.json')).default` 动态加载；需要改动时先 `structuredClone` 克隆一份。
 > 当前：**160 文件 / 1785 用例通过 + 3 expected fail（0 failed）**（`models` 的待修缺陷 3 条，有意保留，见下）。另有既有 flaky 用例 `comfyui/editor/generator.test.ts`（约 50% 假失败，详见 comfyui 一节的遗留说明）——它是否出现与本次工作无关，两次全量一次红一次绿即为其概率性。
+>
+> ⚠️ **验证口径变更（重要）**：上面这个数字是 **A 组修复之前**最后一次跑通的全量。之后（a）A 组 14 项 src 修复落地、（b）工作副本**从上游合并了 PR #60（HEAD 现为 `b6a4933`）**，此后**全量在这个环境里跑不动**（多次卡住被中断，`--reporter=basic` 在 vitest 5 不存在），所以**修复后的验证是 scoped 子集**，不是全量。已 scoped 复核过的：`tests/{models,lorebooks,presets,utils,comfyui,plugins,database,interceptors,signal,files,global,generated,localization,components,tasks}` 122 文件 / 1332 通过 + 3 expected fail（合并前）；A 组相关 27 个文件 ≈470 用例（合并后）。**恢复全量跑通是收尾的第一件事。**
 
 ```text
 tests/
@@ -424,7 +426,44 @@ tests/
 - `src/models/anthropic/client/engine.tsx`：流式 `signature_delta` 由 `output.properties['signature'] += delta.signature` 改为 `(output.properties['signature'] ?? '') + delta.signature`。原来首个分片会拼出 `"undefinedsig-a"`，而这个签名会随 thinking 块回传 API，Anthropic 会校验签名完整性。
 - `src/models/deepseek/client/engine.tsx`：`caller` 在有正文且带 callings 时不再重复发一条正文相同的 assistant 消息（正文并进带 `tool_calls` 的那条）。用例补了「正文只出现一次」的回归断言。
 
+### A 组 14 项缺陷：已按确认修复（用户拍板「A 组全部」）
+
+改动清单（`git status -- src plugins` 可逐项核对，全部落在批准范围内）：
+
+| # | 位置 | 修法 | 验证 |
+| --- | --- | --- | --- |
+| 1 | `plugins/secyud-tavern-importer/server/silly-tavern.ts:140`（preset）、`:346`（chara） | `entries[1].length`→`entries.length`、`entries[1][i]`→`entries[i]` | 用例 16→**19** 绿（新增单次/同 key 两次赋值/正文片段摘除三条正向断言） |
+| 2 | `tools/{agents:58,fetchers:23,scripts:43}/client/index.tsx` | `merge(structuredClone(defaultConfig), data.config)` | agents 21→**23**、fetchers 13→**15**、scripts 10→**11**，各补「渲染带配置后 `*.default` 不变」 |
+| 3 | `tools/scripts/client/index.tsx:162-165` | `JSON.stringify(result) ?? ''` | 新增「无 return → 空串」 |
+| 4 | `tools/fetchers/client/index.tsx:129-130` | `u.content ?? u.error ?? 'no content'` | 新增「不出现字面量 undefined」 |
+| 5 | `tools/server/storage.ts:9-19` | 改抛 `BusinessError('error.tool.provider_not_registered')` + `.withValue('type')`；tools zh/en 语言包补文案 | storage 9→**11** |
+| 6 | `tools/variables/client/index.tsx:43-57` | 无本轮输出 → `'error: no output to operate.'` | variables 13→**14** |
+| 7 | `interceptors/index.ts:46-57,104-112` | 新增 `parseable()`（try/catch JSON.parse），`'0'/'false'/'null'` 变合法，错误 code/message/data 不变 | interceptors 28→**29** |
+| 8 | `stories/client/realms/index.ts:180-241` | create 阶段抛错时也复位 `generating`（错误仍上抛） | `tests/stories/realms.test.ts` 41 绿 |
+| 9 | `stories/client/realms/feature.tsx:275` | 补 `throw` | feature 8→**9** |
+| 10 | `files/server/api.ts:39-40` | `response.json(null)` | files api 12 绿 |
+| 11 | `database/server/factory.ts:148`、`comfyui/server/repository-workflow.ts:89` | 空数组直接返回 | database/factory 18→**19**、comfyui/repository-workflow 24→**25** |
+| 12 | `tasks/server/manager.ts:22-26` | 改抛 `BusinessError('error.task.provider_not_registered')` + tasks zh/en 补文案 | manager 8→**9** |
+| 13 | `comfyui/civitai/server/index.ts:14,20` | 校验提到 `mkdir` 之前；`new URL` 移入 try | civitai/server 7→**8** |
+| 14 | `src/tools/localization/{en,zh}.json`、`plugins/secyud-tavern-importer/localization/{en,zh}.json` | 两语言键集合对齐（含「代码引用但语言包缺失」的 code 排查） | `tests/generated/resources.test.ts` 6 绿 |
+
+- 连带修掉的一条：第 7 项让 `'null'` 变合法后，`tests/comfyui/editor/configurators.test.ts` 里原「字面量 null 应当拒绝」的硬编码用例必然失败 ⇒ 已改成**正向用例**（`expected: "null"`，因为 `configureObject` 对合法 JSON 是原样保留字符串），fixture `字面量 null 应当拒绝` 同步改为应当接受。该文件 19 绿。
+- 过程说明：A1 组完成并报告；**A2、A3 组在收尾前被中断（无报告）**，其可见产出经我 scoped 复核为完整：A2 相关 19 文件 / 278 用例全绿（含 manager 9、repository-workflow 25、database/factory 19、stories/feature 9），A3 的语言包改动使 `tests/generated` 6 条全绿。
+
+### ⚠️ 工作副本在上游合并后的状态（PR #60）
+
+HEAD 现为 `b6a4933 Merge pull request #60 from laoxTu/develop/merge`，该合并动了 16 个文件（含 `tests` 子模块指针）与我们的工作重叠。核实结果：
+
+- **我们的修复仍在**：`comfyui/editor/client/index.tsx:219` 仍是 `id: main.prompt.name`；`lorebooks/client/matchers/variable.tsx:73` 仍是 `String(current.item)`；`models/openai/client/engine.tsx:437` 仍是 `arguments: ''`。
+- **被上游覆盖的一条**：`src/models/deepseek/index.ts` 的模型列表变成 `['deepseek-flash','deepseek-pro']`（我们早先加的 `deepseek-v4-flash` 不在了）。对应用例仍绿（`tests/models/deepseek/index.test.ts` 9 绿），说明它以「上游列表为准」，无需回改。
+- **上游带来的新行为 + 一条测试失配**：合并把 `src/signal/client/proxy.ts` 改成把 id 塞进 **body**（`post(url, {...param, id})`），但服务端是从**路径参数**取 id 的（`signal/server/api.ts:29` 的 `record.params`）⇒ 请求路径仍是字面量 `sse/{id}/subscription`，**这个改法并不能修好「订阅落到幽灵连接」**，同时让 `tests/signal/client/proxy.test.ts` 断言失配（它按合并前的形状断言）。
+  - 我**暂时把该文件还原成合并前的形状**（工作树改动，未做 git 操作），`tests/signal` 5 文件 52 用例随之恢复全绿。
+  - **待你决定**：(a) 保留我的还原（用例绿，bug 仍在）；(b) 跟随上游改用例（用例绿，bug 仍在）；(c) 真正修好——把 id 作为 `params` 传（或在服务端回落到 `body.id`），并同步用例。
+- `src/models/localization/{en,zh}.json` 被上游各删了 4 行；语言包键集合一致性用例仍绿。
+
 ### 可疑但未确认（未写断言）
+
+> 本节是**历史记录**：其中 **A 组 14 项已于上面「A 组 14 项缺陷：已按确认修复」中修掉**（对应条目原文保留以便追溯），其余条目**仍未改动**，按用户「只记录」处理。B 组（需先定语义的 9 条）与 C 组（建议不动）也未动。
 
 - 本轮模块（client / plugins / database / interceptors / signal / files / generated / localization / components，均为「只记录」：未改 src、未写 `it.fails`，展示层按确认暂缓）：
   - **client**：`open` 走相对路径（不像 fetch 那样拼 `getBaseUrl()`）；调用方自带 `Content-Type` 时普通对象 body 不会被 JSON 化；同一个占位符出现两次只替换第一个。（三条均已按现状断言 + 注释）

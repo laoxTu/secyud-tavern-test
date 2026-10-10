@@ -151,6 +151,27 @@ describe('tasks manager / 注册与执行', () => {
     expect(manager.get(task.id)).toBeUndefined();
   });
 
+  it('provider 未注册时应当以 failed 收尾，而不是标记成功', async () => {
+    const data = await loadCases();
+    const manager = new TaskManager();
+
+    // 一个 provider 都不注册，args.missing 指向不存在的那个
+    const task = await manager.create(data.names.one, data.args.missing);
+    await settle();
+
+    expect(mocks.update.mock.calls.map((u) => u[1].status)).toEqual([
+      'running',
+      'failed',
+    ]);
+    const result = JSON.parse(mocks.update.mock.calls.at(-1)![1].result);
+    expect(result.message).toBe(
+      `task provider ${data.args.missing.provider} is not registered.`,
+    );
+    expect(result.code).toBe('error.task.provider_not_registered');
+    expect(result.data).toEqual({ type: data.args.missing.provider });
+    expect(manager.get(task.id)).toBeUndefined();
+  });
+
   it('provider 立即完成时也应当先回写 running、再回写终态', async () => {
     const data = await loadCases();
     registerInstantProvider(data.providers.two);

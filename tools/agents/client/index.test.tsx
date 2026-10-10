@@ -96,9 +96,8 @@ async function loadCases() {
 }
 
 /**
- * Editor 里的 `jsonUtils.merge(defaultConfig, data.config)` 是就地合并，
- * 会改写模块级的 defaultConfig；用例开头留一份快照，每个用例结束后恢复，
- * 保证用例之间互不干扰（现象本身见报告里的「可疑但未确认」）。
+ * Editor 里的 `jsonUtils.merge` 曾经就地改写模块级 defaultConfig；现在它先克隆再合并，
+ * 这里保留用例开头的一份快照 + 每个用例结束后恢复，作为防回归的兜底。
  */
 const defaultSnapshot = structuredClone(agents.default);
 
@@ -244,6 +243,19 @@ describe('agents client / configureObject', () => {
       });
     }
   });
+
+  it('解析结果是假值但合法的 schema（null 字面量）应当通过', async () => {
+    const data = await loadCases();
+    const tool = { type: 'agent', config: {} } as any;
+
+    await agents.tool.configureObject!(
+      toFormData({ schema: data.falsySchema }),
+      tool,
+    );
+
+    // 修复前 validJson 用解析结果的真值判断，'null' 会被误判成 error.json_invalid
+    expect(tool.config.schema).toBe(data.falsySchema);
+  });
 });
 
 describe('agents client / Editor 表单契约', () => {
@@ -339,6 +351,26 @@ describe('agents client / Editor 表单契约', () => {
     expect(controlProps('TagBox', 'disable_tags').items).toEqual(
       mainPresets.tags,
     );
+  });
+
+  it('渲染带配置的编辑器后 agents.default 不应当被改写', async () => {
+    const data = await loadCases();
+
+    render(
+      <Editor
+        entry={
+          {
+            entryId: 1,
+            data: { type: 'agent', config: data.expectedConfig },
+          } as any
+        }
+        formRef={{ current: null }}
+      />,
+    );
+
+    // 修复前 merge 就地合并，渲染一次就把模块级 defaultConfig 改成了 expectedConfig，
+    // 于是新建工具会预填上一个条目的配置。这里对着用例开头的快照断言它没被动过。
+    expect(agents.default).toEqual(defaultSnapshot);
   });
 
   it('code 字段应当带注册表用的正则、max_length 限定为非负整数', () => {
