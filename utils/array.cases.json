@@ -1,0 +1,56 @@
+{
+  "intersperse": {
+    "empty": { "items": [], "expected": [] },
+    "single": { "items": ["a"], "expected": ["a"] },
+    "multi": {
+      "items": ["a", "b", "c"],
+      "expected": ["a", "|b", "b", "|c", "c"]
+    }
+  },
+  "join": [
+    { "name": "空数组得到空串", "items": [], "separator": ",", "expected": "" },
+    { "name": "没有数组时得到空串", "separator": ",", "expected": "" },
+    {
+      "name": "字符串数组过滤掉空项",
+      "items": ["a", "", "b"],
+      "separator": "-",
+      "expected": "a-b"
+    },
+    { "name": "不传分隔符时按 join 默认逗号", "items": ["a", "b"], "expected": "a,b" },
+    {
+      "name": "非字符串会转成文本",
+      "items": [1, 2, 3],
+      "separator": ",",
+      "expected": "1,2,3"
+    },
+    {
+      "name": "按取值函数取字段并丢掉空白项",
+      "items": [{ "value": " a " }, { "value": "  " }, { "value": "b" }],
+      "separator": "|",
+      "useValue": true,
+      "expected": " a |b"
+    }
+  ],
+  "joinPath": [
+    { "parts": ["a", "b", "c"], "expected": "a/b/c" },
+    { "parts": ["a", "b"], "expected": "a/b" },
+    { "parts": ["a", "", "b"], "expected": "a/b" },
+    { "parts": [], "expected": "" }
+  ],
+  "groupSerial": {
+    "empty": { "items": [], "expected": [] },
+    "single": { "items": ["a"], "expected": [["a"]] },
+    "serial": {
+      "items": ["a", "a", "b", "a"],
+      "expected": [["a", "a"], ["b"], ["a"]]
+    },
+    "objects": {
+      "items": [
+        { "role": "system", "text": "1" },
+        { "role": "system", "text": "2" },
+        { "role": "user", "text": "3" }
+      ],
+      "expected": [["1", "2"], ["3"]]
+    }
+  }
+}

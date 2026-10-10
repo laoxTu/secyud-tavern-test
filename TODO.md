@@ -4,27 +4,26 @@
 > `[x]` = 已有用例（可补强），`[ ]` = 待写。
 > 写用例前先看 `GUIDELINES.md`（数据一律 json 动态 import、mock 边界、jsdom 限制、未确认行为先不加断言）。
 > 用例数据统一放 json、用 `(await import('./xxx.json')).default` 动态加载；需要改动时先 `structuredClone` 克隆一份。
-> 当前：56 文件 / 575 用例通过 + 3 expected fail（`models` 的待修缺陷，有意保留，见下）。
+> 当前：65 文件 / 654 用例通过 + 3 expected fail（`models` 的待修缺陷，有意保留，见下）。
 
 ```text
 tests/
 ├── [ ] client.test.ts                      # src/client.ts
 ├── [x] template.test.ts                    # 占位，待删或替换
 │
-├── utils/
-│   ├── [ ] array.test.ts
-│   ├── [x] json-utils.test.ts
-│   ├── [x] json-patch.test.ts
-│   ├── [ ] str.test.ts
-│   ├── [ ] cn.test.ts                      # src/utils/lib/utils.ts
-│   ├── client/
-│   │   └── hooks/
-│   │       └── [ ] use-mobile.test.ts
-│   └── server/
-│       ├── [ ] cache.test.ts
-│       ├── [ ] file.test.ts
-│       ├── [x] hasher.test.ts
-│       └── [ ] response.test.ts
+├── utils/                                  # client / server 段按约定省略，行尾标出源码路径
+│   ├── [x] archive.test.ts                 # src/utils/archive.ts（原来漏列）
+│   ├── [x] array.test.ts                   # src/utils/array.ts
+│   ├── [x] cache.test.ts                   # src/utils/server/cache.ts
+│   ├── [x] cn.test.ts                      # src/utils/lib/utils.ts
+│   ├── [x] file.test.ts                    # src/utils/server/file.ts
+│   ├── [x] hasher.test.ts                  # src/utils/server/hasher.ts
+│   ├── [x] json-utils.test.ts              # src/utils/json.ts
+│   ├── [x] json-patch.test.ts              # src/utils/json-patch.ts
+│   ├── [x] mutex.test.ts                   # src/utils/mutex.ts（原来漏列）
+│   ├── [x] response.test.ts                # src/utils/server/response.ts
+│   ├── [x] str.test.ts                     # src/utils/str.ts
+│   └── [x] use-mobile.test.ts              # src/utils/client/hooks/use-mobile.ts
 │
 ├── plugins/
 │   ├── [x] registry.test.ts
@@ -299,6 +298,13 @@ tests/
 - 覆盖：`index` 的序号与排序、`matcher` 的 content/variables/analyze、五个匹配器（含事件日期区间、向量 id 收集与缓存）、`realm` 的 init 分桶 / json 压缩 / RAG 嵌入 / 默认与 layered 构造器注入、`tool` 的 get_lorebook 检索与编码回写、`server/storage` 归档往返。
 - 剩余展示层未做：`lorebooks/client/content.test.tsx`（与 `presets/client/content.test.tsx` 保持一致，暂缓；`content.tsx` 里真正的逻辑只有表单提交）。
 
+### utils：已完成
+- 用例：`utils/**` 共 12 个文件 / 142 用例，数据落在 7 个 fixture json（`archive.cases.json`、`array.cases.json`、`str.cases.json`、`cn.cases.json`、`cache.cases.json`、`file.cases.json`、`response.cases.json`）。
+- 新增（本轮）：`array`（intersperse/join/groupSerial/joinPath）、`str`（random/wrap/fnv1a64Bytes/buffer，FNV 用 FNV-1a 64 参考值校验）、`cn`（clsx + tailwind-merge 冲突消解）、`mutex`（串行执行/失败不阻塞）、`cache`（命中/未命中/factory/滑动过期/容量淘汰，用假时钟）、`file`（exists/mkdir/writeFile/copy/listDirs/listFiles/两种流/download 的四种回调/execute）、`response`（json/null/create/download/resource）、`use-mobile`（伪造 matchMedia + renderHook）、`archive`（set/get/fuzzy 与 zip 往返、root 前缀、空内容不落盘）。
+- 两个补的：TODO 树原本漏列 `src/utils/mutex.ts`（`src/tasks/index.ts` 在用）与 `src/utils/archive.ts`（此前只在 presets 测试里被 mock 掉 / 当作助手用，`archiveToZip`/`zipToArchive` 从未被直接测过）。
+- fixture 位置按 GUIDELINES §2「client / server 段通常省略」放在 `tests/utils/` 平铺（与原有 `hasher.test.ts` 一致），树里行尾标出源码路径。
+- 未覆盖：`src/utils/index.ts`（桶文件）、`src/utils/json-schema.ts`（纯类型），均在「跳过」清单内。
+
 ### 已按确认的预期改动源码
 
 - `src/lorebooks/client/matchers/variable.tsx`：`String(current)` 改为 `String(current.item)`。`extract` 返回的是 `{item, key, pos}` 节点，原写法恒为 `'[object Object]'`，变量匹配器实际不可能命中（同文件 `patchOne` 的 test 分支、`tools/variables/client/index.tsx` 都是取 `current.item`）。
@@ -336,6 +342,7 @@ tests/
 
 ### 可疑但未确认（未写断言）
 
+- `src/utils/str.ts` 的 `wrap`：`text.replace('\n', ...)` 只替换**第一个**换行，pad 只补到第二行，第三行及以后没有前缀（实测 `wrap((t) => \`<${t}>\`, 'a\nb\nc', '> ')` → `'<> a\n> b\nc>'`）。用例只断言了单行与两行（两种读法下都成立），多行现象未写断言，疑似漏了 `/g`。
 - `src/models/openai/client/engine.tsx:262-288` 的 chat `caller` 与 deepseek 修前同形：`content` 非空且有 callings 时会先发一条 `assistant(content)`，再发一条 `assistant(content, tool_calls)`，正文重复。deepseek 已按确认修掉，openai 这条是否也要一并对齐未确认。
 - `src/models/anthropic/client/engine.tsx:201-208`：没有任何 system 注入时 `system` 就是 `''`，summaries 仍必定 unshift `{role:'system',content:''}`，`input.system=''` 也照发给 API。
 - `src/models/anthropic/client/engine.tsx:112`：`max_tokens` 用 `forms.float`，字段为空时 `parseFloat('')=NaN` 会进请求体（JSON 化后为 `null`），非整数也照发，而 Anthropic 要求整数。openai/deepseek 同样用 forms.float/int，更像统一约定。

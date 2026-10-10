@@ -1,0 +1,30 @@
+{
+  "files": {
+    "nested": "deep/nested/file.txt",
+    "text": "写入的内容",
+    "copySource": "copy/source.txt",
+    "copyTarget": "copy/target.txt",
+    "copyText": "复制的来源"
+  },
+  "dirs": {
+    "first": "alpha",
+    "second": "beta",
+    "files": ["a.txt", "b.md"]
+  },
+  "streams": {
+    "bufferText": "buffer 流内容",
+    "onceText": "一次性流内容"
+  },
+  "downloads": {
+    "chunks": [
+      [104, 101, 108],
+      [108, 111]
+    ],
+    "length": 5,
+    "streamError": { "chunks": [[1, 2, 3]], "length": 3, "failAt": 1 }
+  },
+  "execute": {
+    "expression": "1+1",
+    "expected": "2"
+  }
+}

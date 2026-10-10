@@ -1,0 +1,42 @@
+{
+  "cases": [
+    { "name": "多个字符串按空格拼接", "inputs": ["a", "b"], "expected": "a b" },
+    { "name": "没有输入时得到空串", "inputs": [], "expected": "" },
+    {
+      "name": "假值被过滤掉",
+      "inputs": ["a", false, null, "", "b"],
+      "expected": "a b"
+    },
+    {
+      "name": "对象按键的真值取舍",
+      "inputs": [{ "a": true, "b": false }],
+      "expected": "a"
+    },
+    { "name": "嵌套数组会被展平", "inputs": [["a", ["b"]]], "expected": "a b" },
+    {
+      "name": "同属性冲突时后者生效",
+      "inputs": ["px-2", "px-4"],
+      "expected": "px-4"
+    },
+    {
+      "name": "不同属性互不影响",
+      "inputs": ["px-2", "py-4"],
+      "expected": "px-2 py-4"
+    },
+    {
+      "name": "颜色冲突后者生效",
+      "inputs": ["text-red-500", "text-blue-500"],
+      "expected": "text-blue-500"
+    },
+    {
+      "name": "条件类也参与合并",
+      "inputs": ["px-2", { "px-4": true }],
+      "expected": "px-4"
+    },
+    {
+      "name": "自定义类名原样保留",
+      "inputs": ["my-class", "another"],
+      "expected": "my-class another"
+    }
+  ]
+}

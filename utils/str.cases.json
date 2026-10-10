@@ -1,0 +1,57 @@
+{
+  "defaultCharset": "abcdefghijklmnopqrstuvwxyz0123456789",
+  "random": [
+    { "name": "长度为 0 时得到空串", "length": 0, "random": 0.5, "expected": "" },
+    { "name": "取到字符集首字符", "length": 3, "random": 0, "expected": "aaa" },
+    {
+      "name": "取到字符集末字符",
+      "length": 2,
+      "random": 0.999999,
+      "expected": "99"
+    },
+    {
+      "name": "自定义字符集",
+      "length": 2,
+      "charset": "XY",
+      "random": 0.6,
+      "expected": "YY"
+    },
+    {
+      "name": "长度决定字符个数",
+      "length": 16,
+      "random": 0,
+      "expected": "aaaaaaaaaaaaaaaa"
+    }
+  ],
+  "fnv": [
+    { "name": "空串是 FNV 偏移基", "text": "", "hex": "cbf29ce484222325" },
+    { "name": "单字符与参考值一致", "text": "a", "hex": "af63dc4c8601ec8c" },
+    { "name": "三个字符与参考值一致", "text": "abc", "hex": "e71fa2190541574b" },
+    {
+      "name": "带空格与参考值一致",
+      "text": "hello world",
+      "hex": "779a65e7023cd2e7"
+    },
+    { "name": "多字节字符按 utf-16 码元处理", "text": "中文", "hex": "032881088a0547ad" }
+  ],
+  "wrap": [
+    {
+      "name": "没有 pad 时直接交给模板",
+      "text": "single",
+      "expected": "<single>"
+    },
+    { "name": "pad 前缀加在首行", "text": "single", "pad": "> ", "expected": "<> single>" },
+    {
+      "name": "两行时换行后补上 pad",
+      "text": "a\nb",
+      "pad": "> ",
+      "expected": "<> a\n> b>"
+    },
+    { "name": "空文本", "text": "", "expected": "<>" }
+  ],
+  "buffer": [
+    { "name": "字符串原样返回", "text": "hello", "expected": "hello" },
+    { "name": "空字符串", "text": "", "expected": "" },
+    { "name": "多字节文本", "text": "中文内容", "expected": "中文内容" }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "value": { "items": [], "length": 0 },
+  "text": "hello 内容",
+  "filename": "导出 文件.txt",
+  "filetype": "text/css",
+  "created": {
+    "body": "raw body",
+    "status": 201,
+    "headers": { "x-custom": "1" }
+  },
+  "downloads": {
+    "chunks": [
+      [104, 101, 108],
+      [108, 111]
+    ],
+    "length": 5,
+    "exist": { "targetExists": true },
+    "failed": { "ok": false, "status": 404 },
+    "streamError": { "chunks": [[1, 2, 3]], "length": 3, "failAt": 1 }
+  }
+}

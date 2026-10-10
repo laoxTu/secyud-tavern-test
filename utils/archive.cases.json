@@ -1,0 +1,18 @@
+{
+  "names": {
+    "root": "a.txt",
+    "folder": "dir",
+    "inner": "b.txt",
+    "outside": "other/x.txt"
+  },
+  "texts": {
+    "root": "根文件内容",
+    "inner": "嵌套文件内容",
+    "outside": "root 之外的内容"
+  },
+  "json": {
+    "valid": "{\"a\":1,\"list\":[1,2]}",
+    "invalid": "{ 不是 json",
+    "expected": { "a": 1, "list": [1, 2] }
+  }
+}

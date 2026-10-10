@@ -1,0 +1,23 @@
+{
+  "keys": {
+    "plain": "utils_cache_plain",
+    "sliding": "utils_cache_sliding",
+    "expired": "utils_cache_expired",
+    "factory": "utils_cache_factory",
+    "missing": "utils_cache_missing",
+    "evict": "utils_cache_evict_"
+  },
+  "values": {
+    "first": { "id": "first", "value": 1 },
+    "second": { "id": "second", "value": 2 },
+    "third": { "id": "third", "value": 3 }
+  },
+  "spans": {
+    "oneSecond": { "second": 1 },
+    "oneDay": { "day": 1 }
+  },
+  "evict": {
+    "count": 1001,
+    "remain": 1000
+  }
+}
