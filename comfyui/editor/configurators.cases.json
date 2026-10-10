@@ -1,0 +1,545 @@
+{
+  "workflow": {
+    "3": {
+      "inputs": {
+        "seed": 1,
+        "steps": 20
+      },
+      "class_type": "KSampler",
+      "_meta": {
+        "title": "KSampler"
+      }
+    },
+    "10": {
+      "inputs": {
+        "text": "a cat",
+        "clip": ["4", 1]
+      },
+      "class_type": "CLIPTextEncode",
+      "_meta": {
+        "title": "CLIP Text Encode (Prompt)"
+      }
+    },
+    "12": {
+      "inputs": {
+        "value": 7,
+        "min": 0
+      },
+      "class_type": "PrimitiveInt",
+      "_meta": {
+        "title": "Primitive Int"
+      }
+    }
+  },
+  "textCases": [
+    {
+      "name": "完整表单",
+      "fields": {
+        "node": "10",
+        "key": "text",
+        "prompt_3": "a beautiful cat"
+      },
+      "expected": {
+        "node": "10",
+        "key": "text",
+        "prompt": "a beautiful cat"
+      }
+    },
+    {
+      "name": "缺 node / key 时为 null",
+      "fields": {
+        "prompt_3": "x"
+      },
+      "expected": {
+        "node": null,
+        "key": null,
+        "prompt": "x"
+      }
+    },
+    {
+      "name": "缺 prompt_3 时为 null",
+      "fields": {
+        "node": "10",
+        "key": "text"
+      },
+      "expected": {
+        "node": "10",
+        "key": "text",
+        "prompt": null
+      }
+    },
+    {
+      "name": "序号不匹配时读不到提示词",
+      "fields": {
+        "node": "10",
+        "key": "text",
+        "prompt_4": "for another sequence"
+      },
+      "expected": {
+        "node": "10",
+        "key": "text",
+        "prompt": null
+      }
+    },
+    {
+      "name": "提示词为空串时保留空串",
+      "fields": {
+        "node": "10",
+        "key": "text",
+        "prompt_3": ""
+      },
+      "expected": {
+        "node": "10",
+        "key": "text",
+        "prompt": ""
+      }
+    }
+  ],
+  "numberCases": [
+    {
+      "name": "完整表单",
+      "fields": {
+        "node": "12",
+        "key": "value",
+        "value_3": "42"
+      },
+      "expected": {
+        "node": "12",
+        "key": "value",
+        "value": 42
+      }
+    },
+    {
+      "name": "小数会被 parseInt 截断",
+      "fields": {
+        "node": "12",
+        "key": "value",
+        "value_3": "3.9"
+      },
+      "expected": {
+        "node": "12",
+        "key": "value",
+        "value": 3
+      }
+    },
+    {
+      "name": "负数应当保留符号",
+      "fields": {
+        "node": "12",
+        "key": "value",
+        "value_3": "-7"
+      },
+      "expected": {
+        "node": "12",
+        "key": "value",
+        "value": -7
+      }
+    },
+    {
+      "name": "空串得到 NaN",
+      "fields": {
+        "node": "12",
+        "key": "value",
+        "value_3": ""
+      },
+      "expected": {
+        "node": "12",
+        "key": "value",
+        "value": "__NaN__"
+      }
+    },
+    {
+      "name": "缺字段得到 NaN",
+      "fields": {
+        "node": "12",
+        "key": "value"
+      },
+      "expected": {
+        "node": "12",
+        "key": "value",
+        "value": "__NaN__"
+      }
+    },
+    {
+      "name": "非数字得到 NaN",
+      "fields": {
+        "node": "12",
+        "key": "value",
+        "value_3": "abc"
+      },
+      "expected": {
+        "node": "12",
+        "key": "value",
+        "value": "__NaN__"
+      }
+    }
+  ],
+  "promptCases": [
+    {
+      "name": "合法 pools 原样保留",
+      "fields": {
+        "node": "10",
+        "key": "text",
+        "prompt_3": "a cat",
+        "template": "1girl, {hair}",
+        "pools": "{\"hair\": [[\"blue hair\"]]}"
+      },
+      "expected": {
+        "node": "10",
+        "key": "text",
+        "prompt": "a cat",
+        "template": "1girl, {hair}",
+        "pools": "{\"hair\": [[\"blue hair\"]]}"
+      }
+    },
+    {
+      "name": "pools 是空数组也合法",
+      "fields": {
+        "node": "10",
+        "key": "text",
+        "prompt_3": "",
+        "template": "",
+        "pools": "[]"
+      },
+      "expected": {
+        "node": "10",
+        "key": "text",
+        "prompt": "",
+        "template": "",
+        "pools": "[]"
+      }
+    }
+  ],
+  "schemaCases": [
+    {
+      "name": "合法 json 原样返回",
+      "input": "{\"type\": \"object\"}",
+      "expected": "{\"type\": \"object\"}"
+    },
+    {
+      "name": "空串应当拒绝",
+      "input": "",
+      "target": "default.field"
+    },
+    {
+      "name": "缺字段（null）应当拒绝",
+      "target": "default.field"
+    },
+    {
+      "name": "非法 json 应当拒绝",
+      "input": "not a json",
+      "target": "default.field"
+    },
+    {
+      "name": "字面量 null 应当拒绝",
+      "input": "null",
+      "target": "default.field"
+    }
+  ],
+  "agentFields": {
+    "fields": {
+      "node": "10",
+      "key": "text",
+      "prompt_3": "an agent prompt",
+      "code": "agent_code",
+      "description": "agent desc",
+      "schema": "{\"type\":\"object\"}",
+      "disable_preset": "on",
+      "max_length": "5",
+      "model": "{\"value\":\"model-id\",\"name\":\"model-name\"}",
+      "disable_tags": ["tag_a", "tag_b"],
+      "preset": "{\"value\":\"preset-1\",\"name\":\"preset one\"}"
+    },
+    "expected": {
+      "code": "agent_code",
+      "description": "agent desc",
+      "maxLength": 5,
+      "disablePreset": true,
+      "disableTags": ["tag_a", "tag_b"],
+      "model": {
+        "value": "model-id",
+        "name": "model-name"
+      },
+      "presets": [
+        {
+          "value": "preset-1",
+          "name": "preset one"
+        }
+      ]
+    }
+  },
+  "edit": [
+    {
+      "name": "text 使用 prompt_${sequence} 并写入 config.key",
+      "type": "text",
+      "fields": {
+        "node": "10",
+        "key": "text"
+      },
+      "valueField": "prompt_3",
+      "value": "text value",
+      "writes": {
+        "node": "10",
+        "key": "text",
+        "value": "text value"
+      }
+    },
+    {
+      "name": "text 缺字段时写入 null",
+      "type": "text",
+      "fields": {
+        "node": "10",
+        "key": "text"
+      },
+      "writes": {
+        "node": "10",
+        "key": "text",
+        "value": null
+      }
+    },
+    {
+      "name": "prompt 也使用 prompt_${sequence}",
+      "type": "prompt",
+      "fields": {
+        "node": "10",
+        "key": "text"
+      },
+      "valueField": "prompt_3",
+      "value": "prompt value",
+      "writes": {
+        "node": "10",
+        "key": "text",
+        "value": "prompt value"
+      }
+    },
+    {
+      "name": "agentText 使用 text_${sequence}",
+      "type": "agentText",
+      "fields": {
+        "node": "10",
+        "key": "text"
+      },
+      "valueField": "text_3",
+      "value": "agent text",
+      "writes": {
+        "node": "10",
+        "key": "text",
+        "value": "agent text"
+      }
+    },
+    {
+      "name": "number 使用 value_${sequence} 并解析成整数",
+      "type": "number",
+      "fields": {
+        "node": "12",
+        "key": "value"
+      },
+      "valueField": "value_3",
+      "value": "13",
+      "writes": {
+        "node": "12",
+        "key": "value",
+        "value": 13
+      }
+    },
+    {
+      "name": "number 空值写入 NaN",
+      "type": "number",
+      "fields": {
+        "node": "12",
+        "key": "value"
+      },
+      "valueField": "value_3",
+      "value": "",
+      "writes": {
+        "node": "12",
+        "key": "value",
+        "value": "__NaN__"
+      }
+    }
+  ],
+  "generate": [
+    {
+      "name": "text 有 args 时用 args",
+      "type": "text",
+      "config": {
+        "node": "10",
+        "key": "text",
+        "prompt": "default prompt"
+      },
+      "args": {
+        "paint": "from args"
+      },
+      "writes": {
+        "node": "10",
+        "key": "text",
+        "value": "from args"
+      }
+    },
+    {
+      "name": "text 没有 args 时回落到 config.prompt",
+      "type": "text",
+      "config": {
+        "node": "10",
+        "key": "text",
+        "prompt": "default prompt"
+      },
+      "args": {},
+      "writes": {
+        "node": "10",
+        "key": "text",
+        "value": "default prompt"
+      }
+    },
+    {
+      "name": "number 有 args 时用 args",
+      "type": "number",
+      "config": {
+        "node": "12",
+        "key": "value",
+        "value": 7
+      },
+      "args": {
+        "paint": 99
+      },
+      "writes": {
+        "node": "12",
+        "key": "value",
+        "value": 99
+      }
+    },
+    {
+      "name": "number 的 args 为 0 时仍然用 args",
+      "type": "number",
+      "config": {
+        "node": "12",
+        "key": "value",
+        "value": 7
+      },
+      "args": {
+        "paint": 0
+      },
+      "writes": {
+        "node": "12",
+        "key": "value",
+        "value": 0
+      }
+    },
+    {
+      "name": "number 没有 args 时回落到 config.value",
+      "type": "number",
+      "config": {
+        "node": "12",
+        "key": "value",
+        "value": 7
+      },
+      "args": {},
+      "writes": {
+        "node": "12",
+        "key": "value",
+        "value": 7
+      }
+    },
+    {
+      "name": "agentText 有 args 时用 args",
+      "type": "agentText",
+      "config": {
+        "node": "10",
+        "key": "text",
+        "prompt": "agent prompt"
+      },
+      "args": {
+        "paint": "agent from args"
+      },
+      "writes": {
+        "node": "10",
+        "key": "text",
+        "value": "agent from args"
+      }
+    },
+    {
+      "name": "agentText 的 args 为空串时不写入",
+      "type": "agentText",
+      "config": {
+        "node": "10",
+        "key": "text",
+        "prompt": "agent prompt"
+      },
+      "args": {
+        "paint": ""
+      },
+      "writes": {
+        "node": "10",
+        "key": "text",
+        "value": "a cat"
+      }
+    },
+    {
+      "name": "agentText 没有 args 时保持原值",
+      "type": "agentText",
+      "config": {
+        "node": "10",
+        "key": "text",
+        "prompt": "agent prompt"
+      },
+      "args": {},
+      "writes": {
+        "node": "10",
+        "key": "text",
+        "value": "a cat"
+      }
+    },
+    {
+      "name": "prompt 有 args 时用 args",
+      "type": "prompt",
+      "config": {
+        "node": "10",
+        "key": "text",
+        "template": "1girl, {hair}",
+        "pools": "{\"hair\": [[\"blue hair\"]]}"
+      },
+      "args": {
+        "paint": "prompt from args"
+      },
+      "writes": {
+        "node": "10",
+        "key": "text",
+        "value": "prompt from args"
+      }
+    },
+    {
+      "name": "prompt 的 args 为空串时按空串写入（?? 不把空串当缺失）",
+      "type": "prompt",
+      "config": {
+        "node": "10",
+        "key": "text",
+        "template": "1girl, {hair}",
+        "pools": "{\"hair\": [[\"blue hair\"]]}"
+      },
+      "args": {
+        "paint": ""
+      },
+      "writes": {
+        "node": "10",
+        "key": "text",
+        "value": ""
+      }
+    },
+    {
+      "name": "prompt 没有 args 时回落到模板生成",
+      "type": "prompt",
+      "config": {
+        "node": "10",
+        "key": "text",
+        "template": "1girl, {hair}",
+        "pools": "{\"hair\": [[\"blue hair\"]]}"
+      },
+      "args": {},
+      "writes": {
+        "node": "10",
+        "key": "text",
+        "value": "1girl, blue hair"
+      }
+    }
+  ]
+}

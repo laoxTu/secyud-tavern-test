@@ -1,0 +1,38 @@
+{
+  "workflow": {
+    "id": "wf-1",
+    "name": "工作流 A",
+    "content": "{\"1\":{\"inputs\":{\"text\":\"\"},\"class_type\":\"CLIPTextEncode\",\"_meta\":{\"title\":\"正向提示词\"}}}"
+  },
+  "invalidWorkflow": {
+    "id": "wf-2",
+    "name": "坏工作流",
+    "content": "不是 json"
+  },
+  "emptyWorkflow": { "id": "wf-3", "name": "空工作流", "content": "" },
+  "params": [
+    {
+      "masterId": "wf-1",
+      "sequence": 3,
+      "type": "text",
+      "name": "提示词",
+      "config": { "node": "1", "input": "text" }
+    },
+    {
+      "masterId": "wf-1",
+      "sequence": 5,
+      "type": "missing",
+      "name": "未知",
+      "config": {}
+    }
+  ],
+  "input": {
+    "1": {
+      "inputs": { "text": "" },
+      "class_type": "CLIPTextEncode",
+      "_meta": { "title": "正向提示词" }
+    }
+  },
+  "selected": { "name": "工作流 A-wf-1", "value": "wf-1" },
+  "generateResponse": { "prompt_id": "p-1", "number": 1 }
+}

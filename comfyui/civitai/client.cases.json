@@ -1,0 +1,415 @@
+{
+  "url": "https://civitai.com",
+  "extract": [
+    {
+      "name": "单文件：按 fileInfo.type 映射模型类型",
+      "meta": {
+        "description": "a lora for testing",
+        "baseModel": "SD 1.5",
+        "downloadUrl": "https://civitai.com/api/download/models/100",
+        "images": [
+          {
+            "url": "https://image.civitai.com/one.jpeg",
+            "width": 512
+          },
+          {
+            "url": "https://image.civitai.com/two.jpeg",
+            "width": 768
+          }
+        ],
+        "files": [
+          {
+            "id": 1,
+            "name": "my_lora.safetensors",
+            "type": "LORA",
+            "primary": true
+          }
+        ]
+      },
+      "modelMeta": {
+        "name": "My Lora",
+        "type": "LORA"
+      },
+      "url": "https://civitai.com/model-versions/100",
+      "expected": [
+        {
+          "id": null,
+          "code": "my_lora.safetensors",
+          "name": "My Lora",
+          "type": "lora",
+          "path": "my_lora.safetensors",
+          "cover": "https://image.civitai.com/one.jpeg",
+          "model": "SD 1.5",
+          "download": "https://civitai.com/api/download/models/100",
+          "html": "a lora for testing",
+          "url": "https://civitai.com/model-versions/100",
+          "importer": "civitai"
+        }
+      ]
+    },
+    {
+      "name": "多文件：每个文件各生成一个模型，文件名作为 code",
+      "meta": {
+        "description": "checkpoint with two files",
+        "baseModel": "SDXL 1.0",
+        "downloadUrl": "https://civitai.com/api/download/models/200",
+        "images": [
+          {
+            "url": "https://image.civitai.com/cover.jpeg"
+          }
+        ],
+        "files": [
+          {
+            "id": 1,
+            "name": "one.safetensors",
+            "type": "Model"
+          },
+          {
+            "id": 2,
+            "name": "two.safetensors",
+            "type": "Model"
+          }
+        ]
+      },
+      "modelMeta": {
+        "name": "Checkpoint",
+        "type": "Checkpoint"
+      },
+      "url": "u",
+      "expected": [
+        {
+          "id": null,
+          "code": "one.safetensors",
+          "name": "Checkpoint",
+          "type": "checkpoint",
+          "path": "one.safetensors",
+          "cover": "https://image.civitai.com/cover.jpeg",
+          "model": "SDXL 1.0",
+          "download": "https://civitai.com/api/download/models/200",
+          "html": "checkpoint with two files",
+          "url": "u",
+          "importer": "civitai"
+        },
+        {
+          "id": null,
+          "code": "two.safetensors",
+          "name": "Checkpoint",
+          "type": "checkpoint",
+          "path": "two.safetensors",
+          "cover": "https://image.civitai.com/cover.jpeg",
+          "model": "SDXL 1.0",
+          "download": "https://civitai.com/api/download/models/200",
+          "html": "checkpoint with two files",
+          "url": "u",
+          "importer": "civitai"
+        }
+      ]
+    },
+    {
+      "name": "没有图片时 cover 为 null",
+      "meta": {
+        "description": "",
+        "baseModel": "SD 1.5",
+        "downloadUrl": "https://civitai.com/api/download/models/300",
+        "images": [],
+        "files": [
+          {
+            "id": 1,
+            "name": "novae.safetensors",
+            "type": "VAE"
+          }
+        ]
+      },
+      "modelMeta": {
+        "name": "No Image",
+        "type": "Checkpoint"
+      },
+      "url": "u",
+      "expected": [
+        {
+          "id": null,
+          "code": "novae.safetensors",
+          "name": "No Image",
+          "type": "vae",
+          "path": "novae.safetensors",
+          "cover": null,
+          "model": "SD 1.5",
+          "download": "https://civitai.com/api/download/models/300",
+          "html": "",
+          "url": "u",
+          "importer": "civitai"
+        }
+      ]
+    },
+    {
+      "name": "没有映射的文件类型应当被跳过",
+      "meta": {
+        "description": "mixed files",
+        "baseModel": "SD 1.5",
+        "downloadUrl": "https://civitai.com/api/download/models/400",
+        "images": [
+          {
+            "url": "https://image.civitai.com/cover.jpeg"
+          }
+        ],
+        "files": [
+          {
+            "id": 1,
+            "name": "archive.zip",
+            "type": "Archive"
+          },
+          {
+            "id": 2,
+            "name": "kept.safetensors",
+            "type": "LORA"
+          }
+        ]
+      },
+      "modelMeta": {
+        "name": "Mixed",
+        "type": "LORA"
+      },
+      "url": "u",
+      "expected": [
+        {
+          "id": null,
+          "code": "kept.safetensors",
+          "name": "Mixed",
+          "type": "lora",
+          "path": "kept.safetensors",
+          "cover": "https://image.civitai.com/cover.jpeg",
+          "model": "SD 1.5",
+          "download": "https://civitai.com/api/download/models/400",
+          "html": "mixed files",
+          "url": "u",
+          "importer": "civitai"
+        }
+      ]
+    },
+    {
+      "name": "files 为空时不产出任何模型",
+      "meta": {
+        "description": "no files",
+        "baseModel": "SD 1.5",
+        "downloadUrl": "u",
+        "images": [],
+        "files": []
+      },
+      "modelMeta": {
+        "name": "Empty",
+        "type": "Checkpoint"
+      },
+      "url": "u",
+      "expected": []
+    }
+  ],
+  "typeFallback": {
+    "name": "type 为 Model 时改用 modelMeta.type（Text Encoder 映射）",
+    "meta": {
+      "description": "text encoder",
+      "baseModel": "Flux",
+      "downloadUrl": "https://civitai.com/api/download/models/500",
+      "images": [
+        {
+          "url": "https://image.civitai.com/cover.jpeg"
+        }
+      ],
+      "files": [
+        {
+          "id": 1,
+          "name": "text_encoder.safetensors",
+          "type": "Model"
+        }
+      ]
+    },
+    "modelMeta": {
+      "name": "Text Encoder",
+      "type": "Text Encoder"
+    },
+    "url": "u",
+    "expected": [
+      {
+        "id": null,
+        "code": "text_encoder.safetensors",
+        "name": "Text Encoder",
+        "type": "text_encoder",
+        "path": "text_encoder.safetensors",
+        "cover": "https://image.civitai.com/cover.jpeg",
+        "model": "Flux",
+        "download": "https://civitai.com/api/download/models/500",
+        "html": "text encoder",
+        "url": "u",
+        "importer": "civitai"
+      }
+    ]
+  },
+  "typeFallbackNoMap": {
+    "name": "type 为 Model 但 modelMeta.type 也没映射时跳过",
+    "meta": {
+      "description": "",
+      "baseModel": "Flux",
+      "downloadUrl": "u",
+      "images": [],
+      "files": [
+        {
+          "id": 1,
+          "name": "unknown.safetensors",
+          "type": "Model"
+        }
+      ]
+    },
+    "modelMeta": {
+      "name": "Unknown",
+      "type": "Unknown Type"
+    },
+    "url": "u",
+    "expected": []
+  },
+  "modelVersionResponse": {
+    "id": 100,
+    "name": "My Lora",
+    "description": "version description",
+    "baseModel": "SD 1.5",
+    "downloadUrl": "https://civitai.com/api/download/models/100",
+    "images": [
+      {
+        "url": "https://image.civitai.com/cover.jpeg",
+        "width": 512
+      }
+    ],
+    "files": [
+      {
+        "id": 1,
+        "name": "my_lora.safetensors",
+        "type": "LORA"
+      }
+    ],
+    "model": {
+      "name": "My Lora",
+      "type": "LORA",
+      "nsfw": false
+    },
+    "modelId": 42
+  },
+  "modelVersionResponseNoModel": {
+    "id": 101,
+    "name": "Orphan",
+    "description": "",
+    "baseModel": "",
+    "downloadUrl": "https://civitai.com/api/download/models/101",
+    "images": [],
+    "files": [
+      {
+        "id": 1,
+        "name": "orphan.safetensors",
+        "type": "LORA"
+      }
+    ],
+    "modelId": 43
+  },
+  "modelVersionResponseNoModelModelFile": {
+    "id": 102,
+    "name": "Orphan",
+    "description": "",
+    "baseModel": "",
+    "downloadUrl": "https://civitai.com/api/download/models/102",
+    "images": [],
+    "files": [
+      {
+        "id": 1,
+        "name": "orphan.safetensors",
+        "type": "Model"
+      }
+    ],
+    "modelId": 44
+  },
+  "modelVersionExpected": [
+    {
+      "id": null,
+      "code": "my_lora.safetensors",
+      "name": "My Lora",
+      "type": "lora",
+      "path": "my_lora.safetensors",
+      "cover": "https://image.civitai.com/cover.jpeg",
+      "model": "SD 1.5",
+      "download": "https://civitai.com/api/download/models/100",
+      "html": "version description",
+      "url": "https://civitai.com/model-versions/100",
+      "importer": "civitai"
+    }
+  ],
+  "modelResponse": {
+    "id": 42,
+    "name": "My Model",
+    "type": "LORA",
+    "modelVersions": [
+      {
+        "id": 100,
+        "name": "My Lora",
+        "description": "version description",
+        "baseModel": "SD 1.5",
+        "downloadUrl": "https://civitai.com/api/download/models/100",
+        "images": [
+          {
+            "url": "https://image.civitai.com/cover.jpeg"
+          }
+        ],
+        "files": [
+          {
+            "id": 1,
+            "name": "v1.safetensors",
+            "type": "LORA"
+          }
+        ]
+      },
+      {
+        "id": 200,
+        "name": "My Lora",
+        "description": "",
+        "baseModel": "SDXL 1.0",
+        "downloadUrl": "https://civitai.com/api/download/models/200",
+        "images": [],
+        "files": [
+          {
+            "id": 2,
+            "name": "v2.safetensors",
+            "type": "LORA"
+          },
+          {
+            "id": 3,
+            "name": "v2-archive.zip",
+            "type": "Archive"
+          }
+        ]
+      }
+    ]
+  },
+  "modelExpected": [
+    {
+      "id": null,
+      "code": "v1.safetensors",
+      "name": "My Model",
+      "type": "lora",
+      "path": "v1.safetensors",
+      "cover": "https://image.civitai.com/cover.jpeg",
+      "model": "SD 1.5",
+      "download": "https://civitai.com/api/download/models/100",
+      "html": "version description",
+      "url": "https://civitai.com/model/42",
+      "importer": "civitai"
+    },
+    {
+      "id": null,
+      "code": "v2.safetensors",
+      "name": "My Model",
+      "type": "lora",
+      "path": "v2.safetensors",
+      "cover": null,
+      "model": "SDXL 1.0",
+      "download": "https://civitai.com/api/download/models/200",
+      "html": "",
+      "url": "https://civitai.com/model/42",
+      "importer": "civitai"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "civitai",
+  "url": "https://civitai.com",
+  "typeMap": {
+    "Checkpoint": "checkpoint",
+    "Diffusion Model": "diffusion_model",
+    "LORA": "lora",
+    "TextEncoder": "text_encoder",
+    "Text Encoder": "text_encoder",
+    "VAE": "vae"
+  },
+  "model": {
+    "id": "m-1",
+    "code": "a.safetensors",
+    "name": "model-a",
+    "type": "lora",
+    "path": "loras/a.safetensors",
+    "download": "https://civitai.com/api/download/models/12345?type=Model&format=SafeTensor",
+    "importer": "civitai"
+  },
+  "filename": "models/loras/a.safetensors",
+  "directory": "models/loras",
+  "subdomainDownload": "https://models.civitai.com/api/download/models/12345",
+  "foreignDownload": "https://huggingface.co/example/model.safetensors",
+  "token": "civitai-token",
+  "whitespaceDownload": "   ",
+  "curlError": "curl exited with code 1",
+  "expectedField": "civitai.download"
+}

@@ -1,0 +1,154 @@
+{
+  "workflow": {
+    "id": "11111111-1111-4111-8111-111111111111",
+    "name": "文生图基础工作流",
+    "description": "SDXL 基础文生图",
+    "content": "{\"3\":{\"inputs\":{\"seed\":42},\"class_type\":\"KSampler\",\"_meta\":{\"title\":\"KSampler\"}}}",
+    "properties": {
+      "tags": ["基础"]
+    }
+  },
+  "create": {
+    "invalidId": "not-a-uuid",
+    "noName": {
+      "id": "22222222-2222-4222-8222-222222222222",
+      "description": "没有名字"
+    },
+    "blankName": {
+      "id": "33333333-3333-4333-8333-333333333333",
+      "name": "   ",
+      "description": "空白名字"
+    },
+    "simple": {
+      "id": "44444444-4444-4444-8444-444444444444",
+      "name": "新建工作流",
+      "description": "用于创建用例"
+    }
+  },
+  "update": {
+    "blankName": {
+      "name": "   "
+    },
+    "withId": {
+      "id": "55555555-5555-4555-8555-555555555555",
+      "name": "改名后的工作流"
+    }
+  },
+  "requests": {
+    "paged": {
+      "skip": 20,
+      "size": 10
+    },
+    "fuzzy": {
+      "search": {
+        "fuzzy": "文生图"
+      }
+    }
+  },
+  "list": {
+    "mapKeys": ["id", "name"]
+  },
+  "params": {
+    "first": {
+      "masterId": "11111111-1111-4111-8111-111111111111",
+      "sequence": 0,
+      "type": "prompt",
+      "name": "正向提示词",
+      "config": {
+        "node": "6",
+        "input": "text"
+      }
+    },
+    "second": {
+      "masterId": "11111111-1111-4111-8111-111111111111",
+      "sequence": 1,
+      "type": "seed",
+      "name": "随机种子",
+      "config": {
+        "node": "3",
+        "input": "seed"
+      }
+    },
+    "incomingAdd": {
+      "masterId": "",
+      "sequence": 99,
+      "type": "size",
+      "name": "尺寸",
+      "config": {
+        "node": "5",
+        "input": "width"
+      }
+    },
+    "incomingMake": [
+      {
+        "masterId": "",
+        "sequence": 0,
+        "type": "prompt",
+        "name": "正向提示词",
+        "config": {
+          "node": "6",
+          "input": "text"
+        }
+      },
+      {
+        "masterId": "",
+        "sequence": 7,
+        "type": "negative",
+        "name": "负向提示词",
+        "config": {
+          "node": "7",
+          "input": "text"
+        }
+      }
+    ],
+    "update": {
+      "masterId": "99999999-9999-4999-8999-999999999999",
+      "sequence": 88,
+      "name": "改名后的参数"
+    },
+    "add": {
+      "maxSequence": 3,
+      "emptyMaxSequence": null
+    },
+    "make": {
+      "maxSequence": 1,
+      "emptyMaxSequence": null
+    },
+    "list": {
+      "items": [
+        {
+          "masterId": "11111111-1111-4111-8111-111111111111",
+          "sequence": 0,
+          "type": "prompt",
+          "name": "正向提示词",
+          "config": {
+            "node": "6",
+            "input": "text"
+          }
+        }
+      ],
+      "otherItems": [
+        {
+          "masterId": "11111111-1111-4111-8111-111111111111",
+          "sequence": 1,
+          "type": "seed",
+          "name": "随机种子",
+          "config": {
+            "node": "3",
+            "input": "seed"
+          }
+        }
+      ],
+      "length": 2,
+      "filteredLength": 1,
+      "filter": "提示",
+      "request": {
+        "skip": 10,
+        "size": 5,
+        "search": {
+          "filter": "提示"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "listRequest": {
+    "skip": 0,
+    "size": 10,
+    "search": {
+      "fuzzy": "lora",
+      "types": ["lora"]
+    }
+  },
+  "listResponse": {
+    "items": [{ "id": "m-1", "path": "loras/a.safetensors" }],
+    "length": 1
+  },
+  "model": {
+    "id": "m-1",
+    "code": "a.safetensors",
+    "name": "model-a",
+    "type": "lora",
+    "path": "loras/a.safetensors",
+    "url": "https://civitai.com/models/1",
+    "download": "https://civitai.com/api/download/models/1",
+    "importer": "civitai"
+  },
+  "createBody": {
+    "id": null,
+    "code": "b.safetensors",
+    "name": "model-b",
+    "type": "lora",
+    "path": "loras/b.safetensors"
+  },
+  "createdId": "m-created",
+  "updateBody": {
+    "code": "a.safetensors",
+    "name": "model-a-2",
+    "type": "vae",
+    "path": "vae/a.safetensors"
+  },
+  "updatedId": "m-1",
+  "importModels": [
+    {
+      "code": "existing.safetensors",
+      "name": "existing",
+      "type": "lora",
+      "path": "loras/existing.safetensors"
+    },
+    {
+      "code": "fresh.safetensors",
+      "name": "fresh",
+      "type": "vae",
+      "path": "vae/fresh.safetensors"
+    }
+  ],
+  "existingId": "m-existing",
+  "importedId": "m-imported",
+  "downloadModel": {
+    "id": "m-download",
+    "code": "d.safetensors",
+    "name": "model-d",
+    "type": "checkpoint",
+    "path": "checkpoints/d.safetensors",
+    "download": "https://civitai.com/api/download/models/9",
+    "importer": "civitai"
+  }
+}

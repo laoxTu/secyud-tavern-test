@@ -1,0 +1,52 @@
+{
+  "setting": {
+    "url": "http://comfy.test:8188",
+    "client": "test-client",
+    "directory": "/models"
+  },
+  "ids": {
+    "model": "11111111-1111-4111-8111-111111111111",
+    "cache": "22222222-2222-4222-8222-222222222222",
+    "cacheMissing": "33333333-3333-4333-8333-333333333333",
+    "workflow": "44444444-4444-4444-8444-444444444444",
+    "workflowMissing": "55555555-5555-4555-8555-555555555555"
+  },
+  "sequence": 3,
+  "prompt": {
+    "1": {
+      "inputs": { "text": "一只猫" },
+      "class_type": "CLIPTextEncode",
+      "_meta": { "title": "正向提示词" }
+    }
+  },
+  "generateResponse": { "prompt_id": "prompt-1", "number": 1 },
+  "model": {
+    "id": "11111111-1111-4111-8111-111111111111",
+    "code": "a.safetensors",
+    "name": "模型 A",
+    "type": "lora",
+    "path": "loras/a.safetensors"
+  },
+  "models": [
+    {
+      "code": "a.safetensors",
+      "name": "模型 A",
+      "type": "lora",
+      "path": "loras/a.safetensors"
+    }
+  ],
+  "workflow": {
+    "id": "44444444-4444-4444-8444-444444444444",
+    "name": "工作流 A",
+    "description": "描述",
+    "content": "{\"1\":{}}"
+  },
+  "param": {
+    "masterId": "44444444-4444-4444-8444-444444444444",
+    "sequence": 3,
+    "type": "text",
+    "name": "提示词",
+    "config": { "node": "1", "input": "text" }
+  },
+  "request": { "skip": 20, "size": 10, "search": { "fuzzy": "a" } }
+}

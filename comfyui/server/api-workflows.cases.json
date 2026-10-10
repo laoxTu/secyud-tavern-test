@@ -1,0 +1,86 @@
+{
+  "workflow": {
+    "id": "w-1",
+    "name": "wf-a",
+    "description": "工作流 A",
+    "properties": {}
+  },
+  "workflowInput": {
+    "1": {
+      "_meta": { "title": "Load Diffusion Model" },
+      "class_type": "UNETLoader",
+      "inputs": { "unet_name": "flux-dev.safetensors", "weight_dtype": "default" }
+    },
+    "2": {
+      "_meta": { "title": "Positive Prompt" },
+      "class_type": "CLIPTextEncode",
+      "inputs": { "text": "a cat", "clip": ["1", 0] }
+    },
+    "3": {
+      "_meta": { "title": "Power Lora Loader (rgthree)" },
+      "class_type": "Power Lora Loader (rgthree)",
+      "inputs": {
+        "lora_1": { "on": true, "lora": "a.safetensors", "strength": 0.8 },
+        "lora_2": { "on": false, "lora": "b.safetensors", "strength": 1 },
+        "lora_4": { "on": true, "lora": "d.safetensors", "strength": 0.5 }
+      }
+    },
+    "4": {
+      "_meta": { "title": "Form Post Request Node" },
+      "class_type": "Form Post Request Node",
+      "inputs": {}
+    },
+    "5": {
+      "_meta": { "title": "Negative Prompt" },
+      "class_type": "CLIPTextEncode",
+      "inputs": { "text": "bad anatomy" }
+    }
+  },
+  "listRequest": {
+    "skip": 0,
+    "size": 20,
+    "search": { "fuzzy": "wf" }
+  },
+  "listResponse": {
+    "items": [{ "id": "w-1", "name": "wf-a" }],
+    "length": 1
+  },
+  "createBody": {
+    "id": null,
+    "name": "wf-b",
+    "description": "工作流 B",
+    "content": "{}"
+  },
+  "createdId": "w-2",
+  "updateBody": { "name": "wf-a-2", "description": "改过" },
+  "cloneBody": { "name": "wf-a-clone" },
+  "workflowParams": [
+    {
+      "masterId": "w-1",
+      "sequence": 0,
+      "type": "select",
+      "name": "种子",
+      "config": { "node": "1", "key": "seed", "items": [] }
+    }
+  ],
+  "paramListRequest": { "skip": 0, "size": 5, "search": { "filter": "种子" } },
+  "param": {
+    "masterId": "w-1",
+    "sequence": 3,
+    "type": "select",
+    "name": "步数",
+    "config": { "node": "1", "key": "steps", "items": ["20", "30"] }
+  },
+  "newParam": {
+    "masterId": "w-1",
+    "sequence": 0,
+    "type": "select",
+    "name": "CFG",
+    "config": { "node": "1", "key": "cfg", "items": ["7"] }
+  },
+  "paramCloneBody": { "name": "步数-副本" },
+  "addedSequence": 7,
+  "generatedSequences": [10, 11, 12, 13],
+  "sequenceParam": "3",
+  "importCreatedId": "w-imported"
+}

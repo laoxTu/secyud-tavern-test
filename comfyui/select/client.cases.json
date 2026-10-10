@@ -1,0 +1,225 @@
+{
+  "workflow": {
+    "3": {
+      "inputs": {
+        "seed": 1,
+        "steps": 20
+      },
+      "class_type": "KSampler",
+      "_meta": {
+        "title": "KSampler"
+      }
+    },
+    "10": {
+      "inputs": {
+        "text": "a cat",
+        "clip": ["4", 1]
+      },
+      "class_type": "CLIPTextEncode",
+      "_meta": {
+        "title": "CLIP Text Encode (Prompt)"
+      }
+    },
+    "12": {
+      "inputs": {
+        "value": 7
+      },
+      "class_type": "PrimitiveInt",
+      "_meta": {
+        "title": "Primitive Int"
+      }
+    }
+  },
+  "cases": [
+    {
+      "name": "完整表单",
+      "fields": {
+        "node": "10",
+        "key": "text",
+        "value_3": "blue hair",
+        "item": ["blue hair", "green hair"]
+      },
+      "expected": {
+        "node": "10",
+        "key": "text",
+        "value": "blue hair",
+        "items": ["blue hair", "green hair"]
+      }
+    },
+    {
+      "name": "缺 node / key / value",
+      "fields": {
+        "item": ["only item"]
+      },
+      "expected": {
+        "node": null,
+        "key": null,
+        "value": null,
+        "items": ["only item"]
+      }
+    },
+    {
+      "name": "没有可选值时 items 为空数组",
+      "fields": {
+        "node": "12",
+        "key": "value"
+      },
+      "expected": {
+        "node": "12",
+        "key": "value",
+        "value": null,
+        "items": []
+      }
+    },
+    {
+      "name": "序号与表单字段名不匹配时读不到值",
+      "fields": {
+        "node": "10",
+        "key": "text",
+        "value_4": "for another sequence",
+        "item": ["a"]
+      },
+      "expected": {
+        "node": "10",
+        "key": "text",
+        "value": null,
+        "items": ["a"]
+      }
+    },
+    {
+      "name": "值为空串时保留空串",
+      "fields": {
+        "node": "10",
+        "key": "text",
+        "value_3": "",
+        "item": ["a"]
+      },
+      "expected": {
+        "node": "10",
+        "key": "text",
+        "value": "",
+        "items": ["a"]
+      }
+    }
+  ],
+  "configureInput": [
+    {
+      "name": "节点存在时写入选中值",
+      "fields": {
+        "node": "10",
+        "key": "text",
+        "value_3": "blue hair"
+      },
+      "expected": "blue hair"
+    },
+    {
+      "name": "缺 value_3 时写入 null",
+      "fields": {
+        "node": "10",
+        "key": "text"
+      },
+      "expected": null
+    },
+    {
+      "name": "key 指向的输入不存在时按 key 新建",
+      "fields": {
+        "node": "10",
+        "key": "new_key",
+        "value_3": "v"
+      },
+      "expected": "v"
+    },
+    {
+      "name": "node 有值但 key 缺失时写入字符串键 undefined",
+      "fields": {
+        "node": "10",
+        "value_3": "v"
+      },
+      "expected": "v"
+    }
+  ],
+  "generateCalling": [
+    {
+      "name": "args 提供值时优先使用 args",
+      "config": {
+        "node": "10",
+        "key": "text",
+        "items": ["a", "b"],
+        "value": "a"
+      },
+      "args": {
+        "paint": "from args"
+      },
+      "expected": "from args"
+    },
+    {
+      "name": "args 缺该 code 时回落到 config.value",
+      "config": {
+        "node": "10",
+        "key": "text",
+        "items": ["a", "b"],
+        "value": "a"
+      },
+      "args": {},
+      "expected": "a"
+    },
+    {
+      "name": "args 里该 code 显式为 null 时回落到 config.value",
+      "config": {
+        "node": "10",
+        "key": "text",
+        "items": ["a", "b"],
+        "value": "a"
+      },
+      "args": {
+        "paint": null
+      },
+      "expected": "a"
+    },
+    {
+      "name": "config.value 缺失且 args 也没给时不新增键",
+      "config": {
+        "node": "10",
+        "key": "text",
+        "items": []
+      },
+      "args": {},
+      "absent": true,
+      "expected": null
+    }
+  ],
+  "schema": {
+    "config": {
+      "node": "10",
+      "key": "text",
+      "items": ["blue hair", "green hair"]
+    },
+    "paint": {
+      "id": 1,
+      "disabled": false,
+      "description": "发色",
+      "code": "hair"
+    },
+    "expected": {
+      "type": "string",
+      "description": "发色",
+      "enum": ["blue hair", "green hair"]
+    }
+  },
+  "defaults": {
+    "select": {
+      "node": "",
+      "key": "",
+      "items": []
+    },
+    "modelSelect": {
+      "node": "",
+      "key": "",
+      "type": "diffusion_model"
+    },
+    "powerLoraSelect": {
+      "node": "",
+      "loras": []
+    }
+  }
+}

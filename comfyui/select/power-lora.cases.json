@@ -1,0 +1,336 @@
+{
+  "workflow": {
+    "3": {
+      "inputs": {
+        "seed": 1,
+        "steps": 20
+      },
+      "class_type": "KSampler",
+      "_meta": {
+        "title": "KSampler"
+      }
+    },
+    "10": {
+      "inputs": {
+        "text": "a cat",
+        "clip": ["4", 1]
+      },
+      "class_type": "CLIPTextEncode",
+      "_meta": {
+        "title": "CLIP Text Encode (Prompt)"
+      }
+    },
+    "12": {
+      "inputs": {
+        "value": 7
+      },
+      "class_type": "PrimitiveInt",
+      "_meta": {
+        "title": "Primitive Int"
+      }
+    },
+    "20": {
+      "inputs": {
+        "model": ["4", 0],
+        "PowerLoraLoaderHeaderWidget": {
+          "type": "PowerLoraLoaderHeaderWidget"
+        }
+      },
+      "class_type": "Power Lora Loader (rgthree)",
+      "_meta": {
+        "title": "Power Lora Loader (rgthree)"
+      }
+    }
+  },
+  "powerLoraConfig": [
+    {
+      "name": "完整表单",
+      "fields": {
+        "node": "20",
+        "count_3": "2",
+        "items": {
+          "lora_3_0": { "value": "id-a", "name": "a.safetensors" },
+          "lora_strength_3_0": "0.7",
+          "lora_on_3_0": "on",
+          "lora_3_1": { "value": "id-b", "name": "b.safetensors" },
+          "lora_strength_3_1": "1.25"
+        }
+      },
+      "expected": {
+        "node": "20",
+        "loras": [
+          {
+            "lora": { "value": "id-a", "name": "a.safetensors" },
+            "strength": 0.7,
+            "on": true
+          },
+          {
+            "lora": { "value": "id-b", "name": "b.safetensors" },
+            "strength": 1.25,
+            "on": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "数量为 0 时得到空列表",
+      "fields": {
+        "node": "20",
+        "count_3": "0",
+        "items": {
+          "lora_3_0": { "value": "id-a", "name": "a.safetensors" },
+          "lora_strength_3_0": "0.7"
+        }
+      },
+      "expected": {
+        "node": "20",
+        "loras": []
+      }
+    },
+    {
+      "name": "数量为负时得到空列表",
+      "fields": {
+        "node": "20",
+        "count_3": "-1"
+      },
+      "expected": {
+        "node": "20",
+        "loras": []
+      }
+    },
+    {
+      "name": "数量大于实际字段数时缺的部分为 null / NaN / false",
+      "fields": {
+        "node": "20",
+        "count_3": "3",
+        "items": {
+          "lora_3_0": { "value": "id-a", "name": "a.safetensors" },
+          "lora_strength_3_0": "0.7",
+          "lora_on_3_0": "on"
+        }
+      },
+      "expected": {
+        "node": "20",
+        "loras": [
+          {
+            "lora": { "value": "id-a", "name": "a.safetensors" },
+            "strength": 0.7,
+            "on": true
+          },
+          { "lora": null, "strength": null, "on": false },
+          { "lora": null, "strength": null, "on": false }
+        ]
+      }
+    },
+    {
+      "name": "强度不是数字时得到 NaN",
+      "fields": {
+        "node": "20",
+        "count_3": "1",
+        "items": {
+          "lora_3_0": { "value": "id-a", "name": "a.safetensors" },
+          "lora_strength_3_0": "abc"
+        }
+      },
+      "expected": {
+        "node": "20",
+        "loras": [
+          {
+            "lora": { "value": "id-a", "name": "a.safetensors" },
+            "strength": null,
+            "on": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "缺 count 时列表为空",
+      "fields": {
+        "node": "20",
+        "items": {
+          "lora_3_0": { "value": "id-a", "name": "a.safetensors" }
+        }
+      },
+      "expected": {
+        "node": "20",
+        "loras": []
+      }
+    },
+    {
+      "name": "序号不匹配时读不到 lora 字段",
+      "fields": {
+        "node": "20",
+        "count_3": "1",
+        "items": {
+          "lora_4_0": { "value": "id-a", "name": "a.safetensors" }
+        }
+      },
+      "expected": {
+        "node": "20",
+        "loras": [{ "lora": null, "strength": null, "on": false }]
+      }
+    }
+  ],
+  "powerLoraInput": [
+    {
+      "name": "按数量写入 lora_1..lora_n（写入 name 而不是 value）",
+      "fields": {
+        "node": "20",
+        "count_3": "2",
+        "items": {
+          "lora_3_0": { "value": "id-a", "name": "a.safetensors" },
+          "lora_strength_3_0": "0.7",
+          "lora_on_3_0": "on",
+          "lora_3_1": { "value": "id-b", "name": "b.safetensors" },
+          "lora_strength_3_1": "1.25"
+        }
+      },
+      "stale": ["lora_1", "lora_2", "lora_3", "lora_4"],
+      "expected": {
+        "writes": {
+          "lora_1": { "lora": "a.safetensors", "strength": 0.7, "on": true },
+          "lora_2": { "lora": "b.safetensors", "strength": 1.25, "on": false }
+        },
+        "deleted": ["lora_3", "lora_4"],
+        "kept": ["model", "PowerLoraLoaderHeaderWidget"]
+      }
+    },
+    {
+      "name": "数量为 0 时清空所有 lora_i",
+      "fields": {
+        "node": "20",
+        "count_3": "0"
+      },
+      "stale": [
+        "lora_1",
+        "lora_2",
+        "lora_3",
+        "lora_4",
+        "lora_5",
+        "lora_6",
+        "lora_7",
+        "lora_8",
+        "lora_9",
+        "lora_10"
+      ],
+      "expected": {
+        "writes": {},
+        "deleted": [
+          "lora_1",
+          "lora_2",
+          "lora_3",
+          "lora_4",
+          "lora_5",
+          "lora_6",
+          "lora_7",
+          "lora_8",
+          "lora_9",
+          "lora_10"
+        ],
+        "kept": ["model", "PowerLoraLoaderHeaderWidget"]
+      }
+    },
+    {
+      "name": "缺 count 时 i < NaN 恒假，lora_1..lora_10 全部被删除",
+      "fields": {
+        "node": "20",
+        "items": {
+          "lora_3_0": { "value": "id-a", "name": "a.safetensors" },
+          "lora_strength_3_0": "0.7"
+        }
+      },
+      "stale": ["lora_1", "lora_2"],
+      "expected": {
+        "writes": {},
+        "deleted": ["lora_1", "lora_2"],
+        "kept": ["model", "PowerLoraLoaderHeaderWidget"]
+      }
+    }
+  ],
+  "powerLoraCalling": [
+    {
+      "name": "按 args 重建 lora_i 并保留 model 与 header",
+      "config": {
+        "node": "20",
+        "loras": []
+      },
+      "args": {
+        "paint": [
+          { "lora": "a.safetensors", "strength": 0.7 },
+          { "lora": "b.safetensors", "strength": 1.2 }
+        ]
+      },
+      "expected": {
+        "model": ["4", 0],
+        "PowerLoraLoaderHeaderWidget": {
+          "type": "PowerLoraLoaderHeaderWidget"
+        },
+        "➕ Add Lora": "",
+        "lora_1": { "lora": "a.safetensors", "strength": 0.7, "on": true },
+        "lora_2": { "lora": "b.safetensors", "strength": 1.2, "on": true }
+      }
+    },
+    {
+      "name": "args 里没有该 code 时保持原样",
+      "config": {
+        "node": "20",
+        "loras": []
+      },
+      "args": {},
+      "expected": {
+        "model": ["4", 0],
+        "PowerLoraLoaderHeaderWidget": {
+          "type": "PowerLoraLoaderHeaderWidget"
+        }
+      }
+    },
+    {
+      "name": "args 里该 code 为空数组时清空 lora 列表",
+      "config": {
+        "node": "20",
+        "loras": []
+      },
+      "args": {
+        "paint": []
+      },
+      "expected": {
+        "model": ["4", 0],
+        "PowerLoraLoaderHeaderWidget": {
+          "type": "PowerLoraLoaderHeaderWidget"
+        },
+        "➕ Add Lora": ""
+      }
+    }
+  ],
+  "powerLoraSchema": {
+    "config": {
+      "node": "20",
+      "loras": []
+    },
+    "paint": {
+      "id": 3,
+      "disabled": false,
+      "description": "LoRA 列表",
+      "code": "loras"
+    },
+    "expected": {
+      "type": "array",
+      "description": "LoRA 列表",
+      "items": {
+        "type": "object",
+        "properties": {
+          "lora": {
+            "type": "string",
+            "description": "the lora name, need to use the result from search"
+          },
+          "strength": {
+            "type": "number",
+            "maximum": 5,
+            "minimum": -5,
+            "description": "the strength of the lora"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "config": { "node": "10", "title": "11", "key": "text", "value": "image" },
+  "form": {
+    "node": "10",
+    "title": "11",
+    "title_key": "text",
+    "title_value": "高清"
+  },
+  "sequence": 7,
+  "paint": {
+    "id": "p-1",
+    "disabled": false,
+    "code": "prompt",
+    "description": "提示词"
+  },
+  "input": {
+    "10": {
+      "inputs": {},
+      "class_type": "SaveImage",
+      "_meta": { "title": "保存图片" }
+    },
+    "11": {
+      "inputs": {},
+      "class_type": "CLIPTextEncode",
+      "_meta": { "title": "标题" }
+    }
+  },
+  "realmId": "realm-1",
+  "fromForm": "表单里的标题",
+  "fromArgs": "参数里的标题"
+}

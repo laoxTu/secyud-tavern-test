@@ -1,0 +1,96 @@
+{
+  "config": {
+    "code": "paint",
+    "description": "自动绘图",
+    "workflow": { "name": "工作流 A-wf-1", "value": "wf-1" },
+    "params": [
+      { "id": 3, "disabled": false, "code": "prompt", "description": "提示词" },
+      { "id": 4, "disabled": true, "code": "lora", "description": "LoRA" },
+      { "id": 5, "disabled": false, "code": "unknown", "description": "未知" }
+    ]
+  },
+  "form": {
+    "code": "paint",
+    "description": "自动绘图",
+    "workflow": { "name": "工作流 A-wf-1", "value": "wf-1" },
+    "params": [
+      {
+        "id": 3,
+        "code": "prompt",
+        "description": "提示词",
+        "enabled": true
+      },
+      { "id": 4, "code": "lora", "description": "LoRA", "enabled": false }
+    ]
+  },
+  "expectedConfig": {
+    "code": "paint",
+    "description": "自动绘图",
+    "workflow": { "name": "工作流 A-wf-1", "value": "wf-1" },
+    "params": [
+      {
+        "id": 3,
+        "code": "prompt",
+        "description": "提示词",
+        "disabled": false
+      },
+      { "id": 4, "code": "lora", "description": "LoRA", "disabled": true }
+    ]
+  },
+  "input": {
+    "1": {
+      "inputs": { "text": "" },
+      "class_type": "CLIPTextEncode",
+      "_meta": { "title": "正向提示词" }
+    }
+  },
+  "workflow": {
+    "id": "wf-1",
+    "name": "工作流 A",
+    "description": "描述",
+    "content": "{\"1\":{\"inputs\":{\"text\":\"\"},\"class_type\":\"CLIPTextEncode\",\"_meta\":{\"title\":\"正向提示词\"}}}"
+  },
+  "invalidWorkflow": {
+    "id": "wf-2",
+    "name": "坏工作流",
+    "content": "不是 json"
+  },
+  "params": [
+    {
+      "masterId": "wf-1",
+      "sequence": 3,
+      "type": "text",
+      "name": "提示词",
+      "config": { "node": "1", "input": "text" }
+    },
+    {
+      "masterId": "wf-1",
+      "sequence": 4,
+      "type": "lora_select",
+      "name": "LoRA",
+      "config": {}
+    },
+    {
+      "masterId": "wf-1",
+      "sequence": 5,
+      "type": "missing",
+      "name": "未知",
+      "config": {}
+    }
+  ],
+  "modelsResponse": {
+    "items": [
+      {
+        "id": "m-1",
+        "code": "a.safetensors",
+        "name": "模型 A",
+        "type": "lora",
+        "path": "loras/a.safetensors",
+        "model": "sdxl"
+      }
+    ],
+    "length": 1
+  },
+  "args": { "prompt": "一只猫" },
+  "generateResponse": { "prompt_id": "p-1", "number": 1 }
+}

@@ -1,0 +1,192 @@
+{
+  "workflow": {
+    "3": {
+      "inputs": {
+        "seed": 1
+      },
+      "class_type": "KSampler",
+      "_meta": {
+        "title": "KSampler"
+      }
+    },
+    "4": {
+      "inputs": {
+        "ckpt_name": "a.safetensors",
+        "vae_name": "vae.safetensors"
+      },
+      "class_type": "CheckpointLoaderSimple",
+      "_meta": {
+        "title": "Load Checkpoint"
+      }
+    }
+  },
+  "modelSelectCases": [
+    {
+      "name": "完整表单",
+      "fields": {
+        "node": "4",
+        "key": "ckpt_name",
+        "type": "checkpoint",
+        "model_3": { "value": "id-a", "name": "a.safetensors" }
+      },
+      "expected": {
+        "node": "4",
+        "key": "ckpt_name",
+        "type": "checkpoint",
+        "fuzzy": null,
+        "model": { "value": "id-a", "name": "a.safetensors" }
+      }
+    },
+    {
+      "name": "缺 type 时保留 null（不回落默认值）",
+      "fields": {
+        "node": "4",
+        "key": "ckpt_name",
+        "model_3": { "value": "id-a", "name": "a.safetensors" }
+      },
+      "expected": {
+        "node": "4",
+        "key": "ckpt_name",
+        "type": null,
+        "fuzzy": null,
+        "model": { "value": "id-a", "name": "a.safetensors" }
+      }
+    },
+    {
+      "name": "没有选中模型时为 null",
+      "fields": {
+        "node": "4",
+        "key": "ckpt_name",
+        "type": "lora"
+      },
+      "expected": {
+        "node": "4",
+        "key": "ckpt_name",
+        "type": "lora",
+        "fuzzy": null,
+        "model": null
+      }
+    },
+    {
+      "name": "模型字段不是合法 json 时为 null",
+      "fields": {
+        "node": "4",
+        "key": "ckpt_name",
+        "type": "lora",
+        "model_3": "not a json"
+      },
+      "expected": {
+        "node": "4",
+        "key": "ckpt_name",
+        "type": "lora",
+        "fuzzy": null,
+        "model": null
+      }
+    },
+    {
+      "name": "fuzzy 原样读取",
+      "fields": {
+        "node": "4",
+        "key": "ckpt_name",
+        "type": "lora",
+        "fuzzy": "anime",
+        "model_3": { "value": "id-b", "name": "b.safetensors" }
+      },
+      "expected": {
+        "node": "4",
+        "key": "ckpt_name",
+        "type": "lora",
+        "fuzzy": "anime",
+        "model": { "value": "id-b", "name": "b.safetensors" }
+      }
+    },
+    {
+      "name": "序号与表单字段名不匹配时读不到模型",
+      "fields": {
+        "node": "4",
+        "key": "ckpt_name",
+        "type": "lora",
+        "model_2": { "value": "id-a", "name": "a.safetensors" }
+      },
+      "expected": {
+        "node": "4",
+        "key": "ckpt_name",
+        "type": "lora",
+        "fuzzy": null,
+        "model": null
+      }
+    }
+  ],
+  "modelSelectInput": [
+    {
+      "name": "有选中模型时写入整段 json 字符串",
+      "fields": {
+        "node": "4",
+        "key": "ckpt_name",
+        "model_3": { "value": "id-a", "name": "a.safetensors" }
+      },
+      "raw": "{\"value\":\"id-a\",\"name\":\"a.safetensors\"}"
+    },
+    {
+      "name": "没有选中模型时写入 null",
+      "fields": {
+        "node": "4",
+        "key": "ckpt_name"
+      },
+      "raw": null
+    }
+  ],
+  "modelSelectGenerate": [
+    {
+      "name": "args 提供值时优先使用 args",
+      "config": {
+        "node": "4",
+        "key": "ckpt_name",
+        "type": "lora",
+        "model": { "value": "id-a", "name": "a.safetensors" }
+      },
+      "args": { "paint": "from args" },
+      "expected": "from args"
+    },
+    {
+      "name": "args 缺该 code 时回落到 config.model.name",
+      "config": {
+        "node": "4",
+        "key": "ckpt_name",
+        "type": "lora",
+        "model": { "value": "id-a", "name": "a.safetensors" }
+      },
+      "args": {},
+      "expected": "a.safetensors"
+    },
+    {
+      "name": "没有选中模型且 args 也没给时不新增键",
+      "config": {
+        "node": "4",
+        "key": "ckpt_name",
+        "type": "lora",
+        "model": null
+      },
+      "args": {},
+      "absent": true,
+      "expected": null
+    }
+  ],
+  "modelSelectSchema": {
+    "config": {
+      "node": "4",
+      "key": "ckpt_name",
+      "type": "checkpoint"
+    },
+    "paint": {
+      "id": 2,
+      "disabled": false,
+      "description": "底模",
+      "code": "checkpoint"
+    },
+    "expected": {
+      "type": "string",
+      "description": "底模"
+    }
+  }
+}
