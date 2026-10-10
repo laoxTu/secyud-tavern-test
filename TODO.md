@@ -4,9 +4,10 @@
 > `[x]` = 已有用例（可补强），`[ ]` = 待写。
 > 写用例前先看 `GUIDELINES.md`（数据一律 json 动态 import、mock 边界、jsdom 限制、未确认行为先不加断言）。
 > 用例数据统一放 json、用 `(await import('./xxx.json')).default` 动态加载；需要改动时先 `structuredClone` 克隆一份。
-> 当前：**160 文件 / 1785 用例通过 + 3 expected fail（0 failed）**（`models` 的待修缺陷 3 条，有意保留，见下）。另有既有 flaky 用例 `comfyui/editor/generator.test.ts`（约 50% 假失败，详见 comfyui 一节的遗留说明）——它是否出现与本次工作无关，两次全量一次红一次绿即为其概率性。
+> 当前：**160 文件 / 1802 用例通过 + 3 expected fail，0 failed**（`models` 的待修缺陷 3 条，有意保留，见下）。全量单实例跑通约 60s。
+> 既有 flaky 用例 `comfyui/editor/generator.test.ts`（约 50% 假失败，详见 comfyui 一节的遗留说明）——它是否出现与本次工作无关。
 >
-> ⚠️ **验证口径变更（重要）**：上面这个数字是 **A 组修复之前**最后一次跑通的全量。之后（a）A 组 14 项 src 修复落地、（b）工作副本**从上游合并了 PR #60（HEAD 现为 `b6a4933`）**，此后**全量在这个环境里跑不动**（多次卡住被中断，`--reporter=basic` 在 vitest 5 不存在），所以**修复后的验证是 scoped 子集**，不是全量。已 scoped 复核过的：`tests/{models,lorebooks,presets,utils,comfyui,plugins,database,interceptors,signal,files,global,generated,localization,components,tasks}` 122 文件 / 1332 通过 + 3 expected fail（合并前）；A 组相关 27 个文件 ≈470 用例（合并后）。**恢复全量跑通是收尾的第一件事。**
+> 本轮收官时排掉了一个**卡死全量**的问题，根因与修法见下面「测试卡死排查」一节（是测试侧的循环 mock 死锁，不是 src 缺陷）。
 
 ```text
 tests/
@@ -460,6 +461,27 @@ HEAD 现为 `b6a4933 Merge pull request #60 from laoxTu/develop/merge`，该合�
   - 我**暂时把该文件还原成合并前的形状**（工作树改动，未做 git 操作），`tests/signal` 5 文件 52 用例随之恢复全绿。
   - **待你决定**：(a) 保留我的还原（用例绿，bug 仍在）；(b) 跟随上游改用例（用例绿，bug 仍在）；(c) 真正修好——把 id 作为 `params` 传（或在服务端回落到 `body.id`），并同步用例。
 - `src/models/localization/{en,zh}.json` 被上游各删了 4 行；语言包键集合一致性用例仍绿。
+
+### 测试卡死排查（已修，测试侧问题）
+
+**症状**：全量跑到「所有用例都通过」之后**不退出**（日志里 1797 条 ✓ 却没有任何 `Test Files`/`Duration` 收尾行）；两个 node 进程里有一个 worker 只消耗 2.4s CPU 却占着内存 ⇒ 它在**收集/导入阶段被阻塞**，不是在空转。`--maxWorkers=4` 照样卡；`--pool=threads` 变成原生崩溃 `0xC0000005`；而按目录分组跑（≤122 文件）都能正常退出。
+
+**根因（循环 mock 死锁）**：`tests/tasks/client/state.test.ts` 里
+
+```ts
+vi.mock('@/signal/client', async () => {
+  const { proxy } = await import('@/signal/client/proxy');  // ← 死锁点
+  return { signals: { proxy } };
+});
+```
+
+而上游那次 `fix subscription` 让 `src/signal/client/proxy.ts` 变成 `import { useSseConnection } from '.'`（即依赖 `@/signal/client` 自身）。于是「异步 mock 工厂」等一个**反过来依赖被 mock 模块**的模块 ⇒ 工厂永远返回不了 ⇒ 该文件在收集阶段卡死 ⇒ 它所在 worker 永不结束 ⇒ vitest 无限等待。**这是上游合并之后才出现的**，也解释了为什么只有这一个文件卡（合并后我只跑过 `tests/tasks/server/*`，没再跑过它）。
+
+**修法（已改测试，未动 src）**：把 `@/signal/client` 换成**同步** mock，直接给 `signals.proxy.subscription` 一个 spy，不再 `await import` 真实 proxy；断言从「请求层参数」改成「订阅入参」（url/params 属于 signal 自己的职责，已由 `tests/signal/client/proxy.test.ts` 覆盖）。文件从「卡死」变成 **7 用例 / 1.02s**。
+
+**那个 src 侧脆弱点已经修掉了（用户改的）**：`useSseConnection` 被抽到新模块 `src/signal/client/hook.ts`，于是 `proxy.ts → './hook'`、`index.ts → { './hook', './proxy' }`，循环引用消失（`index.ts` 还 `export * from './hook'` 保持对外导出不变）。复核：`tests/signal` 5 文件 52 用例、`tests/tasks` 6 文件 56 用例全绿。⚠️ 提醒：`src/signal/client/hook.ts` 目前还是 **untracked**（`git status` 显示 `??`），提交前要 `git add`。
+
+**给后续写用例的硬规则（仍然适用）**：`vi.mock(X, async () => { const m = await import(Y); ... })` 里，**Y 不能反过来依赖 X**（否则死锁）。要 mock 桶、又想保留其中某个真实子模块时，优先「同步工厂 + 直接给 spy」，或改 mock 更内层的模块。
 
 ### 可疑但未确认（未写断言）
 

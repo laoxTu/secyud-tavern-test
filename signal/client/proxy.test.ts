@@ -17,6 +17,7 @@ vi.mock('@/client', () => ({
   open: mocks.open,
 }));
 
+import { useSseConnection } from '@/signal/client';
 import { proxy } from '@/signal/client/proxy';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
@@ -39,9 +40,11 @@ describe('signal proxy / subscription', () => {
     await proxy.subscription(data.subscription as any);
 
     expect(mocks.post).toHaveBeenCalledTimes(1);
+    // 订阅必须把真实连接 id 作为路径参数带上，否则请求会打到字面量 sse/{id}/subscription（幽灵连接）
     expect(mocks.post).toHaveBeenCalledWith(
       'sse/{id}/subscription',
       data.subscription,
+      { params: { id: useSseConnection.getState().id } },
     );
     // 只走 post，不该顺手发别的请求
     expect(mocks.get).not.toHaveBeenCalled();

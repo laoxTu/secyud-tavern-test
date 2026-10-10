@@ -5,6 +5,7 @@ const mocks = vi.hoisted(() => ({
   post: vi.fn(),
   put: vi.fn(),
   del: vi.fn(),
+  subscription: vi.fn(),
 }));
 
 // 请求层整体替换掉，用例只关心状态编排与拼出来的参数
@@ -21,11 +22,13 @@ vi.mock('@/tasks/client', async () => {
   const { proxy } = await import('@/tasks/client/proxy');
   return { tasks: { name: 'task', proxy } };
 });
-// 订阅同理：走真实的 signal proxy，最终打到被 mock 的请求层
-vi.mock('@/signal/client', async () => {
-  const { proxy } = await import('@/signal/client/proxy');
-  return { signals: { proxy } };
-});
+// signal 侧这里只关心「编排顺序与入参」；订阅请求本身（url/params）由 tests/signal 覆盖。
+// 注意：**不要**用 `await import('@/signal/client/proxy')` 取真实 proxy —— 上游让 proxy.ts
+// 反过来 `import { useSseConnection } from '.'`（即 '@/signal/client'），异步 mock 工厂会与
+// 它形成循环等待，整个文件卡死在收集阶段（本文件曾因此让全量跑不完）。
+vi.mock('@/signal/client', () => ({
+  signals: { proxy: { subscription: mocks.subscription } },
+}));
 
 import type { TaskState } from '@/tasks/client/state';
 import { useTaskState } from '@/tasks/client/state';
@@ -90,13 +93,13 @@ describe('tasks client state / 列表', () => {
 
     await useTaskState.getState().refresh();
 
-    expect(mocks.post).toHaveBeenCalledWith('sse/{id}/subscription', {
+    expect(mocks.subscription).toHaveBeenCalledWith({
       ...data.subscription,
       targets: data.items.map((u: { id: string }) => u.id),
     });
     // 先拿到列表再订阅
     expect(mocks.get.mock.invocationCallOrder[0]).toBeLessThan(
-      mocks.post.mock.invocationCallOrder[0],
+      mocks.subscription.mock.invocationCallOrder[0],
     );
   });
 
@@ -106,7 +109,7 @@ describe('tasks client state / 列表', () => {
 
     await useTaskState.getState().refresh();
 
-    expect(mocks.post).toHaveBeenCalledWith('sse/{id}/subscription', {
+    expect(mocks.subscription).toHaveBeenCalledWith({
       ...data.subscription,
       targets: [],
     });
@@ -150,7 +153,7 @@ describe('tasks client state / 列表', () => {
 
     await expect(useTaskState.getState().refresh()).rejects.toThrow('boom');
 
-    expect(mocks.post).not.toHaveBeenCalled();
+    expect(mocks.subscription).not.toHaveBeenCalled();
     expect(useTaskState.getState().loading).toBe(false);
   });
 });
