@@ -1,0 +1,17 @@
+{
+  "ranges": [
+    { "name": "页数不超过可见数时全部列出", "cur": 0, "max": 5, "cnt": 5 },
+    { "name": "刚好等于可见数", "cur": 2, "max": 5, "cnt": 5 },
+    { "name": "中间页", "cur": 5, "max": 10, "cnt": 5 },
+    { "name": "第一页", "cur": 0, "max": 10, "cnt": 5 },
+    { "name": "最后一页", "cur": 9, "max": 10, "cnt": 5 },
+    { "name": "只有一页", "cur": 0, "max": 1, "cnt": 5 },
+    { "name": "没有数据", "cur": 0, "max": 0, "cnt": 5 }
+  ],
+  "items": [
+    { "entryId": 1, "name": "第一条" },
+    { "entryId": 2, "name": "第二条" },
+    { "entryId": 3, "name": "第三条" }
+  ],
+  "pageVisibleCount": 5
+}

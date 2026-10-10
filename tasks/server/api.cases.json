@@ -1,0 +1,28 @@
+{
+  "id": "11111111-1111-7111-8111-111111111111",
+  "searchParams": { "size": "7", "skip": "0", "search": { "fuzzy": "import" } },
+  "listResponse": {
+    "items": [
+      {
+        "id": "11111111-1111-7111-8111-111111111111",
+        "name": "task.import",
+        "status": "running"
+      }
+    ],
+    "length": 1
+  },
+  "historyResponse": [
+    {
+      "masterId": "11111111-1111-7111-8111-111111111111",
+      "attempt": 0,
+      "status": "failed",
+      "result": "first"
+    },
+    {
+      "masterId": "11111111-1111-7111-8111-111111111111",
+      "attempt": 1,
+      "status": "completed",
+      "result": "second"
+    }
+  ]
+}

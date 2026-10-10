@@ -1,0 +1,223 @@
+{
+  "fields": [
+    "code",
+    "description",
+    "schema",
+    "disable_preset",
+    "max_length",
+    "model",
+    "preset",
+    "disable_tags"
+  ],
+  "form": {
+    "code": "sub_agent",
+    "description": "子代理",
+    "schema": "{\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"task\":{\"type\":\"string\"}}}",
+    "disable_preset": "on",
+    "max_length": "3",
+    "model": "{\"name\":\"模型A\",\"value\":\"model-a\"}",
+    "disable_tags": ["agent"],
+    "preset": [
+      "{\"name\":\"预设A-1.0\",\"value\":\"preset-a\"}",
+      "{\"name\":\"预设B-2.0\",\"value\":\"preset-b\"}"
+    ]
+  },
+  "expectedConfig": {
+    "schema": "{\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"task\":{\"type\":\"string\"}}}",
+    "disableTags": ["agent"],
+    "presets": [
+      { "name": "预设A-1.0", "value": "preset-a" },
+      { "name": "预设B-2.0", "value": "preset-b" }
+    ],
+    "description": "子代理",
+    "code": "sub_agent",
+    "disablePreset": true,
+    "maxLength": 3,
+    "model": { "name": "模型A", "value": "model-a" }
+  },
+  "minimalForm": {
+    "schema": "{\"type\":\"object\"}"
+  },
+  "minimalExpectedConfig": {
+    "schema": "{\"type\":\"object\"}",
+    "disableTags": [],
+    "presets": [],
+    "description": null,
+    "code": null,
+    "disablePreset": false,
+    "maxLength": "__NaN__",
+    "model": null
+  },
+  "invalidSchemas": [
+    { "name": "空串", "fields": { "schema": "" } },
+    { "name": "缺字段", "fields": {} },
+    { "name": "非 json", "fields": { "schema": "not a json" } },
+    { "name": "字面量 null", "fields": { "schema": "null" } }
+  ],
+  "realm": {
+    "id": "realm-1",
+    "model": { "id": "model-main", "name": "主模型" },
+    "properties": { "world": "艾泽" },
+    "entries": [{ "type": "agent", "name": "子代理", "data": { "config": {} } }],
+    "presets": [
+      {
+        "id": "preset-a",
+        "name": "预设A",
+        "version": "1.0",
+        "tags": ["story"],
+        "requires": [],
+        "entries": []
+      },
+      {
+        "id": "preset-b",
+        "name": "预设B",
+        "version": "2.0",
+        "tags": ["agent", "story"],
+        "requires": [],
+        "entries": []
+      }
+    ],
+    "histories": [
+      {
+        "masterId": "realm-1",
+        "sequence": 0,
+        "prompts": [
+          { "content": "第一轮输入", "variables": [], "properties": {} }
+        ],
+        "outputs": [
+          [
+            {
+              "content": "第一轮输出",
+              "thought": "",
+              "variables": [],
+              "properties": {}
+            }
+          ]
+        ],
+        "output": 0,
+        "summary": false,
+        "variables": {}
+      },
+      {
+        "masterId": "realm-1",
+        "sequence": 1,
+        "prompts": [
+          { "content": "第二轮输入", "variables": [], "properties": {} }
+        ],
+        "outputs": [
+          [
+            {
+              "content": "第二轮输出",
+              "thought": "",
+              "variables": [],
+              "properties": {}
+            }
+          ]
+        ],
+        "output": 0,
+        "summary": false,
+        "variables": {}
+      },
+      {
+        "masterId": "realm-1",
+        "sequence": 2,
+        "prompts": [
+          { "content": "第三轮输入", "variables": [], "properties": {} }
+        ],
+        "outputs": [
+          [
+            {
+              "content": "第三轮输出",
+              "thought": "",
+              "variables": [],
+              "properties": {}
+            }
+          ]
+        ],
+        "output": 0,
+        "summary": true,
+        "variables": { "hp": 3 }
+      }
+    ]
+  },
+  "result": {
+    "presets": [
+      { "id": "preset-a", "name": "预设A", "version": "1.0", "tags": ["story"] },
+      {
+        "id": "preset-b",
+        "name": "预设B",
+        "version": "2.0",
+        "tags": ["agent", "story"]
+      },
+      { "id": "preset-c", "name": "预设C", "version": "3.0", "tags": [] }
+    ]
+  },
+  "config": {
+    "disablePreset": false,
+    "maxLength": 2,
+    "code": "sub_agent",
+    "description": "子代理",
+    "disableTags": ["agent"],
+    "model": null,
+    "presets": [{ "name": "附加预设-1.0", "value": "preset-extra" }],
+    "schema": "{\"type\":\"object\",\"additionalProperties\":false}"
+  },
+  "chunks": [
+    {
+      "content": "a",
+      "thought": "",
+      "variables": [],
+      "properties": {},
+      "callings": []
+    },
+    {
+      "content": "ab",
+      "thought": "思考",
+      "variables": [],
+      "properties": {},
+      "callings": []
+    },
+    {
+      "content": "abc",
+      "thought": "思考",
+      "variables": [],
+      "properties": {},
+      "callings": [
+        {
+          "index": 0,
+          "id": "call-1",
+          "name": "sub_agent",
+          "arguments": "{\"a\""
+        }
+      ]
+    },
+    {
+      "content": "abcd",
+      "thought": "思考",
+      "variables": [],
+      "properties": {},
+      "callings": [
+        {
+          "index": 0,
+          "id": "call-1",
+          "name": "sub_agent",
+          "arguments": "{\"a\":1}"
+        }
+      ]
+    },
+    {
+      "content": "abcde",
+      "thought": "思考",
+      "variables": [],
+      "properties": {},
+      "callings": [
+        {
+          "index": 0,
+          "id": "call-1",
+          "name": "sub_agent",
+          "arguments": "{\"a\":1}"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "transformer",
+  "models": {
+    "all-MiniLM-L6-v2": { "model": "all-MiniLM-L6-v2", "dimension": 384 },
+    "bge-small-zh-v1.5": { "model": "bge-small-zh-v1.5", "dimension": 512 }
+  },
+  "env": {
+    "allowLocalModels": true,
+    "localModelPath": "/models/",
+    "allowRemoteModels": false
+  },
+  "content": "主角在酒馆遇到同伴",
+  "vector": [1, 0.5, 0],
+  "editor": {
+    "id": "transformers-model",
+    "name": "model",
+    "defaultModel": "all-MiniLM-L6-v2"
+  }
+}

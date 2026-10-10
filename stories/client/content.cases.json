@@ -1,0 +1,67 @@
+{
+  "stories": [
+    {
+      "id": "story-1",
+      "name": "故事一",
+      "model": { "name": "模型甲", "value": "model-a" },
+      "presets": [{ "name": "预设甲", "value": "preset-a" }]
+    },
+    {
+      "id": "story-2",
+      "name": "故事二",
+      "model": { "name": "模型乙", "value": "model-b" },
+      "presets": []
+    },
+    {
+      "id": "story-3",
+      "name": "故事三",
+      "model": null,
+      "presets": []
+    }
+  ],
+  "total": 3,
+  "listParam": { "size": 7, "skip": 0 },
+  "search": { "text": "故事一" },
+  "typed": {
+    "id": "story-2",
+    "name": "故事二",
+    "model": null,
+    "presets": [],
+    "properties": { "types": ["entries"] }
+  },
+  "tab": {
+    "id": "entries",
+    "label": "label.entries",
+    "text": "entries-content"
+  },
+  "update": {
+    "name": "故事一（改名）",
+    "model": { "name": "模型丙", "value": "model-c" },
+    "presets": [
+      { "name": "预设乙", "value": "preset-b" },
+      { "name": "预设丙", "value": "preset-c" }
+    ]
+  },
+  "create": {
+    "name": "新建故事",
+    "created": { "id": "story-new" }
+  },
+  "clipboard": {
+    "type": "story_entry",
+    "id": "story-2",
+    "entryType": "entries",
+    "entryId": 7,
+    "entry": { "masterId": "story-3", "name": "克隆条目" }
+  },
+  "afterDelete": {
+    "stories": [
+      {
+        "id": "story-2",
+        "name": "故事二",
+        "model": { "name": "模型乙", "value": "model-b" },
+        "presets": []
+      }
+    ],
+    "total": 1
+  }
+}

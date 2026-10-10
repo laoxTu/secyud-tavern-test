@@ -1,0 +1,142 @@
+{
+  "moduleInfo": {
+    "name": "memory",
+    "plural": "memories"
+  },
+  "dimension": 3,
+  "embedding": [1, 0, 0],
+  "entries": [
+    {
+      "entryId": 1,
+      "name": "初遇",
+      "text": "主角在酒馆遇到同伴",
+      "importance": 8,
+      "sequence": 100,
+      "type": "event",
+      "tags": ["主角"]
+    },
+    {
+      "entryId": 2,
+      "name": "旧识",
+      "text": "同伴其实早就认识主角",
+      "importance": 5,
+      "sequence": 120,
+      "type": "relation",
+      "tags": ["同伴"]
+    }
+  ],
+  "history": {
+    "masterId": "realm",
+    "sequence": 0,
+    "summary": false,
+    "variables": {},
+    "prompts": [{ "content": "我去酒馆", "variables": [], "properties": {} }],
+    "output": 0,
+    "outputs": [
+      [
+        {
+          "content": "你遇到了同伴",
+          "thought": "",
+          "variables": [],
+          "properties": { "memory": [[1], [2]] }
+        }
+      ]
+    ]
+  },
+  "firstOnlyHistory": {
+    "masterId": "realm",
+    "sequence": 1,
+    "summary": false,
+    "variables": {},
+    "prompts": [],
+    "output": 0,
+    "outputs": [
+      [
+        {
+          "content": "同伴点头",
+          "thought": "",
+          "variables": [],
+          "properties": { "memory": [[1]] }
+        }
+      ]
+    ]
+  },
+  "secondOnlyHistory": {
+    "masterId": "realm",
+    "sequence": 1,
+    "summary": false,
+    "variables": {},
+    "prompts": [],
+    "output": 0,
+    "outputs": [
+      [
+        {
+          "content": "同伴笑了",
+          "thought": "",
+          "variables": [],
+          "properties": { "memory": [[2]] }
+        }
+      ]
+    ]
+  },
+  "duplicateHistory": {
+    "masterId": "realm",
+    "sequence": 1,
+    "summary": false,
+    "variables": {},
+    "prompts": [],
+    "output": 0,
+    "outputs": [
+      [
+        {
+          "content": "重复引用",
+          "thought": "",
+          "variables": [],
+          "properties": { "memory": [[1], [1], [2]] }
+        }
+      ]
+    ]
+  },
+  "emptyHistory": {
+    "masterId": "realm",
+    "sequence": 1,
+    "summary": false,
+    "variables": {},
+    "prompts": [],
+    "output": 0,
+    "outputs": [
+      [
+        {
+          "content": "没有记忆",
+          "thought": "",
+          "variables": [],
+          "properties": { "memory": [] }
+        }
+      ]
+    ]
+  },
+  "missingHistory": {
+    "masterId": "realm",
+    "sequence": 1,
+    "summary": false,
+    "variables": {},
+    "prompts": [],
+    "output": 0,
+    "outputs": [
+      [
+        {
+          "content": "引用了不存在的记忆",
+          "thought": "",
+          "variables": [],
+          "properties": { "memory": [[99]] }
+        }
+      ]
+    ]
+  },
+  "expectedCalling": {
+    "index": 0,
+    "id": "t0m",
+    "name": "get_knowledge",
+    "arguments": "{\"type\":\"memory\"}"
+  }
+}

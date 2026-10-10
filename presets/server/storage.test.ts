@@ -2,7 +2,12 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import type { Preset } from '@/presets';
 import { storage } from '@/presets/server/storage';
-import { archives, type Archive, type ArchiveFolder } from '@/utils/archive';
+import {
+  archives,
+  type Archive,
+  type ArchiveFile,
+  type ArchiveFolder,
+} from '@/utils/archive';
 
 const mocks = vi.hoisted(() => ({
   get: vi.fn(),
@@ -93,7 +98,9 @@ describe('preset storage / load', () => {
 
     expect(mocks.get).toHaveBeenCalledWith(data.cover.id, true);
     expect(Object.keys(node.nodes)).toContain(`cover.${data.cover.ext}`);
-    expect(node.nodes[`cover.${data.cover.ext}`].level).toBe(0);
+    // cover 是文件节点，level 只在 ArchiveFile 上有
+    const cover = node.nodes[`cover.${data.cover.ext}`] as ArchiveFile;
+    expect(cover.level).toBe(0);
     expect((item as any).coverType).toBe(data.cover.mime);
   });
 

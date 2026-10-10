@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { ComfyUIPaint } from '@/comfyui';
+import type { ComfyUIPaint, ComfyUIWorkflowInput } from '@/comfyui';
 
 const mocks = vi.hoisted(() => ({
   workflowRepo: {
@@ -345,7 +345,8 @@ describe('comfyui api-workflows / 参数 clone', () => {
 describe('comfyui api-workflows / 参数生成', () => {
   it('应当按节点类型追加参数，lora 序号断开即停止收集', async () => {
     const data = await loadCases();
-    const input = data.workflowInput;
+    // fixture 的 inputs 是字面量对象，按声明类型收窄才能用 string 索引节点输入
+    const input = data.workflowInput as ComfyUIWorkflowInput;
     const workflow = withContent(data);
     const listed: any[] = [];
     mocks.workflowRepo.get.mockResolvedValue(workflow);

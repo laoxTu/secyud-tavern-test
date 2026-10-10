@@ -1,0 +1,62 @@
+{
+  "urls": [
+    {
+      "name": "占位符被替换且不进入查询串",
+      "url": "models/{id}",
+      "params": { "id": "m-1" },
+      "expected": "/api/models/m-1"
+    },
+    {
+      "name": "替换后剩余参数作为查询串",
+      "url": "models/{id}",
+      "params": { "id": "m-1", "size": 10 },
+      "expected": "/api/models/m-1?size=10"
+    },
+    {
+      "name": "对象参数被 JSON 化后编码",
+      "url": "models",
+      "params": { "search": { "fuzzy": "x" } },
+      "expected": "/api/models?search=%7B%22fuzzy%22%3A%22x%22%7D"
+    },
+    {
+      "name": "数组参数被 JSON 化（不是重复键）",
+      "url": "models",
+      "params": { "types": ["lora", "vae"] },
+      "expected": "/api/models?types=%5B%22lora%22%2C%22vae%22%5D"
+    },
+    {
+      "name": "没有参数时不加问号",
+      "url": "models",
+      "expected": "/api/models"
+    },
+    {
+      "name": "空参数对象同样不加问号",
+      "url": "models",
+      "params": {},
+      "expected": "/api/models"
+    },
+    {
+      "name": "同一个占位符出现两次只替换第一个（现状）",
+      "url": "a/{id}/b/{id}",
+      "params": { "id": "1" },
+      "expected": "/api/a/1/b/{id}"
+    }
+  ],
+  "response": {
+    "json": { "items": [], "length": 0 },
+    "text": "plain text",
+    "error": {
+      "message": "boom",
+      "code": "error.boom",
+      "data": { "field": "x" }
+    },
+    "noMessage": { "code": "error.unknown" }
+  },
+  "body": {
+    "object": { "name": "新建", "nested": { "a": 1 } }
+  },
+  "params": {
+    "id": "m-1",
+    "skip": 20
+  }
+}

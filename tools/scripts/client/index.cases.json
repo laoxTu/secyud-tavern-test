@@ -1,0 +1,174 @@
+{
+  "defaultConfig": {
+    "code": "",
+    "description": "",
+    "script": "return input;",
+    "enableDoc": false,
+    "schema": "{\n    \"type\": \"object\",\n    \"additionalProperties\": false\n}"
+  },
+  "config": {
+    "code": "my_tool",
+    "description": "我的脚本工具",
+    "script": "return input;",
+    "schema": "{\"type\":\"object\",\"additionalProperties\":false,\"properties\":{\"city\":{\"type\":\"string\"}}}",
+    "enableDoc": false,
+    "enableVariable": false
+  },
+  "fieldNames": [
+    "code",
+    "description",
+    "enable_doc",
+    "enable_variable",
+    "schema",
+    "script"
+  ],
+  "configure": [
+    {
+      "name": "全部字段",
+      "fields": {
+        "description": "说明文本",
+        "enable_doc": "on",
+        "enable_variable": "on",
+        "code": "c1",
+        "script": "return 1;",
+        "schema": "{\"type\":\"object\"}"
+      },
+      "expected": {
+        "enableDoc": true,
+        "enableVariable": true,
+        "script": "return 1;",
+        "code": "c1",
+        "schema": "{\"type\":\"object\"}",
+        "description": "说明文本"
+      }
+    },
+    {
+      "name": "复选框未勾选且脚本为空串",
+      "fields": {
+        "code": "c2",
+        "script": "",
+        "schema": "{}"
+      },
+      "expected": {
+        "enableDoc": false,
+        "enableVariable": false,
+        "script": "",
+        "code": "c2",
+        "schema": "{}",
+        "description": null
+      }
+    },
+    {
+      "name": "缺 schema",
+      "fields": { "code": "c3" },
+      "error": { "code": "error.json_invalid", "target": "default.schema" }
+    },
+    {
+      "name": "schema 不是 json",
+      "fields": { "schema": "not a json" },
+      "error": { "code": "error.json_invalid", "target": "default.schema" }
+    },
+    {
+      "name": "schema 是空串",
+      "fields": { "schema": "" },
+      "error": { "code": "error.json_invalid", "target": "default.schema" }
+    },
+    {
+      "name": "schema 是字面量 null",
+      "fields": { "schema": "null" },
+      "error": { "code": "error.json_invalid", "target": "default.schema" }
+    }
+  ],
+  "invoke": [
+    {
+      "name": "字符串结果原样返回",
+      "script": "return 'hello';",
+      "args": {},
+      "expected": "hello"
+    },
+    {
+      "name": "对象结果序列化",
+      "script": "return { city: input.city, n: 2 };",
+      "args": { "city": "上海" },
+      "expected": "{\"city\":\"上海\",\"n\":2}"
+    },
+    {
+      "name": "数值结果序列化",
+      "script": "return input.a + input.b;",
+      "args": { "a": 1, "b": 2 },
+      "expected": "3"
+    },
+    {
+      "name": "返回 null 时序列化成 null",
+      "script": "return null;",
+      "args": {},
+      "expected": "null"
+    },
+    {
+      "name": "默认脚本把入参原样回传",
+      "script": "return input;",
+      "args": { "x": 1, "y": "z" },
+      "expected": "{\"x\":1,\"y\":\"z\"}"
+    }
+  ],
+  "contextScript": "return JSON.stringify({ doc: context.document ?? null, win: context.window ?? null, vars: context.variables ?? null });",
+  "context": [
+    {
+      "name": "两个开关都关时不注入任何上下文",
+      "enableDoc": false,
+      "enableVariable": false,
+      "expected": { "doc": null, "win": null, "vars": null }
+    },
+    {
+      "name": "enableDoc 注入 iframe 的 document 与 window",
+      "enableDoc": true,
+      "enableVariable": false,
+      "expected": {
+        "doc": { "marker": "doc" },
+        "win": { "marker": "win" },
+        "vars": null
+      }
+    },
+    {
+      "name": "enableVariable 从历史读取变量",
+      "enableDoc": false,
+      "enableVariable": true,
+      "expected": {
+        "doc": null,
+        "win": null,
+        "vars": { "count": 3, "name": "旅人" }
+      }
+    }
+  ],
+  "iframe": {
+    "contentDocument": { "marker": "doc" },
+    "contentWindow": { "marker": "win" }
+  },
+  "variables": { "count": 3, "name": "旅人" },
+  "editor": {
+    "config": {
+      "code": "rendered_code",
+      "description": "渲染用描述",
+      "script": "return 'rendered';",
+      "schema": "{\"type\":\"object\"}",
+      "enableDoc": true,
+      "enableVariable": true
+    },
+    "fields": {
+      "code": "rendered_code",
+      "description": "渲染用描述",
+      "script": "return 'rendered';",
+      "schema": "{\"type\":\"object\"}",
+      "enable_doc": true,
+      "enable_variable": true
+    },
+    "defaultFields": {
+      "code": "",
+      "description": "",
+      "script": "return input;",
+      "schema": "{\n    \"type\": \"object\",\n    \"additionalProperties\": false\n}",
+      "enable_doc": false,
+      "enable_variable": false
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "id": "realm-story",
+  "realm": {
+    "histories": [
+      {
+        "masterId": "realm-story",
+        "output": 0,
+        "outputs": [
+          {
+            "content": "回复一",
+            "properties": {},
+            "thought": "",
+            "variables": []
+          },
+          {
+            "content": "回复二",
+            "properties": {},
+            "thought": "",
+            "variables": []
+          }
+        ],
+        "prompts": [
+          {
+            "content": "你好",
+            "properties": {},
+            "variables": []
+          }
+        ],
+        "sequence": 1,
+        "summary": true,
+        "variables": {}
+      }
+    ],
+    "id": "realm-story",
+    "name": "测试故事",
+    "presets": []
+  },
+  "input": "用户输入",
+  "pageIndex": 1,
+  "features": [
+    {
+      "id": "probe-a",
+      "sequence": 1
+    },
+    {
+      "id": "probe-b",
+      "requires": ["probe-a"],
+      "sequence": 2
+    }
+  ]
+}

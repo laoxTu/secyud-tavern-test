@@ -27,7 +27,9 @@ vi.mock('@/global/client', async (importOriginal) => {
 });
 
 import { comfyuis } from '@/comfyui';
+import type { ComfyUIParamRequestParam } from '@/comfyui';
 import { proxy } from '@/comfyui/client/proxy';
+import type { DataRequest } from '@/database';
 import { useComfyUIModelSettingState } from '@/comfyui/client/state';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
@@ -243,7 +245,12 @@ describe('comfyui proxy / workflow.param', () => {
     mocks.get.mockResolvedValue({ items: [data.param], length: 1 });
 
     await proxy.workflow.param.generate(data.ids.workflow);
-    await proxy.workflow.param.list(data.ids.workflow, data.request);
+    // data.request 是三个 list 共用的一份 fixture，search 的键是 fuzzy；
+    // param.list 声明的 search 只认 filter，这里按「原样透传」的用例意图收窄
+    await proxy.workflow.param.list(
+      data.ids.workflow,
+      data.request as unknown as DataRequest<ComfyUIParamRequestParam>,
+    );
 
     expect(mocks.post).toHaveBeenCalledWith(
       'comfyuis/workflows/{id}/params/generate',

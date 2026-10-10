@@ -1,0 +1,52 @@
+{
+  "ids": {
+    "realm": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    "model": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
+  },
+  "realm": {
+    "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    "name": "realm-state",
+    "properties": {},
+    "context": {},
+    "histories": [],
+    "model": {
+      "id": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+      "name": "realm-model",
+      "builder": "default",
+      "iterations": 20,
+      "stream": true
+    },
+    "presets": []
+  },
+  "histories": [
+    {
+      "masterId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "sequence": 1,
+      "summary": false,
+      "output": -1,
+      "variables": {},
+      "prompts": [],
+      "outputs": []
+    },
+    {
+      "masterId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "sequence": 2,
+      "summary": true,
+      "output": 0,
+      "variables": {},
+      "prompts": [],
+      "outputs": [
+        [{ "content": "o-1", "thought": "", "variables": [], "properties": {} }],
+        [{ "content": "o-2", "thought": "", "variables": [], "properties": {} }]
+      ]
+    }
+  ],
+  "mismatchOutput": 5,
+  "mismatchExpectedCur": 1,
+  "expected": {
+    "openingOutput": { "cur": 0, "max": 1 },
+    "lastHistoryOutput": { "cur": 0, "max": 2 },
+    "overriddenOutput": { "cur": 1, "max": 2 },
+    "emptyOutput": { "cur": -1, "max": 0 }
+  }
+}

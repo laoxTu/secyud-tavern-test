@@ -182,7 +182,7 @@ describe('models client engine / prompt 生命周期', () => {
       {
         current: true,
         injects: [
-          async (inner) => {
+          async (inner: ModelInjectContext) => {
             // 注入器只能在被调用时拿到注入上下文
             events.push(`inject:${inner.builder}`);
             return {

@@ -1,0 +1,8 @@
+{
+  "persist": {
+    "name": "global",
+    "partialKeys": ["menu", "open"]
+  },
+  "menu": "presets",
+  "anotherMenu": "setting"
+}

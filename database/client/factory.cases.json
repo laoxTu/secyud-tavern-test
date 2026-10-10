@@ -1,0 +1,14 @@
+{
+  "pageSize": 10,
+  "items": [{ "id": "item-a" }, { "id": "item-b" }, { "id": "item-c" }],
+  "fallbackItems": [{ "id": "item-x" }],
+  "search": { "fuzzy": "首" },
+  "params": { "entryType": "macros" },
+  "responses": {
+    "threeOfTen": { "length": 3 },
+    "twenty": { "length": 20 },
+    "twentyFive": { "length": 25 },
+    "empty": { "length": 0 },
+    "hundred": { "length": 100 }
+  }
+}

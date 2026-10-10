@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { Preset } from '@/presets';
+import type { Script } from '@/presets/scripts';
 import { scripts } from '@/presets/scripts/client';
 import type { Realm, RealmHistory } from '@/stories';
 import { realms } from '@/stories/client/realms';
@@ -90,7 +91,7 @@ describe('scripts / init', () => {
 
     const cache = await scripts.renderer.init({ realm });
 
-    expect(cache.entries.map((u) => u.code)).toEqual([
+    expect(cache.entries.map((u: Script) => u.code)).toEqual([
       'first',
       'middle',
       'later',
@@ -103,7 +104,7 @@ describe('scripts / init', () => {
 
     const cache = await scripts.renderer.init({ realm });
 
-    expect(cache.entries.map((u) => u.code)).toEqual(['on']);
+    expect(cache.entries.map((u: Script) => u.code)).toEqual(['on']);
   });
 
   it('多个 importmap 应当合并，后者覆盖同名键', async () => {
@@ -124,7 +125,7 @@ describe('scripts / init', () => {
     const cache = await scripts.renderer.init({ realm });
 
     expect(error).toHaveBeenCalled();
-    expect(cache.entries.map((u) => u.code)).toEqual(['ok']);
+    expect(cache.entries.map((u: Script) => u.code)).toEqual(['ok']);
     expect(cache.importMap).toBe('{}');
     error.mockRestore();
   });

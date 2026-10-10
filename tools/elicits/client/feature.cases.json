@@ -1,0 +1,20 @@
+{
+  "items": [
+    {
+      "question": "选择颜色？",
+      "examples": ["红", "绿", "蓝"],
+      "custom": true
+    },
+    {
+      "question": "是否继续？",
+      "examples": ["是", "否"],
+      "custom": false
+    },
+    {
+      "question": "自由回答",
+      "examples": [],
+      "custom": true
+    }
+  ],
+  "customAnswer": "自定义答案"
+}

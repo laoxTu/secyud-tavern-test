@@ -1,0 +1,107 @@
+{
+  "businessError": {
+    "arrayValue": {
+      "tags": ["x", "y"]
+    },
+    "code": "error.stock.insufficient",
+    "deepPatch": {
+      "detail": {
+        "b": 3,
+        "c": 4
+      },
+      "skipNull": null
+    },
+    "deepResult": {
+      "detail": {
+        "a": 1,
+        "b": 3,
+        "c": 4
+      },
+      "entity": "preset"
+    },
+    "deepValues": {
+      "detail": {
+        "a": 1,
+        "b": 2
+      },
+      "entity": "preset"
+    },
+    "innerMessage": "唯一索引冲突",
+    "message": "库存不足",
+    "status": 409,
+    "values": {
+      "entity": "preset",
+      "name": "code",
+      "value": "daily"
+    }
+  },
+  "checker": {
+    "code": {
+      "errorCode": "error.invalid_code",
+      "invalid": ["", "a-b", "a b", "中文", "a.b"],
+      "message": "code is invalid",
+      "valid": ["abc", "ABC_123", "a_1"]
+    },
+    "defaultField": "default.code",
+    "duplicate": {
+      "entity": "preset",
+      "errorCode": "error.entity.duplicate_value",
+      "message": "preset with code daily already exist",
+      "name": "code",
+      "value": "daily"
+    },
+    "emptyFieldCode": "error.empty_field",
+    "emptyFieldMessage": "No code provided",
+    "entity": {
+      "errorCode": "default.entity_not_found",
+      "id": "p1",
+      "message": "entity not found",
+      "target": "preset",
+      "valid": {
+        "id": "p1",
+        "name": "daily"
+      }
+    },
+    "field": "code",
+    "json": {
+      "errorCode": "error.json_invalid",
+      "invalid": ["", "  ", "abc", "{"],
+      "message": "Json is invalid",
+      "name": "preset.content",
+      "valid": ["{}", "[]", "{\"a\": 1}", "[1,2]"]
+    },
+    "namespace": "preset",
+    "notEmpty": {
+      "invalid": [""],
+      "valid": [" x ", "0", null]
+    },
+    "notNullOrEmpty": {
+      "invalid": ["", null],
+      "valid": ["x", " ", "0"]
+    },
+    "notNullOrWhitespace": {
+      "invalid": ["", "   ", "\t", null],
+      "valid": [" x ", "0"]
+    },
+    "notWhitespace": {
+      "invalid": ["", "   ", "\t"],
+      "valid": [" x ", "0", null]
+    },
+    "scopedField": "preset.code"
+  },
+  "serialize": {
+    "code": "error.stock.insufficient",
+    "data": {
+      "field": "order.amount",
+      "value": 12
+    },
+    "innerMessage": "底层连接失败",
+    "innerNoise": "不该被序列化出来的字段",
+    "message": "库存不足",
+    "nonError": {
+      "number": 42,
+      "string": "boom"
+    },
+    "plainMessage": "Unexpected failure"
+  }
+}

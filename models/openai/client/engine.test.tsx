@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 // engines.prompt 用「真的按 role 回调注入器」的桩，才能驱动被测代码里的 messages/summaries 组装。
 const mocks = vi.hoisted(() => ({
   prompt: vi.fn(),
-  actives: vi.fn(() => []),
+  actives: vi.fn<() => any[]>(() => []),
   summary: vi.fn(),
   calling: vi.fn(),
   warn: vi.fn(),
@@ -65,6 +65,17 @@ function toFormData(fields: Record<string, string>) {
     data.append(key, value);
   }
   return data;
+}
+
+/**
+ * fixture 里的 output 是宽松形状（可选 callings / properties.usage），
+ * 用带索引签名的类型接住，避免把类型收得比运行时还窄。
+ */
+type StreamOutput = Record<string, any>;
+
+/** 造一个流式状态：output 在分片之间是同一个对象 */
+function createStreamState(output: any) {
+  return { output: output as StreamOutput, properties: {} };
 }
 
 /**
@@ -223,22 +234,22 @@ describe('models openai client engine / configureObject', () => {
 
   it('model 上没有 properties 时应当新建一份再写入', async () => {
     const data = await loadData();
-    const model = structuredClone(data.modelWithoutProperties);
+    const model = structuredClone(data.modelWithoutProperties) as any;
 
     expect(model.properties).toBeUndefined();
-    engine.configureObject(toFormData(data.form), model as any);
+    engine.configureObject(toFormData(data.form), model);
 
-    expect(model.properties!.config).toEqual(data.expected.config);
-    expect(model.properties!.option).toEqual(data.expected.options);
+    expect(model.properties.config).toEqual(data.expected.config);
+    expect(model.properties.option).toEqual(data.expected.options);
   });
 
   it('表单缺少 max_output_tokens 时写不出可用数值', async () => {
     const data = await loadData();
-    const model = structuredClone(data.modelWithoutProperties);
+    const model = structuredClone(data.modelWithoutProperties) as any;
 
-    engine.configureObject(toFormData(data.formWithoutMaxTokens), model as any);
+    engine.configureObject(toFormData(data.formWithoutMaxTokens), model);
 
-    const options = model.properties!.option as any;
+    const options = model.properties.option as any;
     expect(options.model).toBe(data.formWithoutMaxTokens.model);
     expect(Number.isNaN(options.max_output_tokens)).toBe(true);
   });
@@ -276,7 +287,9 @@ describe('models openai client engine / result chat 非流式', () => {
 
     expect(item.output.content).toBe(item.expected.content);
     expect(item.output.thought).toBe(item.expected.thought);
-    expect(item.output.properties.usage).toEqual(item.expected.usage);
+    expect((item.output as StreamOutput).properties.usage).toEqual(
+      item.expected.usage,
+    );
   });
 
   it('finish_reason 为 stop 时应当把 ctx.stopped 置为 true', async () => {
@@ -299,7 +312,9 @@ describe('models openai client engine / result chat 非流式', () => {
     expect(item.message.choices[0].message.tool_calls[1].type).not.toBe(
       'function',
     );
-    expect(item.output.callings).toEqual(item.expected.callings);
+    expect((item.output as StreamOutput).callings).toEqual(
+      item.expected.callings,
+    );
   });
 
   // 待修缺陷（用户已知悉，处置权在用户）：
@@ -314,11 +329,13 @@ describe('models openai client engine / result chat 非流式', () => {
       const data = await loadChat();
       const item = data.chatCompleteWithoutCallings;
 
-      expect(item.output.callings).toBeUndefined();
+      expect((item.output as StreamOutput).callings).toBeUndefined();
       await engine.result(createResultContext(item));
 
       expect(item.message.choices[0].message.tool_calls).toHaveLength(1);
-      expect(item.output.callings).toEqual(item.expected.callings);
+      expect((item.output as StreamOutput).callings).toEqual(
+        item.expected.callings,
+      );
     },
   );
 
@@ -328,8 +345,10 @@ describe('models openai client engine / result chat 非流式', () => {
 
     await engine.result(createResultContext(item));
 
-    expect(item.output.usage).toBeUndefined();
-    expect(item.output.properties.usage).toEqual(item.expected.usage);
+    expect((item.output as StreamOutput).usage).toBeUndefined();
+    expect((item.output as StreamOutput).properties.usage).toEqual(
+      item.expected.usage,
+    );
   });
 });
 
@@ -374,7 +393,7 @@ describe('models openai client engine / result chat 流式', () => {
     const data = await loadChat();
     const item = data.chatStreamTools;
     // 只用 deltas 驱动：fixture 里的 message 就是第一片，重复喂会自我追加
-    const state = { output: item.output, properties: {} };
+    const state = createStreamState(item.output);
     const lengths: number[] = [];
 
     for (const message of item.deltas) {
@@ -404,7 +423,7 @@ describe('models openai client engine / result responses 流式', () => {
   it('应当累积 output_text 与 reasoning_summary_text 分片', async () => {
     const data = await loadResponses();
     const item = data.responsesStreamText;
-    const state = { output: item.output, properties: {} };
+    const state = createStreamState(item.output);
 
     await driveStream(item, state);
 
@@ -415,7 +434,7 @@ describe('models openai client engine / result responses 流式', () => {
   it('应当按 output_item.added + function_call_arguments.delta 归并 callings', async () => {
     const data = await loadResponses();
     const item = data.responsesStreamTools;
-    const state = { output: item.output, properties: {} };
+    const state = createStreamState(item.output);
 
     await driveStream(item, state);
 
@@ -425,18 +444,18 @@ describe('models openai client engine / result responses 流式', () => {
   it('非 function_call 的 output_item 不应当产生新的 calling', async () => {
     const data = await loadResponses();
     const item = data.responsesStreamTools;
-    const state = { output: item.output, properties: {} };
+    const state = createStreamState(item.output);
 
     await driveStream(item, state);
 
-    expect(item.deltas[3].item.type).toBe('message');
+    expect((item.deltas[3] as StreamOutput).item.type).toBe('message');
     expect(state.output.callings).toHaveLength(item.expected.callings.length);
   });
 
   it('response.completed 应当写 usage，且有 callings 时不置 stopped', async () => {
     const data = await loadResponses();
     const item = data.responsesStreamTools;
-    const state = { output: item.output, properties: {} };
+    const state = createStreamState(item.output);
 
     const contexts = await driveStream(item, state);
 
@@ -448,7 +467,7 @@ describe('models openai client engine / result responses 流式', () => {
   it('response.completed 没有 callings 时应当把 ctx.stopped 置为 true', async () => {
     const data = await loadResponses();
     const item = data.responsesStreamStop;
-    const state = { output: item.output, properties: {} };
+    const state = createStreamState(item.output);
 
     const contexts = await driveStream(item, state);
 
@@ -465,7 +484,9 @@ describe('models openai client engine / result responses 非流式', () => {
 
     expect(item.output.content).toBe(item.expected.content);
     expect(item.output.thought).toBe(item.expected.thought);
-    expect(item.output.properties.usage).toEqual(item.expected.usage);
+    expect((item.output as StreamOutput).properties.usage).toEqual(
+      item.expected.usage,
+    );
   });
 
   // 同一处缺陷的 responses 分支：src/models/openai/client/engine.tsx 第 365 行
@@ -476,10 +497,12 @@ describe('models openai client engine / result responses 非流式', () => {
       const data = await loadResponses();
       const item = data.responsesCompleteWithCalling;
 
-      expect(item.output.callings).toBeUndefined();
+      expect((item.output as StreamOutput).callings).toBeUndefined();
       await engine.result(createResultContext(item));
 
-      expect(item.output.callings).toEqual(item.expected.callings);
+      expect((item.output as StreamOutput).callings).toEqual(
+        item.expected.callings,
+      );
     },
   );
 
@@ -499,7 +522,8 @@ describe('models openai client engine / result responses 非流式', () => {
   it('reasoning 没有 content 时不应当改动 thought', async () => {
     const data = await loadResponses();
     const item = data.responsesComplete;
-    item.message.output[1].content = undefined;
+    // 故意去掉 reasoning 分段的 content，验证不会被写成 'undefined'
+    (item.message.output[1] as { content?: unknown }).content = undefined;
 
     await engine.result(createResultContext(item));
 

@@ -8,7 +8,7 @@ import type {
   ModelInjectContext,
   ModelPromptContext,
 } from '@/models/client';
-import type { Preset } from '@/presets';
+import type { Preset, PresetItem } from '@/presets';
 import type { Realm, RealmHistory } from '@/stories';
 import { tools } from '@/tools';
 
@@ -109,10 +109,14 @@ describe('lorebooks processer / init', () => {
 
     const cache = await lorebooks.processer.init({ properties: {}, realm });
 
-    expect(cache.before.map((u) => u.code)).toEqual(data.expected.before);
-    expect(cache.after.map((u) => u.code)).toEqual(data.expected.after);
     expect(
-      Object.values(cache.entries)
+      cache.before.map((u: PresetItem<Lorebook>) => u.code),
+    ).toEqual(data.expected.before);
+    expect(
+      cache.after.map((u: PresetItem<Lorebook>) => u.code),
+    ).toEqual(data.expected.after);
+    expect(
+      Object.values(cache.entries as Record<string, PresetItem<Lorebook>>)
         .map((u) => u.code)
         .sort(),
     ).toEqual(data.expected.entryCodes);
@@ -138,9 +142,11 @@ describe('lorebooks processer / init', () => {
 
     const cache = await lorebooks.processer.init({ properties: {}, realm });
     const codes = [
-      ...cache.before.map((u) => u.code),
-      ...cache.after.map((u) => u.code),
-      ...Object.values(cache.entries).map((u) => u.code),
+      ...cache.before.map((u: PresetItem<Lorebook>) => u.code),
+      ...cache.after.map((u: PresetItem<Lorebook>) => u.code),
+      ...Object.values(
+        cache.entries as Record<string, PresetItem<Lorebook>>,
+      ).map((u) => u.code),
     ];
 
     expect(codes).not.toContain('off');
@@ -152,7 +158,9 @@ describe('lorebooks processer / init', () => {
     const realm = await createRealm(data.entries.all);
 
     const cache = await lorebooks.processer.init({ properties: {}, realm });
-    const entry = cache.before.find((u) => u.code === 'json')!;
+    const entry = cache.before.find(
+      (u: PresetItem<Lorebook>) => u.code === 'json',
+    )!;
 
     expect(entry.content).toBe(data.expected.jsonContent);
   });
@@ -240,7 +248,7 @@ describe('lorebooks processer / 默认构造器的注入', () => {
     ]);
 
     await message.before!(0);
-    await message.middle!();
+    await message.middle!(0);
 
     expect(spies.system).toHaveBeenCalledWith(data.expected.systemContent);
     expect(spies.prompt).toHaveBeenCalledWith(data.expected.promptContent);
@@ -256,7 +264,7 @@ describe('lorebooks processer / 默认构造器的注入', () => {
     ]);
 
     await message.before!(0);
-    await message.middle!();
+    await message.middle!(0);
 
     expect(spies.caller).toHaveBeenCalledTimes(1);
     const [content, output, callings] = spies.caller.mock.calls[0];
@@ -285,7 +293,7 @@ describe('lorebooks processer / 默认构造器的注入', () => {
     expect(spies.system).toHaveBeenCalledWith(data.expected.systemContent);
     expect(spies.prompt).not.toHaveBeenCalled();
 
-    await message.middle!();
+    await message.middle!(0);
     expect(spies.prompt).toHaveBeenCalledWith(data.expected.promptContent);
   });
 
@@ -299,7 +307,7 @@ describe('lorebooks processer / 默认构造器的注入', () => {
       structuredClone(data.history),
     ]);
     await message.before!(0);
-    await message.middle!();
+    await message.middle!(0);
 
     expect(spies.assist).toHaveBeenCalledTimes(1);
     expect(spies.assist).toHaveBeenCalledWith(
@@ -317,7 +325,7 @@ describe('lorebooks processer / 默认构造器的注入', () => {
     ]);
 
     await message.before!(0);
-    await message.middle!();
+    await message.middle!(0);
 
     expect(spies.assist).toHaveBeenCalledTimes(1);
     expect(spies.assist).toHaveBeenCalledWith(data.expected.assistJoined, null);

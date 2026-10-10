@@ -72,7 +72,13 @@ describe('presets client factory / fetch', () => {
     const store = createPresetEntryState('macros', data.defaultData);
     mocks.get.mockResolvedValue(data.emptyResponse);
 
-    await store.getState().refresh({
+    // refresh 运行时会转发给 fetch，search 在这里是「按旧值求新值」的函数，
+    // 但 PagedItemsState.refresh 的签名只声明了分页字段，这里按真实行为收窄
+    await (
+      store.getState().refresh as (options: {
+        search: (search: any) => any;
+      }) => Promise<void>
+    )({
       search: () => data.overrideSearch,
     });
 

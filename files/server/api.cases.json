@@ -1,0 +1,56 @@
+{
+  "createdId": "0193f0a0-4444-7000-8000-000000000001",
+  "uploads": {
+    "withArgs": {
+      "name": "a.txt",
+      "type": "text/plain; charset=UTF-8",
+      "bytes": [104, 105],
+      "mime": {
+        "type": "text/plain",
+        "args": "charset=UTF-8"
+      }
+    },
+    "noArgs": {
+      "name": "a.png",
+      "type": "image/png",
+      "bytes": [137, 80, 78, 71],
+      "mime": {
+        "type": "image/png",
+        "args": null
+      }
+    },
+    "multiArgs": {
+      "name": "b.bin",
+      "type": "multipart/form-data; boundary=----x; charset=utf-8",
+      "bytes": [1, 2],
+      "mime": {
+        "type": "multipart/form-data",
+        "args": "boundary=----x; charset=utf-8"
+      }
+    }
+  },
+  "file": {
+    "id": "0193f0a0-4444-7000-8000-000000000002",
+    "hash": "0f4636c78f65d3639ece5a064b5ae753e3408614a14fb18ab4d7540d2c248543",
+    "type": "image/png",
+    "args": null
+  },
+  "fileBytes": [137, 80, 78, 71],
+  "listRequest": {
+    "skip": 20,
+    "size": 5,
+    "search": {
+      "type": "image/png"
+    }
+  },
+  "listResponse": {
+    "items": [
+      {
+        "id": "0193f0a0-4444-7000-8000-000000000002",
+        "type": "image/png",
+        "args": null
+      }
+    ],
+    "length": 1
+  }
+}

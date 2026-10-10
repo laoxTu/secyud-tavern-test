@@ -1,0 +1,77 @@
+{
+  "ids": {
+    "conn": "conn-1",
+    "abort": "conn-2",
+    "cancel": "conn-3",
+    "created": "conn-4",
+    "delAll": "conn-5",
+    "delPart": "conn-6",
+    "delEmpty": "conn-7",
+    "delMissing": "conn-8",
+    "unknown": "conn-9",
+    "addFresh": "conn-10",
+    "addMerge": "conn-11"
+  },
+  "message": {
+    "type": "toast",
+    "data": {
+      "type": "success",
+      "message": "error.task.done",
+      "data": { "name": "codex" }
+    },
+    "target": "client-1"
+  },
+  "secondMessage": {
+    "type": "toast",
+    "data": { "type": "info", "message": "info.ready" },
+    "target": "client-2"
+  },
+  "set": {
+    "action": "set",
+    "type": "task_progress",
+    "status": "part",
+    "targets": ["task-1", "task-2"]
+  },
+  "addFresh": {
+    "action": "add",
+    "type": "task_progress",
+    "status": "part",
+    "targets": ["task-1"]
+  },
+  "addMerge": {
+    "action": "add",
+    "type": "task_progress",
+    "status": "part",
+    "targets": ["task-1", "task-2"]
+  },
+  "delPart": {
+    "action": "del",
+    "type": "task_progress",
+    "status": "part",
+    "targets": ["task-1"]
+  },
+  "delBoth": {
+    "action": "del",
+    "type": "task_progress",
+    "status": "part",
+    "targets": ["task-1", "task-2"]
+  },
+  "delAll": {
+    "action": "del",
+    "type": "task_progress",
+    "status": "all",
+    "targets": []
+  },
+  "delMissing": {
+    "action": "del",
+    "type": "task_missing",
+    "status": "part",
+    "targets": ["task-1"]
+  },
+  "unknownAction": {
+    "action": "nope",
+    "type": "task_progress",
+    "status": "all",
+    "targets": []
+  }
+}

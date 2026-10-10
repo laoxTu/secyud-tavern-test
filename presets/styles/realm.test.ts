@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { Preset } from '@/presets';
+import type { Style } from '@/presets/styles';
 import { styles } from '@/presets/styles/client';
 import { Realm } from '@/stories';
 import { realms } from '@/stories/client/realms';
@@ -118,7 +119,7 @@ describe('style_realm / 过滤、排序与去重', () => {
     const realm = await createRealm(data.ordered);
     const cache = await styles.renderer.init({ realm });
 
-    expect(cache.entries.map((u) => u.code)).toEqual([
+    expect(cache.entries.map((u: Style) => u.code)).toEqual([
       'first',
       'middle',
       'later',

@@ -1,0 +1,20 @@
+{
+  "name": "sub_agent",
+  "entry": {
+    "disabled": false,
+    "type": "agent",
+    "config": {
+      "code": "sub_agent",
+      "description": "子代理说明",
+      "schema": "{\"type\":\"object\",\"title\":\"子代理\"}",
+      "maxLength": 3,
+      "disablePreset": false,
+      "disableTags": [],
+      "model": { "name": "模型A", "value": "model-a" },
+      "presets": [
+        { "name": "预设A-1.0", "value": "preset-a" },
+        { "name": "预设B-2.0", "value": "preset-b" }
+      ]
+    }
+  }
+}

@@ -225,7 +225,7 @@ describe('models openai server engine / 参数合并顺序', () => {
     const data = await loadData();
     data.model.properties.config.extras = data.extrasInvalid;
     // 去掉 input 里同名的 user，确保断言的是 extras 这一层
-    delete data.input.user;
+    delete (data.input as Record<string, any>).user;
     mocks.chatCreate.mockResolvedValue(data.chat.createResult);
 
     await engine.generate({
@@ -252,7 +252,7 @@ describe('models openai server engine / 缺少配置时的兜底', () => {
     const model = structuredClone(data.model);
     delete (model as any).properties;
     // 去掉 input 里同名的 model，避免 input 覆盖 options 干扰断言
-    delete data.input.model;
+    delete (data.input as Record<string, any>).model;
     mocks.chatCreate.mockResolvedValue(data.chat.createResult);
 
     await engine.generate({

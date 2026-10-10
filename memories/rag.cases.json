@@ -1,0 +1,31 @@
+{
+  "moduleInfo": {
+    "name": "rag",
+    "defaultEmbedder": { "type": "transformers", "config": {} }
+  },
+  "state": {
+    "limit": 5,
+    "similarity": 0.75,
+    "cacheLimit": 200000,
+    "disabled": false
+  },
+  "schema": {
+    "entryId": "number",
+    "title": "string",
+    "tags": "string[]",
+    "type": "string",
+    "importance": "number",
+    "sequence": "number"
+  },
+  "dimension": 3,
+  "otherDimension": 2,
+  "inputs": {
+    "first": "第一条记忆",
+    "second": "第二条记忆",
+    "third": "第三条记忆"
+  },
+  "vectors": {
+    "first": [1, 0, 0],
+    "second": [0.5, 0.5, 0]
+  }
+}

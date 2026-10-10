@@ -1,0 +1,76 @@
+{
+  "entries": {
+    "single": [
+      {
+        "name": "变量工具",
+        "type": "alpha",
+        "disabled": false,
+        "config": {}
+      }
+    ],
+    "two": [
+      {
+        "name": "变量工具",
+        "type": "alpha",
+        "disabled": false,
+        "config": {}
+      },
+      {
+        "name": "第二个工具",
+        "type": "beta",
+        "disabled": false,
+        "config": {}
+      }
+    ],
+    "disabled": [
+      {
+        "name": "变量工具",
+        "type": "alpha",
+        "disabled": true,
+        "config": {}
+      }
+    ],
+    "macro": [
+      {
+        "name": "变量工具",
+        "type": "alpha",
+        "macro": "gear",
+        "disabled": false,
+        "config": {}
+      }
+    ],
+    "noType": [
+      {
+        "name": "无类型工具",
+        "disabled": false,
+        "config": {}
+      }
+    ],
+    "unknownType": [
+      {
+        "name": "未注册类型",
+        "type": "missing",
+        "disabled": false,
+        "config": {}
+      }
+    ]
+  },
+  "tools": {
+    "alpha": [
+      {
+        "name": "get_variable",
+        "description": "get the value of the variable object by path"
+      }
+    ],
+    "beta": [
+      {
+        "name": "set_variable",
+        "description": "use JSON patch to set variable."
+      }
+    ]
+  },
+  "expected": {
+    "singleNames": ["get_variable"],
+    "twoNames": ["get_variable", "set_variable"]
+  }
+}

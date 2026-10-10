@@ -1,0 +1,122 @@
+{
+  "toolNames": ["get_memory", "set_memory"],
+  "query": "主角在酒馆遇到谁",
+  "queryEmbedding": [1, 0, 0],
+  "documents": [
+    {
+      "entryId": 1,
+      "title": "初遇",
+      "type": "event",
+      "tags": ["主角"],
+      "importance": 8,
+      "sequence": 100,
+      "embedding": [1, 0, 0]
+    },
+    {
+      "entryId": 2,
+      "title": "旧识",
+      "type": "relation",
+      "tags": ["同伴"],
+      "importance": 5,
+      "sequence": 120,
+      "embedding": [1, 0, 0]
+    },
+    {
+      "entryId": 3,
+      "title": "路人",
+      "type": "other",
+      "tags": ["hero", "路人"],
+      "importance": 5,
+      "sequence": 150,
+      "embedding": [0.6, 0.8, 0]
+    }
+  ],
+  "expectedTitles": ["初遇", "路人", "旧识"],
+  "expectedCodes": [[1, 3, 2]],
+  "minRelevance": {
+    "value": 0.9,
+    "titles": ["初遇", "旧识"],
+    "codes": [[1, 2]]
+  },
+  "limit": {
+    "value": 1,
+    "titles": ["初遇"],
+    "codes": [[1]]
+  },
+  "typeFilter": {
+    "value": ["relation"],
+    "titles": ["旧识"],
+    "codes": [[2]]
+  },
+  "tagFilter": {
+    "value": ["hero"],
+    "titles": ["路人"],
+    "codes": [[3]]
+  },
+  "history": {
+    "masterId": "realm",
+    "sequence": 0,
+    "summary": false,
+    "variables": {},
+    "prompts": [{ "content": "我去酒馆", "variables": [], "properties": {} }],
+    "output": 0,
+    "outputs": [
+      [
+        {
+          "content": "你遇到了同伴",
+          "thought": "",
+          "variables": [],
+          "properties": {}
+        }
+      ]
+    ]
+  },
+  "histories": [
+    {
+      "masterId": "realm",
+      "sequence": 0,
+      "summary": false,
+      "variables": {},
+      "prompts": [],
+      "output": 0,
+      "outputs": []
+    },
+    {
+      "masterId": "realm",
+      "sequence": 1,
+      "summary": false,
+      "variables": {},
+      "prompts": [],
+      "output": 0,
+      "outputs": []
+    },
+    {
+      "masterId": "realm",
+      "sequence": 2,
+      "summary": false,
+      "variables": {},
+      "prompts": [],
+      "output": 0,
+      "outputs": []
+    }
+  ],
+  "result": {
+    "notFound": "error: output not found",
+    "noRag": "warn: RAG is not enabled",
+    "success": "success"
+  },
+  "set": {
+    "args": {
+      "content": "新记忆内容",
+      "title": "新记忆",
+      "type": "knowledge",
+      "importance": 9,
+      "tags": ["新"]
+    },
+    "entryId": 7,
+    "defaults": {
+      "content": "默认值记忆",
+      "title": "默认记忆"
+    }
+  }
+}

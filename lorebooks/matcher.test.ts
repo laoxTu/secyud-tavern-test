@@ -58,7 +58,7 @@ describe('lorebooks matcher / content', () => {
     const { content } = await loadCases();
 
     for (const key of ['outputWithoutCallings', 'outputWithEmptyCallingResult']) {
-      const data = content[key];
+      const data = content[key as keyof typeof content];
       const properties = structuredClone(data.properties);
 
       expect(
@@ -184,7 +184,10 @@ describe('lorebooks matcher / variables', () => {
 describe('lorebooks matcher / analyze', () => {
   it('只收集匹配成功的条目，并按条目顺序返回', async () => {
     const { analyze } = await loadCases();
-    const items = analyze.items as Record<string, PresetItem<Lorebook>>;
+    const items = analyze.items as unknown as Record<
+      string,
+      PresetItem<Lorebook>
+    >;
     registerMatcher('yes', true);
     registerMatcher('no', false);
 
@@ -196,7 +199,10 @@ describe('lorebooks matcher / analyze', () => {
 
   it('匹配结果应当写到 message 的 lorebooks 属性上', async () => {
     const { analyze } = await loadCases();
-    const items = analyze.items as Record<string, PresetItem<Lorebook>>;
+    const items = analyze.items as unknown as Record<
+      string,
+      PresetItem<Lorebook>
+    >;
     registerMatcher('yes', true);
     registerMatcher('no', false);
     const message = { content: 'x', variables: [] };
@@ -208,7 +214,10 @@ describe('lorebooks matcher / analyze', () => {
 
   it('未注册的 match 类型应当被跳过而不是抛错', async () => {
     const { analyze } = await loadCases();
-    const items = analyze.items as Record<string, PresetItem<Lorebook>>;
+    const items = analyze.items as unknown as Record<
+      string,
+      PresetItem<Lorebook>
+    >;
     // 一个匹配器都不注册，所有条目都取不到 match 实现
     const active = await lorebooks.matchers.analyze(items, createContext());
 
@@ -218,7 +227,10 @@ describe('lorebooks matcher / analyze', () => {
 
   it('匹配器应当收到当前上下文与对应条目', async () => {
     const { analyze } = await loadCases();
-    const items = analyze.items as Record<string, PresetItem<Lorebook>>;
+    const items = analyze.items as unknown as Record<
+      string,
+      PresetItem<Lorebook>
+    >;
     const matcher = registerMatcher('yes', true);
     const context = createContext();
 

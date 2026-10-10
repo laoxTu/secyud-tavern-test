@@ -1,0 +1,34 @@
+{
+  "businessError": {
+    "code": "error.entity.duplicate_value",
+    "data": {
+      "entity": "preset",
+      "name": "code",
+      "value": "daily"
+    },
+    "innerMessage": "唯一索引冲突",
+    "message": "预设已存在",
+    "status": 409
+  },
+  "defaultError": {
+    "code": "default.entity_not_found",
+    "data": {
+      "id": "p1",
+      "target": "preset"
+    },
+    "message": "实体不存在"
+  },
+  "passthrough": {
+    "ok": true,
+    "source": "route"
+  },
+  "plainError": {
+    "message": "Unexpected failure"
+  },
+  "reason": "字符串原因",
+  "request": {
+    "readMethod": "GET",
+    "url": "http://localhost/api/presets",
+    "writeMethod": "POST"
+  }
+}

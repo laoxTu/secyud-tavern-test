@@ -1,0 +1,28 @@
+{
+  "storyId": "11111111-1111-7111-8111-111111111111",
+  "fileId": "55555555-5555-7555-8555-555555555555",
+  "uploads": {
+    "withArgs": {
+      "name": "封面",
+      "mime": "image/png; charset=binary",
+      "bytes": [1, 2, 3, 4],
+      "expected": { "type": "image/png", "args": "charset=binary" }
+    },
+    "noArgs": {
+      "name": "立绘",
+      "mime": "image/jpeg",
+      "bytes": [255, 216, 255],
+      "expected": { "type": "image/jpeg", "args": null }
+    },
+    "noMime": {
+      "name": "未知",
+      "bytes": [7, 8],
+      "expected": { "type": "", "args": null }
+    },
+    "noName": {
+      "mime": "image/png",
+      "bytes": [9],
+      "expected": { "type": "image/png", "args": null }
+    }
+  }
+}

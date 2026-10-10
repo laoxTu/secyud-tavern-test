@@ -123,7 +123,13 @@ describe('comfyui state / 工作流列表', () => {
     const data = await loadCases();
     mocks.get.mockResolvedValue(data.workflowsResponse);
 
-    await useComfyUIWorkflowState.getState().refresh({
+    // refresh 运行时会转发给 fetch，search 是「按旧值求新值」的函数；
+    // PagedItemsState.refresh 的签名只声明了分页字段，这里按真实行为收窄
+    await (
+      useComfyUIWorkflowState.getState().refresh as (options: {
+        search: (search: any) => any;
+      }) => Promise<void>
+    )({
       search: () => ({ fuzzy: '工作流' }),
     });
 

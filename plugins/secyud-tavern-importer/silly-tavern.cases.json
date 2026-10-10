@@ -1,0 +1,213 @@
+{
+  "card": {
+    "spec": "chara_card_v2",
+    "spec_version": "2.0",
+    "data": {
+      "name": "测试角色",
+      "description": "角色描述 {{char}}",
+      "personality": "性格摘要",
+      "scenario": "情景",
+      "first_mes": "默认开场白",
+      "mes_example": "<START>\n示例对话",
+      "creator_notes": "创作者备注",
+      "system_prompt": "系统提示词",
+      "post_history_instructions": "后置指令",
+      "tags": ["标签一", "标签二"],
+      "creator": "作者甲",
+      "character_version": "1.2.3",
+      "alternate_greetings": ["备用开场白一", "备用开场白二"],
+      "extensions": {
+        "talkativeness": "0.5",
+        "fav": false,
+        "world": "",
+        "depth_prompt": {
+          "prompt": "",
+          "depth": 4,
+          "role": "system"
+        },
+        "regex_scripts": [
+          {
+            "scriptName": "双端脚本",
+            "findRegex": "/a/g",
+            "replaceString": "b",
+            "disabled": false,
+            "promptOnly": true,
+            "markdownOnly": true
+          },
+          {
+            "scriptName": "仅显示脚本",
+            "findRegex": "/c/g",
+            "replaceString": "d",
+            "disabled": false,
+            "markdownOnly": true
+          },
+          {
+            "scriptName": "仅提示词脚本",
+            "findRegex": "/e/g",
+            "replaceString": "f",
+            "disabled": true,
+            "promptOnly": true
+          },
+          {
+            "scriptName": "默认脚本",
+            "findRegex": "/g/g",
+            "replaceString": "h"
+          }
+        ]
+      },
+      "character_book": {
+        "name": "内嵌世界书",
+        "entries": [
+          {
+            "id": 7,
+            "keys": [],
+            "secondary_keys": [],
+            "comment": "常驻深插",
+            "content": "常驻内容",
+            "constant": true,
+            "enabled": true,
+            "position": "after_char",
+            "extensions": {
+              "position": 4,
+              "depth": 2,
+              "delay": 2,
+              "role": 0
+            }
+          },
+          {
+            "id": 2,
+            "keys": ["key-a", "key-b"],
+            "secondary_keys": ["secondary-1"],
+            "comment": "关键词条目",
+            "content": "关键词内容 {{char}}",
+            "constant": false,
+            "enabled": false,
+            "position": "before_char",
+            "extensions": {
+              "role": 1
+            }
+          },
+          {
+            "id": 5,
+            "keys": [],
+            "secondary_keys": ["secondary-only"],
+            "comment": "仅次要关键词",
+            "content": "次要关键词内容",
+            "constant": false,
+            "enabled": true
+          },
+          {
+            "id": 9
+          },
+          {
+            "id": 11,
+            "comment": "常量非深插",
+            "content": "常量非深插内容",
+            "constant": true,
+            "enabled": true,
+            "extensions": {
+              "position": 1
+            }
+          }
+        ]
+      }
+    }
+  },
+  "minimalCard": {
+    "spec": "chara_card_v2",
+    "spec_version": "2.0",
+    "data": {
+      "name": "极简角色"
+    }
+  },
+  "macroCard": {
+    "spec": "chara_card_v2",
+    "spec_version": "2.0",
+    "data": {
+      "name": "宏角色",
+      "description": "A {{char}} B {{getvar::hp}} C {{$gold}} D {{.local}} E {{custom_key}}",
+      "first_mes": "{{user}}",
+      "system_prompt": "{{getglobalvar::world}}",
+      "character_book": {
+        "name": "宏世界书",
+        "entries": [
+          {
+            "id": 1,
+            "comment": "宏条目",
+            "content": "{{char}} 与 {{$gold}}",
+            "enabled": true
+          }
+        ]
+      }
+    }
+  },
+  "macroText": {
+    "description": "A <%~ it.char %> B <%~ it.hp %> C <%~ it.gold %> D <%~ it.local %> E <%~ it.custom_key %>",
+    "firstMes": "<%~ it.user %>",
+    "systemPrompt": "<%~ it.world %>",
+    "lorebook": "<%~ it.char %> 与 <%~ it.gold %>",
+    "cardDescription": "角色描述 <%~ it.char %>",
+    "cardKeywordContent": "关键词内容 <%~ it.char %>"
+  },
+  "openaiPreset": {
+    "name": "酒馆预设",
+    "temperature": 0.8,
+    "prompts": [
+      {
+        "identifier": "main",
+        "name": "主提示词",
+        "role": "system",
+        "content": "主内容 {{char}}",
+        "injection_position": 0,
+        "injection_depth": 4,
+        "enabled": true
+      },
+      {
+        "identifier": "absolute",
+        "name": "绝对注入",
+        "role": "user",
+        "content": "绝对内容",
+        "injection_position": 1,
+        "injection_depth": 5
+      },
+      {
+        "identifier": "disabled",
+        "name": "禁用条目",
+        "role": "assistant",
+        "content": "禁用内容",
+        "injection_position": 1,
+        "injection_depth": 0,
+        "enabled": false
+      },
+      {
+        "identifier": "bare",
+        "name": "缺字段条目",
+        "role": "assistant",
+        "content": ""
+      },
+      {
+        "identifier": "duplicate",
+        "name": "重复一",
+        "role": "system",
+        "content": "重复内容一",
+        "enabled": true
+      },
+      {
+        "identifier": "duplicate",
+        "name": "重复二",
+        "role": "system",
+        "content": "重复内容二",
+        "enabled": true
+      }
+    ],
+    "prompt_order": [
+      {
+        "character_id": 100001,
+        "order": [
+          { "identifier": "main", "enabled": true },
+          { "identifier": "absolute", "enabled": false }
+        ]
+      }
+    ]
+  }
+}

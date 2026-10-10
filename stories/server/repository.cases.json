@@ -1,0 +1,100 @@
+{
+  "create": {
+    "invalidId": "story-1",
+    "noName": {
+      "id": "11111111-1111-7111-8111-111111111111",
+      "presets": []
+    },
+    "blankName": {
+      "id": "11111111-1111-7111-8111-111111111111",
+      "name": "   ",
+      "presets": []
+    }
+  },
+  "update": {
+    "blankName": { "name": "   " },
+    "withId": {
+      "id": "99999999-9999-7999-8999-999999999999",
+      "name": "改名后的故事"
+    }
+  },
+  "list": {
+    "mapKeys": ["id", "name"]
+  },
+  "requests": {
+    "paged": { "skip": 10, "size": 5, "search": { "fuzzy": null } },
+    "fuzzy": { "skip": 0, "size": 20, "search": { "fuzzy": "测试" } }
+  },
+  "realm": {
+    "historyCount": 3,
+    "setting": {
+      "id": "model_setting",
+      "data": {
+        "model": {
+          "name": "设置里的模型",
+          "value": "22222222-2222-7222-8222-222222222222"
+        }
+      }
+    },
+    "model": { "id": "22222222-2222-7222-8222-222222222222", "name": "默认模型" },
+    "presets": [{ "id": "preset-a", "name": "默认预设" }]
+  },
+  "history": {
+    "index": 2,
+    "maxSequence": 4,
+    "row": {
+      "masterId": "11111111-1111-7111-8111-111111111111",
+      "sequence": 2,
+      "summary": false,
+      "variables": {},
+      "prompts": [],
+      "output": -1,
+      "outputs": []
+    },
+    "newHistory": {
+      "summary": true,
+      "variables": { "hp": 1 },
+      "prompts": [],
+      "output": -1,
+      "outputs": []
+    }
+  },
+  "entry": {
+    "entryType": "image",
+    "entryId": 4,
+    "maxEntryId": 4,
+    "nextEntryId": 5,
+    "firstEntryId": 1,
+    "length": 2,
+    "mapKeys": ["data", "name", "entryType", "entryId", "masterId"],
+    "request": {
+      "skip": 1,
+      "size": 4,
+      "search": { "entryType": "image", "filter": "头像" }
+    },
+    "requestTypeOnly": { "search": { "entryType": "image" } },
+    "rows": [
+      {
+        "data": { "image": "f1" },
+        "name": "定妆",
+        "masterId": "11111111-1111-7111-8111-111111111111",
+        "entryType": "image",
+        "entryId": 1
+      },
+      {
+        "data": { "image": "f2" },
+        "name": "头像",
+        "masterId": "11111111-1111-7111-8111-111111111111",
+        "entryType": "image",
+        "entryId": 2
+      }
+    ],
+    "newEntry": { "data": { "image": "f3" }, "name": "新头像" },
+    "batch": [
+      { "data": { "image": "f4" }, "name": "批量一" },
+      { "data": { "image": "f5" }, "name": "批量二" }
+    ],
+    "patch": { "data": { "image": "f6" }, "name": "改过的条目" },
+    "types": ["image", "note"]
+  }
+}

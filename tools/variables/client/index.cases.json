@@ -1,0 +1,131 @@
+{
+  "toolNames": ["get_variable", "set_variable", "del_variable"],
+  "get": {
+    "required": ["path"],
+    "additionalProperties": false,
+    "pathType": "string"
+  },
+  "set": {
+    "required": ["path", "value"],
+    "valueTypes": ["object", "string", "number", "boolean"]
+  },
+  "del": {
+    "required": ["path"]
+  },
+  "paths": {
+    "hp": "/player/hp",
+    "name": "/player/name",
+    "missing": "/player/mp"
+  },
+  "patches": {
+    "set": {
+      "path": "/player/hp",
+      "value": 5
+    },
+    "del": {
+      "path": "/player/name"
+    }
+  },
+  "histories": {
+    "plain": {
+      "masterId": "00000000-0000-0000-0000-000000000000",
+      "sequence": 0,
+      "summary": false,
+      "variables": {
+        "player": {
+          "hp": 10,
+          "name": "hero"
+        }
+      },
+      "prompts": [],
+      "output": 0,
+      "outputs": []
+    },
+    "withPromptPatch": {
+      "masterId": "00000000-0000-0000-0000-000000000000",
+      "sequence": 1,
+      "summary": false,
+      "variables": {
+        "player": {
+          "hp": 10,
+          "name": "hero"
+        }
+      },
+      "prompts": [
+        {
+          "content": "改名",
+          "variables": [
+            {
+              "op": "replace",
+              "path": "/player/name",
+              "value": "villain"
+            }
+          ]
+        }
+      ],
+      "output": 0,
+      "outputs": []
+    },
+    "withOutputPatch": {
+      "masterId": "00000000-0000-0000-0000-000000000000",
+      "sequence": 2,
+      "summary": false,
+      "variables": {
+        "player": {
+          "hp": 10,
+          "name": "hero"
+        }
+      },
+      "prompts": [],
+      "output": 0,
+      "outputs": [
+        [
+          {
+            "content": "扣血",
+            "thought": "",
+            "properties": {},
+            "variables": [
+              {
+                "op": "replace",
+                "path": "/player/hp",
+                "value": 5
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    "pendingOutput": {
+      "masterId": "00000000-0000-0000-0000-000000000000",
+      "sequence": 3,
+      "summary": false,
+      "variables": {
+        "player": {
+          "hp": 10,
+          "name": "hero"
+        }
+      },
+      "prompts": [],
+      "output": 0,
+      "outputs": [
+        [
+          {
+            "content": "",
+            "thought": "",
+            "properties": {},
+            "variables": []
+          }
+        ]
+      ]
+    }
+  },
+  "expected": {
+    "hp": "10",
+    "patchedHp": "5",
+    "patchedName": "\"villain\"",
+    "notExists": "result: not exists",
+    "success": "success",
+    "valueRequired": "error: value is not provided.",
+    "pathRequired": "error: op or path is not provided."
+  }
+}

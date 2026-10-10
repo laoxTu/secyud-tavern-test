@@ -1,7 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { Model } from '@/models';
-import { engines } from '@/models/server/engine';
+import {
+  ModelGenerateContext,
+  ModelEngine,
+  engines,
+} from '@/models/server/engine';
 import { hasher } from '@/utils/server';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
@@ -10,15 +14,19 @@ async function loadCases() {
 }
 
 async function loadModel(): Promise<Model> {
-  return structuredClone((await import('../model.json')).default) as Model;
+  return structuredClone(
+    (await import('../model.json')).default,
+  ) as unknown as Model;
 }
 
 function registerEngine(id = 'fake') {
   const engine = {
     id,
-    generate: vi.fn(async () => ({ kind: 'response' })),
+    generate: vi.fn<(context: ModelGenerateContext) => Promise<any>>(
+      async () => ({ kind: 'response' }),
+    ),
   };
-  engines.registry.register(engine);
+  engines.registry.register(engine as unknown as ModelEngine);
   return engine;
 }
 

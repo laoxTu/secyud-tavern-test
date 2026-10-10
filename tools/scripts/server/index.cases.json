@@ -1,0 +1,33 @@
+{
+  "name": "demo",
+  "entry": {
+    "id": "e-1",
+    "type": "script",
+    "config": {
+      "code": "my_code",
+      "description": "说明文本",
+      "schema": "{\"type\":\"object\"}",
+      "script": "return input;",
+      "enableDoc": true,
+      "enableVariable": false
+    }
+  },
+  "keptKeys": ["code", "enableDoc", "enableVariable"],
+  "archiveParts": [
+    { "key": "description", "file": ".desc.txt", "fuzzy": ".desc." },
+    { "key": "schema", "file": ".schema.json", "fuzzy": ".schema." },
+    { "key": "script", "file": ".script.js", "fuzzy": ".script." }
+  ],
+  "emptyEntry": {
+    "id": "e-2",
+    "type": "script",
+    "config": {
+      "code": "empty_code",
+      "description": "",
+      "schema": "",
+      "script": "",
+      "enableVariable": true
+    }
+  },
+  "emptyKeptKeys": ["code", "enableVariable"]
+}

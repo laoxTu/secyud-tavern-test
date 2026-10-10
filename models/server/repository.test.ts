@@ -80,7 +80,9 @@ async function loadCases() {
 }
 
 async function loadModel(): Promise<Model> {
-  return structuredClone((await import('../model.json')).default) as Model;
+  return structuredClone(
+    (await import('../model.json')).default,
+  ) as unknown as Model;
 }
 
 const cacheKey = (id: string) => `model_${id}`;

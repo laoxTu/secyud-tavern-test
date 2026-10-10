@@ -1,0 +1,70 @@
+{
+  "masterTable": "presets",
+  "entryTable": "macro_entries",
+  "masterId": "master-1",
+  "entryType": "macros",
+  "entryId": 3,
+  "maxEntryId": 5,
+  "nextEntryId": 6,
+  "firstEntryId": 1,
+  "columns": {
+    "json": {
+      "name": "payload",
+      "dataType": "json",
+      "columnType": "SQLiteTextJson"
+    },
+    "boolean": {
+      "name": "flag",
+      "dataType": "boolean",
+      "columnType": "SQLiteBoolean"
+    },
+    "foreignKey": {
+      "name": "master_id",
+      "dataType": "string",
+      "columnType": "SQLiteText",
+      "onDelete": "cascade",
+      "onUpdate": "cascade"
+    }
+  },
+  "entryColumns": [
+    { "name": "master_id", "notNull": true },
+    { "name": "entry_type", "notNull": true },
+    { "name": "entry_id", "dataType": "number", "notNull": true },
+    { "name": "name", "notNull": true, "default": "" },
+    { "name": "filter", "notNull": true, "default": "" },
+    { "name": "sorter", "notNull": true, "default": "" }
+  ],
+  "pkColumns": ["master_id", "entry_type", "entry_id"],
+  "indexes": [
+    { "suffix": "_filter_idx", "column": "filter" },
+    { "suffix": "_sorter_idx", "column": "sorter" }
+  ],
+  "entries": [
+    { "name": "宏一", "data": { "code": "a" } },
+    { "name": "宏二", "data": { "code": "b" } }
+  ],
+  "entry": { "name": "宏一", "data": { "code": "a" } },
+  "patch": { "name": "宏三" },
+  "request": {
+    "skip": 10,
+    "size": 5,
+    "search": { "entryType": "macros", "filter": "宏" }
+  },
+  "requestNoFilter": { "search": {} },
+  "requestSizeOnly": { "size": 3, "search": {} },
+  "rows": [
+    {
+      "name": "宏一",
+      "filter": "macros:宏一",
+      "entryType": "macros",
+      "entryId": 1,
+      "masterId": "master-1"
+    }
+  ],
+  "length": 12,
+  "types": ["macros", "styles"],
+  "storages": [
+    { "id": "first", "sequence": 1 },
+    { "id": "second", "sequence": 2 }
+  ]
+}

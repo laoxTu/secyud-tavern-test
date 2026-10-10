@@ -1,0 +1,81 @@
+{
+  "name": "file",
+  "ids": {
+    "v7": "0193f0a0-1111-7000-8000-000000000001",
+    "uppercase": "0193F0A0-1111-7000-8000-000000000001",
+    "withoutDash": "0193f0a0111170008000000000000001",
+    "plain": "not-a-uuid"
+  },
+  "urls": {
+    "https": "https://cdn.example.com/images/a.png?size=2",
+    "protocolRelative": "//cdn.example.com/a.png",
+    "rootRelative": "/data/a.png",
+    "data": "data:image/png;base64,iVBORw0KGgo=",
+    "file": "file:///D:/tmp/a.txt",
+    "plain": "plain text"
+  },
+  "mime": [
+    {
+      "title": "无参数的 mime 应当没有 args",
+      "input": "image/png",
+      "type": "image/png",
+      "args": null,
+      "serialized": "image/png"
+    },
+    {
+      "title": "标准写法应当拆出 args",
+      "input": "text/plain; charset=UTF-8",
+      "type": "text/plain",
+      "args": "charset=UTF-8",
+      "serialized": "text/plain; charset=UTF-8"
+    },
+    {
+      "title": "分号后缺空格也应当拆出 args",
+      "input": "text/plain;charset=UTF-8",
+      "type": "text/plain",
+      "args": "charset=UTF-8",
+      "serialized": "text/plain; charset=UTF-8"
+    },
+    {
+      "title": "首尾空白应当被裁掉",
+      "input": "  text/plain  ;   charset=UTF-8   ",
+      "type": "text/plain",
+      "args": "charset=UTF-8",
+      "serialized": "text/plain; charset=UTF-8"
+    },
+    {
+      "title": "多个 args 应当用分号加空格拼回去",
+      "input": "multipart/form-data;boundary=----abc;charset=utf-8",
+      "type": "multipart/form-data",
+      "args": "boundary=----abc; charset=utf-8",
+      "serialized": "multipart/form-data; boundary=----abc; charset=utf-8"
+    },
+    {
+      "title": "空段应当被过滤掉",
+      "input": "text/plain;;",
+      "type": "text/plain",
+      "args": null,
+      "serialized": "text/plain"
+    },
+    {
+      "title": "只有空白字符时等价于空 mime",
+      "input": "   ",
+      "type": "",
+      "args": null,
+      "serialized": ""
+    },
+    {
+      "title": "大小写应当原样保留，不做归一化",
+      "input": "IMAGE/PNG",
+      "type": "IMAGE/PNG",
+      "args": null,
+      "serialized": "IMAGE/PNG"
+    }
+  ],
+  "emptyMime": {
+    "input": "",
+    "type": "",
+    "args": null,
+    "serialized": ""
+  }
+}

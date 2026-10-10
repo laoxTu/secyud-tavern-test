@@ -185,7 +185,7 @@ describe('comfyui select 配置器', () => {
         param,
       );
 
-      expect(param.config.items).toHaveLength(item.fields.item.length);
+      expect(param.config.items).toHaveLength(item.fields.item!.length);
       expect(param.config.items).toEqual(item.expected.items);
     });
   });
@@ -569,7 +569,7 @@ describe('comfyui select 配置器', () => {
       // inputs 整体被替换，旧的 lora_3 不再存在
       expect(input['20'].inputs['lora_3']).toBeUndefined();
       expect(Object.keys(input['20'].inputs).filter((u) => u.startsWith('lora')))
-        .toHaveLength(item.args.paint.length);
+        .toHaveLength(item.args.paint!.length);
     });
 
     it('节点不存在时应当原样返回', async () => {

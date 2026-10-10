@@ -1,0 +1,19 @@
+{
+  "progress": {
+    "type": "task_progress",
+    "payload": { "target": "task-1", "progress": 42 }
+  },
+  "mismatchType": "other_type",
+  "invalidPayload": "not-json",
+  "emptyPayload": "",
+  "toast": {
+    "type": "success",
+    "message": "error.task.done",
+    "data": { "name": "codex" },
+    "target": "client-1"
+  },
+  "unknownToast": {
+    "type": "definitely_unknown",
+    "message": "error.unknown"
+  }
+}

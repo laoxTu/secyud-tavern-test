@@ -148,7 +148,10 @@ describe('lorebooks server storage / saveArchive', () => {
 
   it('content 缺失时应当还原出空内容', async () => {
     const data = await loadData();
-    const entry: Lorebook = { ...structuredClone(data.plain), content: undefined };
+    const entry: Lorebook = {
+      ...structuredClone(data.plain),
+      content: undefined,
+    } as unknown as Lorebook;
     const context = await createContext([entry]);
     await storage.loadArchive(context);
 

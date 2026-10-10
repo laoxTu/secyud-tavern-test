@@ -1,0 +1,17 @@
+{
+  "realm": {
+    "id": "22222222-2222-4222-8222-222222222222",
+    "name": "realm-a",
+    "context": {},
+    "histories": []
+  },
+  "history": {
+    "masterId": "22222222-2222-4222-8222-222222222222",
+    "sequence": 1,
+    "summary": false,
+    "output": 0,
+    "variables": {},
+    "prompts": [],
+    "outputs": []
+  }
+}

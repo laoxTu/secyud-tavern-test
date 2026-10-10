@@ -1,0 +1,28 @@
+{
+  "modelId": "model-1",
+  "key": "color",
+  "initValue": { "code": "a", "value": 1 },
+  "existingValue": { "code": "b" },
+  "falsyValue": 0,
+  "plural": "macros",
+  "emptyPlural": "styles",
+  "otherPlural": "others",
+  "macros": [
+    { "name": "宏一", "value": "1" },
+    { "name": "宏二", "value": "2" },
+    { "name": "宏三", "value": "3" }
+  ],
+  "models": [
+    { "id": "model-1", "macros": [{ "name": "宏一" }, { "name": "宏二" }] },
+    { "id": "model-2", "macros": [{ "name": "宏三" }] },
+    { "id": "model-3", "macros": [] }
+  ],
+  "data": {
+    "items": [
+      { "id": "a1", "name": "甲" },
+      { "id": "b2", "name": "乙" }
+    ],
+    "length": 12
+  },
+  "empty": { "items": [], "length": 0 }
+}

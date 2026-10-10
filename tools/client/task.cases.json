@@ -1,0 +1,46 @@
+{
+  "toolName": "set_variable",
+  "toolCalls": {
+    "set": {
+      "index": 0,
+      "id": "call_1",
+      "name": "set_variable",
+      "arguments": "{\"path\":\"/player/hp\",\"value\":10}"
+    },
+    "get": {
+      "index": 1,
+      "id": "call_2",
+      "name": "get_variable",
+      "arguments": "{\"path\":\"/player/hp\"}"
+    },
+    "finished": {
+      "index": 0,
+      "id": "call_3",
+      "name": "set_variable",
+      "arguments": "{\"path\":\"/player/hp\",\"value\":1}",
+      "result": "already"
+    },
+    "unknown": {
+      "index": 0,
+      "id": "call_4",
+      "name": "not_registered",
+      "arguments": "{}"
+    },
+    "invalidJson": {
+      "index": 0,
+      "id": "call_5",
+      "name": "set_variable",
+      "arguments": "{\"path\": "
+    }
+  },
+  "toolNames": ["set_variable", "get_variable"],
+  "result": {
+    "success": "ok",
+    "unknown": "",
+    "finished": "already"
+  },
+  "error": {
+    "thrown": "boom",
+    "unknown": "error: unknown error"
+  }
+}

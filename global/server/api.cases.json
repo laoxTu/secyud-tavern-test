@@ -1,0 +1,18 @@
+{
+  "proxy": {
+    "url": "https://example.com/api/items",
+    "method": "POST",
+    "body": "{\"a\":1}",
+    "headers": { "Content-Type": "application/json", "X-Token": "t-1" },
+    "responseBody": "{\"ok\":true}",
+    "responseStatus": 201,
+    "responseStatusText": "Created",
+    "responseHeaders": { "X-From-Target": "yes" }
+  },
+  "noUrl": { "method": "GET" },
+  "settings": {
+    "id": "appearance",
+    "data": { "theme": "dark", "fontSize": 14 },
+    "updateData": { "theme": "light" }
+  }
+}

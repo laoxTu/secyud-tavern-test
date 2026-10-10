@@ -1,0 +1,18 @@
+{
+  "items": [
+    {
+      "question": "你叫什么名字？",
+      "examples": ["小明", "小红"],
+      "custom": true
+    },
+    {
+      "question": "去哪里？",
+      "examples": ["东", "西", "南"],
+      "custom": false
+    },
+    {
+      "question": "自由回答",
+      "examples": []
+    }
+  ]
+}

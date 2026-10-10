@@ -1,0 +1,82 @@
+{
+  "task": {
+    "id": "11111111-1111-7111-8111-111111111111",
+    "name": "task.import",
+    "args": { "provider": "task_provider.one", "value": 1 },
+    "attempt": 0,
+    "queue": 1704067200000,
+    "status": "pending",
+    "properties": {}
+  },
+  "create": {
+    "noName": {
+      "id": "22222222-2222-7222-8222-222222222222",
+      "args": { "provider": "task_provider.one" }
+    },
+    "blankName": {
+      "id": "33333333-3333-7333-8333-333333333333",
+      "name": "   ",
+      "args": { "provider": "task_provider.one" }
+    },
+    "withoutId": {
+      "name": "task.plain",
+      "args": { "provider": "task_provider.two", "value": 2 }
+    },
+    "withId": {
+      "id": "44444444-4444-7444-8444-444444444444",
+      "name": "task.with-id",
+      "args": { "provider": "task_provider.two" },
+      "attempt": 2,
+      "status": "failed"
+    }
+  },
+  "update": {
+    "withId": {
+      "id": "55555555-5555-7555-8555-555555555555",
+      "name": "task.renamed",
+      "status": "completed",
+      "result": "success"
+    },
+    "blankName": {
+      "name": "  ",
+      "status": "completed"
+    }
+  },
+  "requests": {
+    "paged": { "size": 7, "skip": 0 },
+    "fuzzy": { "size": 7, "skip": 0, "search": { "fuzzy": "import" } }
+  },
+  "list": {
+    "mapKeys": ["id", "name", "status"]
+  },
+  "history": {
+    "rows": [
+      {
+        "masterId": "11111111-1111-7111-8111-111111111111",
+        "attempt": 0,
+        "status": "failed",
+        "result": "first"
+      },
+      {
+        "masterId": "11111111-1111-7111-8111-111111111111",
+        "attempt": 1,
+        "status": "completed",
+        "result": "second"
+      }
+    ],
+    "row": {
+      "masterId": "11111111-1111-7111-8111-111111111111",
+      "attempt": 1,
+      "status": "completed",
+      "result": "second"
+    },
+    "entry": {
+      "attempt": 2,
+      "queue": 1704067200000,
+      "start": 1704067201000,
+      "finish": 1704067202000,
+      "status": "completed",
+      "result": "third"
+    }
+  }
+}

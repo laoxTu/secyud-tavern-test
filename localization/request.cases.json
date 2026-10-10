@@ -1,0 +1,18 @@
+{
+  "locales": {
+    "zh": {
+      "themeDark": "暗色",
+      "themeLight": "亮色"
+    },
+    "en": {
+      "themeDark": "Dark",
+      "themeLight": "Light"
+    }
+  },
+  "cookies": {
+    "zh": "zh",
+    "en": "en",
+    "unsupported": "xx",
+    "withRegion": "zh-CN"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "existing": { "id": "appearance", "data": { "theme": "dark", "fontSize": 14 } },
+  "created": { "id": "newcomer", "data": { "theme": "light" } },
+  "updatedData": { "theme": "light", "fontSize": 18 },
+  "nullData": null,
+  "emptyId": ""
+}

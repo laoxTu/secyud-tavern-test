@@ -1,0 +1,8 @@
+{
+  "dataDir": "data-fixture",
+  "url": "file:data-fixture/secyud-tavern.db",
+  "migrationsFolder": "scripts/migrations",
+  "messages": {
+    "migrated": "[database] database migrated successfully"
+  }
+}

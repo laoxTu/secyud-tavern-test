@@ -33,7 +33,9 @@ describe('lorebooks / sequence', () => {
     const { sequenceCases } = await loadCases();
 
     for (const item of sequenceCases) {
-      expect(lorebooks.sequence(item as Lorebook)).toBe(item.expected);
+      expect(lorebooks.sequence(item as unknown as Lorebook)).toBe(
+        item.expected,
+      );
     }
   });
 });

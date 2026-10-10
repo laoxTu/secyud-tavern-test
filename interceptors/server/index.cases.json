@@ -1,0 +1,62 @@
+{
+  "businessError": {
+    "code": "error.entity.duplicate_value",
+    "data": {
+      "entity": "preset",
+      "value": "daily"
+    },
+    "message": "预设已存在",
+    "status": 409
+  },
+  "interceptors": {
+    "dependent": {
+      "id": "dependent",
+      "requires": ["early"],
+      "sequence": 1
+    },
+    "early": {
+      "id": "early",
+      "sequence": 10
+    },
+    "late": {
+      "id": "late",
+      "sequence": 30
+    },
+    "middle": {
+      "id": "middle",
+      "sequence": 20
+    },
+    "shortCircuit": {
+      "id": "short-circuit",
+      "sequence": 5
+    }
+  },
+  "missing": {
+    "id": "orphan",
+    "requires": ["not-registered"]
+  },
+  "request": {
+    "body": {
+      "ok": true,
+      "source": "route"
+    },
+    "deserialized": {
+      "flag": true,
+      "keyword": "daily",
+      "limit": 10,
+      "tags": ["a", "b"]
+    },
+    "params": {
+      "id": "p1"
+    },
+    "query": {
+      "blank": "",
+      "flag": "true",
+      "keyword": "daily",
+      "limit": "10",
+      "spaces": "   ",
+      "tags": "[\"a\",\"b\"]"
+    },
+    "url": "http://localhost/api/presets"
+  }
+}

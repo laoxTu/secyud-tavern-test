@@ -21,7 +21,9 @@ import type { Model } from '@/models';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadModel() {
-  return structuredClone((await import('../model.json')).default) as Model;
+  return structuredClone(
+    (await import('../model.json')).default,
+  ) as unknown as Model;
 }
 
 beforeEach(() => {

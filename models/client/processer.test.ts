@@ -21,11 +21,14 @@ async function loadCases() {
 
 const registered: string[] = [];
 
-function registerProcesser<T>(id: string, extra: Record<string, any> = {}) {
+function registerProcesser<T, E extends Record<string, any>>(
+  id: string,
+  extra?: E,
+): { id: string; init: ReturnType<typeof vi.fn> } & E {
   const processer = { id, init: vi.fn(async () => ({ cache: id })), ...extra };
   models.processers.registry.register(processer as unknown as Processer);
   registered.push(id);
-  return processer;
+  return processer as { id: string; init: ReturnType<typeof vi.fn> } & E;
 }
 
 function registerEngine(
@@ -36,7 +39,7 @@ function registerEngine(
     id: 'fake',
     configComponent: (() => null) as any,
     configureObject: vi.fn(),
-    prompt: vi.fn(async () => ({
+    prompt: vi.fn(async (_ctx: any, _cache: any) => ({
       input: data.engineInput,
       summaries: [],
     })),
@@ -120,7 +123,9 @@ describe('models processer / output', () => {
     const histories = structuredClone(historical.histories) as RealmHistory[];
     const realm = await createRealm(histories);
     realm.context = { 'model.p1': { cache: 'p1' } };
-    const first = registerProcesser('p1', { output: vi.fn(async () => {}) });
+    const first = registerProcesser('p1', {
+      output: vi.fn(async (_ctx: any, _cache: any) => {}),
+    });
 
     await models.processers.output({ realm });
 
@@ -194,7 +199,9 @@ describe('models processer / prompt', () => {
       structuredClone(data.histories) as RealmHistory[],
     );
     realm.context = { 'model.p1': { cache: 'p1' } };
-    const first = registerProcesser('p1', { prompt: vi.fn(async () => {}) });
+    const first = registerProcesser('p1', {
+      prompt: vi.fn(async (_ctx: any, _cache: any) => {}),
+    });
     registerEngine(data);
 
     await models.processers.prompt({

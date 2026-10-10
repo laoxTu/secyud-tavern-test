@@ -1,0 +1,89 @@
+{
+  "moduleInfo": {
+    "name": "memory",
+    "plural": "memories"
+  },
+  "criteria": {
+    "entry": {
+      "data": {
+        "text": "主角在酒馆遇到同伴",
+        "sequence": 100,
+        "importance": 5,
+        "type": "event",
+        "tags": ["酒馆"]
+      },
+      "entryId": 1,
+      "entryType": "memory",
+      "masterId": "s",
+      "name": "初遇"
+    },
+    "sorter": "00010005初遇",
+    "filter": "初遇初遇"
+  },
+  "sortCases": [
+    { "sequence": 9, "importance": 1, "name": "a", "expected": "00000901a" },
+    { "sequence": 10, "importance": 10, "name": "b", "expected": "00001010b" },
+    { "sequence": 100, "importance": 5, "name": "c", "expected": "00010005c" }
+  ],
+  "duplicate": [
+    { "sequence": 100, "importance": 5, "name": "初遇" },
+    { "sequence": 200, "importance": 9, "name": "初遇" }
+  ],
+  "entries": [
+    {
+      "entryId": 1,
+      "name": "初遇",
+      "text": "主角在酒馆遇到同伴",
+      "sequence": 100,
+      "importance": 5,
+      "type": "event",
+      "tags": ["酒馆"]
+    },
+    {
+      "entryId": 2,
+      "name": "旧识",
+      "text": "同伴是旧识",
+      "sequence": 120,
+      "importance": 8,
+      "type": "relation",
+      "tags": []
+    }
+  ],
+  "stored": [
+    {
+      "data": {
+        "entryId": 1,
+        "text": "主角在酒馆遇到同伴",
+        "sequence": 100,
+        "importance": 5,
+        "type": "event",
+        "tags": ["酒馆"],
+        "name": "初遇"
+      },
+      "entryId": 1,
+      "entryType": "memory",
+      "masterId": "s",
+      "name": "初遇"
+    },
+    {
+      "data": {
+        "entryId": 2,
+        "text": "同伴是旧识",
+        "sequence": 120,
+        "importance": 8,
+        "type": "relation",
+        "tags": [],
+        "name": "旧识"
+      },
+      "entryId": 2,
+      "entryType": "memory",
+      "masterId": "s",
+      "name": "旧识"
+    }
+  ],
+  "model": {
+    "id": "s",
+    "name": "测试故事",
+    "entries": {}
+  }
+}

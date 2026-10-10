@@ -1,0 +1,30 @@
+{
+  "config": {
+    "dataDir": "data"
+  },
+  "runtimeExports": ["config", "forms"],
+  "formHelpers": ["bool", "file", "float", "int", "ints", "str", "strs"],
+  "fields": {
+    "str": "文本值",
+    "empty": "",
+    "int": "12",
+    "intPartial": "12abc",
+    "intInvalid": "abc",
+    "float": "1.5",
+    "floatPartial": "1.5x",
+    "floatInvalid": "x",
+    "zero": "0",
+    "false": "false",
+    "true": "true"
+  },
+  "multi": {
+    "strs": ["甲", "乙"],
+    "ints": ["1", "2x", "3"],
+    "intsInvalid": ["a", "b"]
+  },
+  "upload": {
+    "name": "note.txt",
+    "content": "hello",
+    "type": "text/plain"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "id": "entity-1",
+  "row": { "id": "entity-1", "name": "甲" },
+  "rows": [
+    { "id": "entity-2", "name": "乙" },
+    { "id": "entity-3", "name": "丙" }
+  ],
+  "length": 7,
+  "requests": {
+    "default": {},
+    "paged": { "skip": 5, "size": 10 },
+    "searched": { "skip": 2, "size": 3, "search": { "fuzzy": "甲" } }
+  },
+  "exists": {
+    "hit": [{ "exists": 1 }],
+    "miss": [],
+    "falsey": [{ "exists": 0 }]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "model": {
+    "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    "name": "主模型",
+    "stream": true,
+    "engine": "openai",
+    "builder": "layered",
+    "iterations": 20,
+    "key": "sk-origin",
+    "properties": {
+      "retry": { "max": 5, "interval": 2 },
+      "keep": "其它属性"
+    }
+  },
+  "noRetryModel": {
+    "id": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+    "name": "没有重试配置",
+    "stream": false,
+    "engine": "deepseek",
+    "builder": "default",
+    "iterations": 20,
+    "properties": {}
+  },
+  "noEngineModel": {
+    "id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+    "name": "还没选引擎",
+    "stream": false,
+    "builder": "default",
+    "iterations": 20
+  },
+  "engines": [{ "id": "openai" }, { "id": "deepseek" }],
+  "retryDefaults": { "max": 3, "interval": 5 },
+  "createDefaults": { "builder": "default", "stream": true, "iterations": 20 },
+  "createdName": "新建模型",
+  "created": { "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd" },
+  "clonedName": "克隆模型",
+  "cloned": { "id": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee" },
+  "edited": {
+    "name": "改名后的模型",
+    "builder": "default",
+    "iterations": 30,
+    "interval": 7,
+    "retryMax": 4,
+    "key": "sk-new",
+    "stream": false
+  },
+  "configured": { "engine": "openai", "configured": true }
+}

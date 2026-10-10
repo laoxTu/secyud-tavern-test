@@ -1,0 +1,83 @@
+{
+  "abort": {
+    "message": "The operation was aborted.",
+    "name": "AbortError",
+    "otherName": "TimeoutError"
+  },
+  "apiError": {
+    "code": "error.entity.duplicate_value",
+    "data": {
+      "entity": "preset",
+      "value": "daily"
+    },
+    "fallbackMessage": "请求失败",
+    "message": "预设已存在"
+  },
+  "handleResponse": {
+    "emptyErrorBody": {
+      "code": "error.unknown"
+    },
+    "errorBody": {
+      "code": "error.entity.duplicate_value",
+      "data": {
+        "entity": "preset"
+      },
+      "message": "预设已存在"
+    },
+    "errorStatus": 409,
+    "fallbackMessage": "Internal Server Error",
+    "htmlContentType": "text/html",
+    "jsonContentType": "application/json; charset=utf-8",
+    "okBody": {
+      "id": "p1",
+      "name": "daily"
+    },
+    "okStatus": 200,
+    "plainText": "hello"
+  },
+  "handler": {
+    "args": ["presets", 1],
+    "result": {
+      "id": "p1"
+    }
+  },
+  "http": {
+    "matched": [
+      {
+        "status": 400
+      },
+      {
+        "status": 500
+      },
+      {
+        "response": {
+          "status": 404
+        }
+      }
+    ],
+    "unmatched": [
+      {
+        "status": 200
+      },
+      {},
+      {
+        "status": "500"
+      }
+    ]
+  },
+  "network": {
+    "matched": [
+      "Failed to fetch",
+      "NetworkError when attempting to fetch resource.",
+      "Load failed",
+      "FETCH FAILED"
+    ],
+    "unmatched": ["其他失败", "timeout"]
+  },
+  "toast": {
+    "httpMessage": "Not Found",
+    "stringError": "保存失败",
+    "successMessage": "保存成功",
+    "unknownMessage": "未知错误"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "config": {
+    "maxResults": 2,
+    "timeout": 1,
+    "maxLength": 12
+  },
+  "defaultConfig": {
+    "maxResults": 3,
+    "timeout": 10000,
+    "maxLength": 8000
+  },
+  "readerConfig": {
+    "maxResults": 1,
+    "timeout": 1,
+    "maxLength": 1000
+  },
+  "urls": [
+    "https://example.test/a",
+    "https://example.test/b",
+    "https://example.test/c"
+  ],
+  "longUrl": "https://example.test/long",
+  "plain": {
+    "content": "hello plain",
+    "contentType": "text/plain"
+  },
+  "long": {
+    "content": "0123456789abcdefghij",
+    "contentType": "text/plain"
+  },
+  "html": {
+    "contentType": "text/html; charset=utf-8",
+    "content": "<!DOCTYPE html><html><head><title>抓取测试文章</title></head><body><nav><a href=\"/\">首页</a></nav><article><h1>抓取测试文章</h1><p>这是第一段正文，用来验证 Readability 能从 html 中提取出可读内容，而不是把整段标签原样返回给上层。</p><p>这是第二段正文，内容同样足够长，以便 Readability 判断它是一个正常的文章节点，而不是导航栏或者页脚。</p><p>这是第三段正文，包含了用于断言的标记句子：READABILITY_BODY_SENTENCE。</p></article><footer>版权信息</footer></body></html>",
+    "expectContain": "READABILITY_BODY_SENTENCE",
+    "expectExclude": ["<p>", "<article", "首页"]
+  },
+  "xml": {
+    "contentType": "application/xml",
+    "content": "<root><item>xml 内容</item></root>",
+    "expectContain": "xml 内容",
+    "expectExclude": ["<root", "<item"]
+  },
+  "configure": [
+    {
+      "name": "全部字段",
+      "fields": {
+        "max_result_count": "5",
+        "timeout": "20",
+        "max_length": "1234"
+      },
+      "expected": {
+        "maxResults": 5,
+        "timeout": 20,
+        "maxLength": 1234
+      }
+    },
+    {
+      "name": "表单缺字段",
+      "fields": {},
+      "expected": {
+        "maxResults": "__NaN__",
+        "timeout": "__NaN__",
+        "maxLength": "__NaN__"
+      }
+    },
+    {
+      "name": "非数字字段",
+      "fields": {
+        "max_result_count": "abc",
+        "timeout": "3.5",
+        "max_length": ""
+      },
+      "expected": {
+        "maxResults": "__NaN__",
+        "timeout": 3,
+        "maxLength": "__NaN__"
+      }
+    }
+  ],
+  "failures": [
+    {
+      "name": "普通错误",
+      "message": "boom"
+    },
+    {
+      "name": "非 2xx 抛出的 ApiError",
+      "message": "Internal Server Error",
+      "api": true
+    }
+  ],
+  "editor": {
+    "config": {
+      "maxResults": 5,
+      "timeout": 20,
+      "maxLength": 1234
+    },
+    "fields": [
+      { "name": "max_result_count", "value": "5" },
+      { "name": "timeout", "value": "20" },
+      { "name": "max_length", "value": "1234" }
+    ],
+    "defaultFields": [
+      { "name": "max_result_count", "value": "3" },
+      { "name": "timeout", "value": "10000" },
+      { "name": "max_length", "value": "8000" }
+    ]
+  }
+}

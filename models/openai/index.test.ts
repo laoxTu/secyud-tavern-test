@@ -34,8 +34,10 @@ describe('models openai / 描述信息', () => {
 
   it('default.options 的 max_output_tokens 应当是可选字段，默认不存在', async () => {
     const data = await loadData();
+    // fixture 里没有这个键，按索引访问才能断言「默认不存在」
+    const options = data.default.options as Record<string, unknown>;
 
-    expect(data.default.options.max_output_tokens).toBeUndefined();
+    expect(options.max_output_tokens).toBeUndefined();
     expect('max_output_tokens' in openais.default.options).toBe(false);
   });
 

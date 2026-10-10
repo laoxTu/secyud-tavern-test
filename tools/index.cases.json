@@ -1,0 +1,9 @@
+{
+  "name": "tool",
+  "plural": "tools",
+  "exports": ["tools"],
+  "default": {
+    "type": "variable",
+    "config": {}
+  }
+}

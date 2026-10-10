@@ -361,7 +361,7 @@ describe('models anthropic client / result 流式', () => {
     await feed(ctx, item.events);
 
     expect(ctx.output.content).toBe(item.expectedContent);
-    expect(ctx.properties.content).toBe(item.expectedContent);
+    expect(ctx.properties!.content).toBe(item.expectedContent);
   });
 
   it('thinking_delta 应当拼到 output.thought', async () => {

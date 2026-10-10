@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
 import type { ConvertContent } from '@/models/client';
-import type { Preset } from '@/presets';
+import type { Preset, PresetItem } from '@/presets';
+import type { Regex } from '@/presets/regexes';
 import { regexes } from '@/presets/regexes/client';
 import type { Realm, RealmHistory } from '@/stories';
 
@@ -50,7 +51,9 @@ describe('regexes / init 作用域', () => {
 
     const cache = await regexes.processer.init!({ properties: {}, realm });
 
-    expect(cache.regexes.map((u) => u.code)).toEqual(['in', 'both']);
+    expect(
+      cache.regexes.map((u: PresetItem<Regex & { code: string }>) => u.code),
+    ).toEqual(['in', 'both']);
   });
 
   it('renderer（输出侧）应当只收集 output 与 both', async () => {
@@ -59,7 +62,9 @@ describe('regexes / init 作用域', () => {
 
     const cache = await regexes.renderer.init({ realm });
 
-    expect(cache.regexes.map((u) => u.code)).toEqual(['out', 'both']);
+    expect(
+      cache.regexes.map((u: PresetItem<Regex & { code: string }>) => u.code),
+    ).toEqual(['out', 'both']);
   });
 
   it('disabled 的规则不应进入缓存', async () => {
@@ -68,7 +73,9 @@ describe('regexes / init 作用域', () => {
 
     const cache = await regexes.renderer.init({ realm });
 
-    expect(cache.regexes.map((u) => u.code)).toEqual(['on']);
+    expect(
+      cache.regexes.map((u: PresetItem<Regex & { code: string }>) => u.code),
+    ).toEqual(['on']);
   });
 
   it('多个预设的规则都应当被收集（按预设顺序）', async () => {
@@ -80,7 +87,9 @@ describe('regexes / init 作用域', () => {
 
     const cache = await regexes.renderer.init({ realm });
 
-    expect(cache.regexes.map((u) => u.code)).toEqual(['a', 'b', 'c']);
+    expect(
+      cache.regexes.map((u: PresetItem<Regex & { code: string }>) => u.code),
+    ).toEqual(['a', 'b', 'c']);
   });
 });
 

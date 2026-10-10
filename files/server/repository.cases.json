@@ -1,0 +1,61 @@
+{
+  "ids": {
+    "image": "0193f0a0-3333-7000-8000-000000000001",
+    "duplicate": "0193f0a0-3333-7000-8000-000000000002",
+    "missing": "0193f0a0-3333-7000-8000-0000000000ff"
+  },
+  "entities": {
+    "image": {
+      "id": "0193f0a0-3333-7000-8000-000000000001",
+      "hash": "0f4636c78f65d3639ece5a064b5ae753e3408614a14fb18ab4d7540d2c248543",
+      "type": "image/png",
+      "args": null
+    },
+    "duplicate": {
+      "id": "0193f0a0-3333-7000-8000-000000000002",
+      "hash": "039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81",
+      "type": "text/plain",
+      "args": "charset=UTF-8"
+    }
+  },
+  "create": {
+    "type": "text/plain",
+    "args": "charset=UTF-8",
+    "bytes": [1, 2, 3],
+    "hash": "039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81"
+  },
+  "read": {
+    "bytes": [104, 101, 108, 108, 111]
+  },
+  "requests": {
+    "paged": {
+      "skip": 0,
+      "size": 10
+    },
+    "typed": {
+      "skip": 5,
+      "size": 2,
+      "search": {
+        "type": "image/png"
+      }
+    },
+    "blankSearch": {
+      "search": {}
+    },
+    "emptyType": {
+      "search": {
+        "type": ""
+      }
+    }
+  },
+  "listResponse": {
+    "items": [
+      {
+        "id": "0193f0a0-3333-7000-8000-000000000001",
+        "type": "image/png",
+        "args": null
+      }
+    ],
+    "length": 1
+  }
+}

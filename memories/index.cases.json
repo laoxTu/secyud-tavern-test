@@ -1,0 +1,18 @@
+{
+  "moduleInfo": {
+    "name": "memory",
+    "plural": "memories"
+  },
+  "types": ["event", "relation", "knowledge", "other"],
+  "defaultEntry": {
+    "text": "",
+    "sequence": 100,
+    "importance": 5,
+    "type": "event",
+    "tags": []
+  },
+  "codes": {
+    "existing": [[1, 2], [3]],
+    "appended": [4]
+  }
+}

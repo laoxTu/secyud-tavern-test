@@ -1,0 +1,23 @@
+{
+  "names": {
+    "one": "task.one",
+    "two": "task.two"
+  },
+  "providers": {
+    "one": "task_provider.one",
+    "two": "task_provider.two"
+  },
+  "args": {
+    "one": { "provider": "task_provider.one", "value": 1 },
+    "two": { "provider": "task_provider.two", "value": 2 },
+    "missing": { "provider": "task_provider.missing", "value": 3 }
+  },
+  "result": "success",
+  "failure": {
+    "message": "provider failed",
+    "code": "error.provider"
+  },
+  "ids": {
+    "missing": "00000000-0000-0000-0000-000000000000"
+  }
+}

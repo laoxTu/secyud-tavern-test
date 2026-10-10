@@ -1,0 +1,16 @@
+{
+  "entry": { "disabled": false, "type": "elicit", "config": {} },
+  "realm": { "id": "realm-1" },
+  "name": "ask_user",
+  "description": "ask the user for input",
+  "args": {
+    "question": "选择颜色？",
+    "examples": ["红", "绿", "蓝"],
+    "custom": true
+  },
+  "secondArgs": {
+    "question": "是否继续？",
+    "examples": ["是", "否"],
+    "custom": false
+  }
+}

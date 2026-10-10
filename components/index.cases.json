@@ -1,0 +1,10 @@
+{
+  "props": { "entry": { "entryId": 1 }, "formRef": null, "className": "x" },
+  "keyCases": [
+    { "name": "只有 ctrl、按键不对", "ctrlKey": true, "code": "KeyA" },
+    { "name": "只有 meta、按键为空", "metaKey": true, "code": "" },
+    { "name": "Enter 但没有修饰键", "code": "Enter" },
+    { "name": "KeyS 但没有修饰键", "code": "KeyS" },
+    { "name": "ctrl + 空格", "ctrlKey": true, "code": "Space" }
+  ]
+}

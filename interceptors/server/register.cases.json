@@ -1,0 +1,16 @@
+{
+  "errorInterceptorId": "error",
+  "manifest": {
+    "id": "interceptor",
+    "sequence": -1000,
+    "server": "server/register"
+  },
+  "missing": {
+    "id": "orphan",
+    "requires": ["not-registered"]
+  },
+  "own": {
+    "id": "custom",
+    "sequence": 100
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "preset": {
+    "id": "11111111-1111-4111-8111-111111111111",
+    "name": "测试预设",
+    "version": "1.0.0",
+    "tags": [],
+    "requires": []
+  },
+  "entry": {
+    "masterId": "11111111-1111-4111-8111-111111111111",
+    "entryType": "lorebook",
+    "entryId": 7,
+    "name": "原始条目",
+    "disabled": false,
+    "data": {
+      "code": "origin_code",
+      "type": "plaintext",
+      "match": "always",
+      "expression": { "last": false },
+      "content": "原始内容",
+      "priority": 3,
+      "layer": 90,
+      "role": "system"
+    }
+  },
+  "jsonEntry": {
+    "masterId": "11111111-1111-4111-8111-111111111111",
+    "entryType": "lorebook",
+    "entryId": 8,
+    "name": "非法 json 条目",
+    "disabled": false,
+    "data": {
+      "code": "bad_json",
+      "type": "json",
+      "match": "always",
+      "expression": { "last": false },
+      "content": "{ 不是合法 json",
+      "priority": 1,
+      "layer": 95,
+      "role": "knowledge"
+    }
+  },
+  "emptyJsonEntry": {
+    "masterId": "11111111-1111-4111-8111-111111111111",
+    "entryType": "lorebook",
+    "entryId": 9,
+    "name": "空 json 条目",
+    "disabled": false,
+    "data": {
+      "code": "empty_json",
+      "type": "json",
+      "match": "always",
+      "expression": { "last": false },
+      "content": "",
+      "priority": 1,
+      "layer": 95,
+      "role": "knowledge"
+    }
+  },
+  "validJsonEntry": {
+    "masterId": "11111111-1111-4111-8111-111111111111",
+    "entryType": "lorebook",
+    "entryId": 10,
+    "name": "合法 json 条目",
+    "disabled": false,
+    "data": {
+      "code": "good_json",
+      "type": "json",
+      "match": "always",
+      "expression": { "last": false },
+      "content": "{\n  \"a\": 1,\n  \"b\": 2\n}",
+      "priority": 1,
+      "layer": 95,
+      "role": "knowledge"
+    }
+  },
+  "ghostEntry": {
+    "masterId": "11111111-1111-4111-8111-111111111111",
+    "entryType": "lorebook",
+    "entryId": 11,
+    "name": "失效匹配器条目",
+    "disabled": false,
+    "data": {
+      "code": "ghost",
+      "type": "plaintext",
+      "match": "ghost",
+      "expression": {},
+      "content": "内容",
+      "priority": 0,
+      "layer": 100,
+      "role": "system"
+    }
+  },
+  "edited": {
+    "name": "改名后的条目",
+    "code": "new_code",
+    "content": "改过的内容",
+    "type": "markdown",
+    "role": "assistant",
+    "priority": 6,
+    "layer": 95
+  },
+  "configured": { "last": true }
+}

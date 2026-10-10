@@ -1,0 +1,25 @@
+{
+  "callings": [
+    {
+      "index": 0,
+      "id": "call-1",
+      "name": "get_variable",
+      "arguments": "{\"path\":\"/player/hp\"}",
+      "result": "5"
+    },
+    {
+      "index": 1,
+      "id": "call-2",
+      "name": "set_variable",
+      "arguments": "{\"path\":\"/player/hp\",\"value\":6}"
+    }
+  ],
+  "cache": {
+    "tools": {
+      "get_variable": { "id": "get_variable", "config": { "name": "get_variable" }, "disabled": false },
+      "set_variable": { "id": "set_variable", "config": { "name": "set_variable" }, "disabled": true },
+      "fetch_url": { "id": "fetch_url", "config": { "name": "fetch_url" }, "disabled": false }
+    }
+  },
+  "expectedActive": ["get_variable", "fetch_url"]
+}

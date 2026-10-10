@@ -1,0 +1,11 @@
+{
+  "tabs": [
+    { "id": "always", "hidable": false },
+    { "id": "story", "hidable": true },
+    { "id": "tool", "hidable": true },
+    { "id": "component", "hidable": true }
+  ],
+  "types": ["story", "component"],
+  "expectedShow": ["always", "story", "component"],
+  "expectedHide": ["tool"]
+}

@@ -1,0 +1,49 @@
+{
+  "entries": [
+    {
+      "name": "变量工具",
+      "disabled": false,
+      "type": "alpha",
+      "config": {
+        "path": "/player"
+      }
+    },
+    {
+      "name": "第二个工具",
+      "disabled": true,
+      "type": "beta",
+      "config": {}
+    }
+  ],
+  "sameName": [
+    {
+      "name": "重复",
+      "disabled": false,
+      "type": "alpha",
+      "config": {}
+    },
+    {
+      "name": "重复",
+      "disabled": true,
+      "type": "alpha",
+      "config": {
+        "path": "/npc"
+      }
+    }
+  ],
+  "criteria": {
+    "entry": {
+      "name": "变量工具",
+      "data": {
+        "type": "alpha",
+        "config": {}
+      }
+    },
+    "sorter": "alpha变量工具",
+    "filter": "alpha变量工具"
+  },
+  "expected": {
+    "names": ["变量工具-0", "第二个工具-1"],
+    "duplicatedNames": ["重复-0", "重复-1"]
+  }
+}

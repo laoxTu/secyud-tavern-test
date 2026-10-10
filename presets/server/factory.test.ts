@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { Preset, PresetEntry } from '@/presets';
+import type { Preset, PresetEntry, PresetItem } from '@/presets';
 import { storages } from '@/presets/server/factory';
+import type { PresetArchiveContext } from '@/presets/server/storage';
 import type { Archive, ArchiveFile } from '@/utils/archive';
 
 const mocks = vi.hoisted(() => ({
@@ -24,8 +25,19 @@ interface FakeData {
   value?: string;
 }
 
-const loadArchive = vi.fn(async () => {});
-const saveArchive = vi.fn(async () => undefined);
+const loadArchive = vi.fn<
+  (
+    context: PresetArchiveContext,
+    entry: PresetItem<FakeData>,
+    sequence: number,
+  ) => Promise<void>
+>(async () => {});
+const saveArchive = vi.fn<
+  (
+    context: PresetArchiveContext,
+    name: string,
+  ) => Promise<PresetItem<FakeData> | undefined>
+>(async () => undefined);
 
 /** 用一个假的条目类型驱动 factory 的通用逻辑 */
 function createStorage() {

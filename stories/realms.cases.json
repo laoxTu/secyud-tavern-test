@@ -1,0 +1,192 @@
+{
+  "ids": {
+    "realm": "11111111-1111-4111-8111-111111111111",
+    "model": "33333333-3333-4333-8333-333333333333",
+    "presetA": "44444444-4444-4444-8444-444444444444",
+    "presetB": "55555555-5555-4555-8555-555555555555",
+    "presetC": "66666666-6666-4666-8666-666666666666"
+  },
+  "realm": {
+    "id": "11111111-1111-4111-8111-111111111111",
+    "name": "realm-a",
+    "properties": {},
+    "context": {},
+    "histories": [],
+    "model": {
+      "id": "33333333-3333-4333-8333-333333333333",
+      "name": "realm-model",
+      "builder": "default",
+      "iterations": 20,
+      "stream": true
+    },
+    "presets": [
+      {
+        "id": "44444444-4444-4444-8444-444444444444",
+        "name": "preset-a",
+        "opening": "  你好，旅行者。  ",
+        "variables": "{\"world\":{\"weather\":\"晴\"},\"flag\":true}"
+      },
+      {
+        "id": "55555555-5555-4555-8555-555555555555",
+        "name": "preset-b",
+        "opening": "   ",
+        "variables": "{\"world\":{\"time\":\"清晨\"},\"flag\":false,\"count\":2}"
+      },
+      {
+        "id": "66666666-6666-4666-8666-666666666666",
+        "name": "preset-c",
+        "variables": "{}"
+      }
+    ]
+  },
+  "emptyHistory": {
+    "masterId": "11111111-1111-4111-8111-111111111111",
+    "sequence": 1,
+    "summary": false,
+    "output": -1,
+    "variables": { "hp": 10 },
+    "prompts": [],
+    "outputs": []
+  },
+  "history": {
+    "masterId": "11111111-1111-4111-8111-111111111111",
+    "sequence": 2,
+    "summary": false,
+    "output": 0,
+    "variables": { "a": { "b": 1 }, "keep": "origin" },
+    "prompts": [
+      {
+        "content": "p1",
+        "variables": [{ "op": "add", "path": "/a/c", "value": 2 }],
+        "properties": {}
+      },
+      { "content": "p2", "variables": [], "properties": {} },
+      { "content": "", "variables": [], "properties": {} }
+    ],
+    "outputs": [
+      [
+        {
+          "content": "out-1",
+          "thought": "t-1",
+          "variables": [{ "op": "replace", "path": "/a/b", "value": 9 }],
+          "properties": {}
+        },
+        {
+          "content": "out-2",
+          "thought": "t-2",
+          "variables": [{ "op": "add", "path": "/extra", "value": "x" }],
+          "properties": {}
+        },
+        { "content": "", "thought": "", "variables": [], "properties": {} }
+      ],
+      [
+        {
+          "content": "next",
+          "thought": "t-next",
+          "variables": [{ "op": "add", "path": "/second", "value": true }],
+          "properties": {}
+        }
+      ]
+    ]
+  },
+  "histories": [
+    {
+      "masterId": "11111111-1111-4111-8111-111111111111",
+      "sequence": 1,
+      "summary": false,
+      "output": -1,
+      "variables": {},
+      "prompts": [],
+      "outputs": []
+    },
+    {
+      "masterId": "11111111-1111-4111-8111-111111111111",
+      "sequence": 2,
+      "summary": true,
+      "output": 0,
+      "variables": {},
+      "prompts": [
+        {
+          "content": "second",
+          "variables": [{ "op": "add", "path": "/second", "value": true }],
+          "properties": {}
+        }
+      ],
+      "outputs": [
+        [
+          {
+            "content": "second-out",
+            "thought": "",
+            "variables": [],
+            "properties": {}
+          }
+        ]
+      ]
+    }
+  ],
+  "fetched": {
+    "masterId": "11111111-1111-4111-8111-111111111111",
+    "sequence": 3,
+    "summary": false,
+    "output": -1,
+    "variables": {},
+    "prompts": [],
+    "outputs": []
+  },
+  "generate": {
+    "input": "hi",
+    "builtContent": "hi[a][b][c]",
+    "content": "  继续冒险  ",
+    "addedSequence": 7,
+    "steps": [
+      { "content": "a", "thought": "t", "variables": [], "properties": {} },
+      {
+        "content": "ab",
+        "thought": "t",
+        "variables": [],
+        "properties": {},
+        "callings": [
+          { "index": 0, "id": "call-1", "name": "look", "arguments": "{}" }
+        ]
+      },
+      {
+        "content": "abc",
+        "thought": "t",
+        "variables": [],
+        "properties": {},
+        "callings": [
+          { "index": 0, "id": "call-1", "name": "look", "arguments": "{}" }
+        ]
+      }
+    ]
+  },
+  "expected": {
+    "variables": { "a": { "b": 9, "c": 2 }, "keep": "origin", "extra": "x" },
+    "variablesBefore": { "a": { "b": 1 }, "keep": "origin" },
+    "variablesWithoutOutput": {
+      "a": { "b": 1, "c": 2 },
+      "keep": "origin"
+    },
+    "outputText": "out-1\nout-2",
+    "thoughtText": "t-1\nt-2",
+    "openingVariables": {
+      "world": { "weather": "晴", "time": "清晨" },
+      "flag": false,
+      "count": 2
+    },
+    "openingPrompts": [{ "content": "", "variables": [], "properties": {} }],
+    "openingOutputs": [
+      {
+        "content": "你好，旅行者。",
+        "variables": [],
+        "properties": {},
+        "thought": ""
+      }
+    ],
+    "stepInfos": [
+      { "content": "1", "title": "realm.thinking" },
+      { "content": "2", "title": "realm.generating_tool" },
+      { "content": "3", "title": "realm.generating" }
+    ]
+  }
+}

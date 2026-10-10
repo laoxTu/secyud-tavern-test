@@ -1,0 +1,22 @@
+{
+  "ids": {
+    "task": "11111111-1111-7111-8111-111111111111",
+    "raw": "id & with={braces}"
+  },
+  "requests": {
+    "paged": { "skip": 0, "size": 7, "search": { "fuzzy": "import" } },
+    "fuzzy": { "search": { "fuzzy": "task" }, "size": 5, "skip": 10 }
+  },
+  "listResponse": {
+    "items": [
+      {
+        "id": "11111111-1111-7111-8111-111111111111",
+        "name": "task.import",
+        "args": { "provider": "provider.a" },
+        "attempt": 0,
+        "status": "running"
+      }
+    ],
+    "length": 1
+  }
+}

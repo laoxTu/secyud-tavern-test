@@ -1,0 +1,76 @@
+{
+  "message": { "type": "task_progress", "data": { "progress": 50 } },
+  "missTarget": "task-2",
+  "toastMessage": {
+    "type": "success",
+    "message": "error.task.done",
+    "data": { "name": "codex" }
+  },
+  "errorText": "send failed",
+  "connections": {
+    "all": {
+      "id": "conn-all",
+      "sequence": 10,
+      "subscriptions": [
+        { "type": "task_progress", "status": "all", "targets": [] }
+      ]
+    },
+    "part": {
+      "id": "conn-part",
+      "sequence": 20,
+      "subscriptions": [
+        { "type": "task_progress", "status": "part", "targets": ["task-1"] }
+      ]
+    },
+    "none": { "id": "conn-none", "sequence": 30, "subscriptions": [] },
+    "silent": {
+      "id": "conn-silent",
+      "sequence": 40,
+      "subscriptions": [
+        { "type": "task_progress", "status": "all", "targets": [] }
+      ]
+    },
+    "broken": {
+      "id": "conn-broken",
+      "sequence": 50,
+      "subscriptions": [
+        { "type": "task_progress", "status": "all", "targets": [] }
+      ]
+    },
+    "tail": {
+      "id": "conn-tail",
+      "sequence": 60,
+      "subscriptions": [
+        { "type": "task_progress", "status": "all", "targets": [] }
+      ]
+    },
+    "toast": {
+      "id": "conn-toast",
+      "sequence": 10,
+      "subscriptions": [{ "type": "toast", "status": "all", "targets": [] }]
+    }
+  },
+  "ordered": [
+    {
+      "id": "conn-third",
+      "sequence": 30,
+      "subscriptions": [
+        { "type": "task_progress", "status": "all", "targets": [] }
+      ]
+    },
+    {
+      "id": "conn-first",
+      "sequence": 10,
+      "subscriptions": [
+        { "type": "task_progress", "status": "all", "targets": [] }
+      ]
+    },
+    {
+      "id": "conn-second",
+      "sequence": 20,
+      "subscriptions": [
+        { "type": "task_progress", "status": "all", "targets": [] }
+      ]
+    }
+  ]
+}

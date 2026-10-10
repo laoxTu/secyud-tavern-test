@@ -1,0 +1,8 @@
+{
+  "subscription": {
+    "action": "set",
+    "type": "task_progress",
+    "status": "part",
+    "targets": ["task-1", "task-2"]
+  }
+}

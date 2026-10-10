@@ -1,0 +1,22 @@
+{
+  "names": {
+    "alpha": "task.alpha",
+    "beta": "task.beta",
+    "gamma": "task.gamma"
+  },
+  "args": {
+    "alpha": { "provider": "provider.alpha", "value": 1 },
+    "beta": { "provider": "provider.beta", "value": 2 },
+    "gamma": { "provider": "provider.gamma", "value": 3 }
+  },
+  "results": {
+    "alpha": "alpha:done"
+  },
+  "failures": {
+    "business": { "message": "execute failed", "code": "error.execute" },
+    "plain": "plain failure"
+  },
+  "ids": {
+    "missing": "00000000-0000-0000-0000-000000000000"
+  }
+}
