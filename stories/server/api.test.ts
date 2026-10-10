@@ -17,6 +17,7 @@ const mocks = vi.hoisted(() => ({
     },
     entry: {
       list: vi.fn(),
+      make: vi.fn(),
       get: vi.fn(),
       add: vi.fn(),
       set: vi.fn(),
@@ -228,11 +229,16 @@ describe('stories api / realm', () => {
 });
 
 describe('stories api / clone', () => {
-  it('应当整份复制故事本体并换一个新 uuid', async () => {
+  // 语义由源码注释明确：故事克隆是「新存档」，只复制故事本体，
+  // 有意不复制条目、也不消费请求体（与 presets 的 clone 不同）。
+  it('应当只克隆故事本体：换新 id、不复制条目、忽略请求体', async () => {
     const data = await loadCases();
     const story = await loadStory();
     mocks.repo.get.mockResolvedValue(story);
-    mocks.repo.create.mockResolvedValue(data.newId);
+    // 真实 create 返回写入用的 id（见 repository.create），这里如实模拟
+    mocks.repo.create.mockImplementation(async (target: any) => target.id);
+    // 即便源故事有条目，也不应该被复制
+    mocks.repo.entry.list.mockResolvedValue(data.cloneEntries);
 
     const response = await call(handlers['[id]'].clone.POST, {
       params: { id: story.id },
@@ -243,14 +249,44 @@ describe('stories api / clone', () => {
     });
 
     expect(mocks.repo.get).toHaveBeenCalledWith(story.id);
+
+    const created = mocks.repo.create.mock.calls[0][0];
+    // 请求体被忽略：改名不生效，名字仍来自源故事
+    expect(created.name).toBe(story.name);
+    expect(created.name).not.toBe(data.cloneBody.name);
+    // 源故事的其余字段保留
+    expect(created.presets).toEqual(story.presets);
+    expect(created.model).toEqual(story.model);
+    // 必须换新 id：不能沿用源故事的 id
+    expect(created.id).not.toBe(story.id);
+    expect(validate(created.id)).toBe(true);
+
+    // 有意不复制条目
+    expect(mocks.repo.entry.list).not.toHaveBeenCalled();
+    expect(mocks.repo.entry.make).not.toHaveBeenCalled();
+
+    await expect(response.json()).resolves.toEqual({ id: created.id });
+  });
+
+  it('请求体为空时同样不报错，仍按源故事克隆', async () => {
+    const story = await loadStory();
+    mocks.repo.get.mockResolvedValue(story);
+    mocks.repo.create.mockImplementation(async (target: any) => target.id);
+
+    const response = await call(handlers['[id]'].clone.POST, {
+      params: { id: story.id },
+      request: new Request(`http://localhost/api/stories/${story.id}/clone`, {
+        method: 'POST',
+      }),
+    });
+
     const created = mocks.repo.create.mock.calls[0][0];
     expect(created.name).toBe(story.name);
     expect(created.presets).toEqual(story.presets);
-    expect(created.model).toEqual(story.model);
-    // 只换主键：请求体里的名字不参与合并
     expect(created.id).not.toBe(story.id);
     expect(validate(created.id)).toBe(true);
-    await expect(response.json()).resolves.toEqual({ id: data.newId });
+    expect(mocks.repo.entry.make).not.toHaveBeenCalled();
+    await expect(response.json()).resolves.toEqual({ id: created.id });
   });
 });
 

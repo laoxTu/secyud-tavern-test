@@ -81,7 +81,8 @@ describe('strUtils / fnv1a64Bytes', () => {
 });
 
 describe('strUtils / wrap', () => {
-  it('应当把 pad 交给模板，并只影响换行后的首行', async () => {
+  // pad 只加在文本上，模板接到的还是「pad + 文本」本身；换行后的**每一行**都要补 pad
+  it('应当把 pad 交给模板，并给换行后的每一行都补上 pad', async () => {
     const { wrap } = await loadCases();
 
     for (const item of wrap) {
@@ -90,6 +91,13 @@ describe('strUtils / wrap', () => {
         item.name,
       ).toBe(item.expected);
     }
+  });
+
+  it('三行文本时第三行也要带上 pad', () => {
+    // 修复前 replace('\n') 只替换第一个换行，第三行起没有前缀
+    expect(strUtils.wrap((t) => `<${t}>`, 'a\nb\nc', '> ')).toBe(
+      '<> a\n> b\n> c>',
+    );
   });
 });
 

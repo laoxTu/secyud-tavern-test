@@ -6,7 +6,7 @@
   },
   "defaultConfig": {
     "maxResults": 3,
-    "timeout": 10000,
+    "timeout": 10,
     "maxLength": 8000
   },
   "readerConfig": {
@@ -105,7 +105,7 @@
     ],
     "defaultFields": [
       { "name": "max_result_count", "value": "3" },
-      { "name": "timeout", "value": "10000" },
+      { "name": "timeout", "value": "10" },
       { "name": "max_length", "value": "8000" }
     ]
   }

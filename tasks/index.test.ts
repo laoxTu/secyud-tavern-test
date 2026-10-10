@@ -109,6 +109,11 @@ describe('tasks TaskRunner / 入队与执行', () => {
     expect(info.queue).toBe(now);
     expect(info.start).toBe(now);
     expect(info.finish).toBeUndefined();
+    // create 返回的是「入队对象」（status 停在 pending）；
+    // 运行态由回写进 running 的新实例承载 —— 运行期一律按 id 从 running 表取，
+    // 不要持有入队时的对象
+    expect(task.status).toBe('pending');
+    expect(info).not.toBe(task);
     expect(runner.runningTasks.get(task.id)).toBe(info);
   });
 
@@ -166,6 +171,10 @@ describe('tasks TaskRunner / 成功与失败', () => {
     const runner = new TestRunner();
     const task = await runner.create(data.names.alpha, data.args.alpha);
     const info = runner.executions[0];
+    // 运行实例就是 running 表里按 id 取到的那个（create 返回的 task 只是入队对象）
+    const running = runner.runningTasks.get(task.id)!;
+    expect(running).toBe(info);
+    expect(running).not.toBe(task);
     const now = Date.now();
     vi.setSystemTime(now + 1000);
 
@@ -177,13 +186,20 @@ describe('tasks TaskRunner / 成功与失败', () => {
     expect(info.finish).toBe(now + 1000);
     expect(runner.runningTasks.has(task.id)).toBe(false);
     expect(runner.runningTasks.size).toBe(0);
+    // 终态落在运行实例上；入队对象不会被回写，状态始终停在 pending
+    expect(task).not.toBe(info);
+    expect(task.status).toBe('pending');
   });
 
   it('execute 抛 BusinessError 时应当落成 failed 并序列化 code 与 data', async () => {
     const data = await loadCases();
     const runner = new TestRunner();
-    await runner.create(data.names.alpha, data.args.alpha);
+    const task = await runner.create(data.names.alpha, data.args.alpha);
     const info = runner.executions[0];
+    // 运行实例按 id 从 running 表取；入队对象不承载运行态
+    const running = runner.runningTasks.get(task.id)!;
+    expect(running).toBe(info);
+    expect(running).not.toBe(task);
 
     runner.fail(
       new BusinessError(
@@ -199,6 +215,9 @@ describe('tasks TaskRunner / 成功与失败', () => {
     expect(result.code).toBe(data.failures.business.code);
     expect(result.data).toEqual({ field: 'default.value' });
     expect(runner.runningTasks.size).toBe(0);
+    // 失败终态同样落在运行实例上；入队对象不会被回写，状态始终停在 pending
+    expect(task).not.toBe(info);
+    expect(task.status).toBe('pending');
   });
 
   it('execute 抛普通错误时也应当落成 failed', async () => {
@@ -225,16 +244,12 @@ describe('tasks TaskRunner / 并发上限与队列', () => {
     const runner = new TestRunner(1);
 
     await runner.create(data.names.alpha, data.args.alpha);
-    // 上限已满：这两个 create 会在 start 阶段被上限挡掉，但任务已经入队
-    const settled = await Promise.allSettled([
-      runner.create(data.names.beta, data.args.beta),
-      runner.create(data.names.gamma, data.args.gamma),
-    ]);
+    // 上限已满：再 create 不会抛错，任务留在队列里等空位
+    const beta = await runner.create(data.names.beta, data.args.beta);
+    const gamma = await runner.create(data.names.gamma, data.args.gamma);
 
-    expect(settled.map((u) => u.status)).toEqual(['rejected', 'rejected']);
-    expect(settled[0]).toMatchObject({
-      reason: { message: 'running task over limit!' },
-    });
+    expect(beta.status).toBe('pending');
+    expect(gamma.status).toBe('pending');
     expect(runner.pendingTasks.map((u) => u.name)).toEqual([
       data.names.beta,
       data.names.gamma,
@@ -266,36 +281,76 @@ describe('tasks TaskRunner / 并发上限与队列', () => {
 });
 
 describe('tasks TaskRunner / restart', () => {
-  it('restart 应当取消原控制器、attempt+1 并重新执行', async () => {
+  it('restart 应当取消原控制器、以新实例 attempt+1 并重新执行', async () => {
     const data = await loadCases();
     const runner = new TestRunner();
     const task = await runner.create(data.names.alpha, data.args.alpha);
     const origin = runner.executions[0];
     const now = Date.now();
+    const controller = origin.controller;
+    const attempt = origin.attempt;
     vi.setSystemTime(now + 500);
 
     await runner.restart(task.id);
 
     expect(runner.executions).toHaveLength(2);
     const retried = runner.executions[1];
+    // restart 会新建实例并回写 running：运行态一律按 id 从 running 表取新实例。
+    // origin 只是上一轮的执行记录，不再代表当前运行态，所以不能拿它断言 attempt/controller
     expect(retried).not.toBe(origin);
+    expect(retried).not.toBe(task);
+    expect(runner.runningTasks.get(task.id)).toBe(retried);
     expect(retried.id).toBe(task.id);
-    expect(retried.attempt).toBe(origin.attempt + 1);
-    expect(retried.controller).not.toBe(origin.controller);
+    expect(retried.attempt).toBe(attempt + 1);
+    expect(retried.controller).not.toBe(controller);
     expect(retried.status).toBe('running');
     expect(retried.start).toBe(now + 500);
+    // 入队对象始终是 pending，运行态与终态都不会回写到它身上
+    expect(task.status).toBe('pending');
 
-    expect(origin.controller.signal.aborted).toBe(true);
-    const reason = origin.controller.signal.reason as BusinessError;
+    // 上一轮的控制器被取消，新一轮的没有被波及
+    expect(controller.signal.aborted).toBe(true);
+    const reason = controller.signal.reason as BusinessError;
     expect(reason.message).toBe('restart');
     expect(reason.code).toBe('error.restart');
+    expect(retried.controller.signal.aborted).toBe(false);
 
-    // 重试这一轮结束后运行集合清空
+    // 重试这一轮结束后运行集合清空，终态落在新一轮的实例上
     runner.release(data.results.alpha, 1);
     await settle();
     expect(retried.status).toBe('completed');
     expect(retried.result).toBe(data.results.alpha);
     expect(runner.runningTasks.size).toBe(0);
+  });
+
+  it('restart 之后 delete 应当取消到新一轮的 controller', async () => {
+    const data = await loadCases();
+    const runner = new TestRunner();
+    const task = await runner.create(data.names.alpha, data.args.alpha);
+    const origin = runner.executions[0];
+    const first = origin.controller;
+
+    await runner.restart(task.id);
+    // 新一轮实例必须按 id 从 running 表取；origin 的 controller 还是旧的（已被 restart 取消）
+    const retried = runner.runningTasks.get(task.id)!;
+    const second = retried.controller;
+    expect(retried).not.toBe(origin);
+    expect(second).not.toBe(first);
+    expect(first.signal.aborted).toBe(true);
+
+    await runner.delete(task.id);
+
+    // 关键：删除必须取消到新一轮的 controller，而不是上一轮已经取消过的那个
+    expect(retried.status).toBe('cancelled');
+    expect(second).toBe(runner.executions[1].controller);
+    expect(second.signal.aborted).toBe(true);
+    const reason = second.signal.reason as BusinessError;
+    expect(reason.message).toBe('canceled');
+    expect(reason.code).toBe('error.canceled');
+    // 旧实例已不是当前运行态，delete 不会碰它
+    expect(origin.status).toBe('running');
+    expect(origin.controller).toBe(first);
+    expect(runner.runningTasks.has(task.id)).toBe(false);
   });
 
   it('restart 非运行中的任务应当报错', async () => {

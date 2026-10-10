@@ -41,6 +41,9 @@ function argsOf(toolcall: ToolCall) {
   return JSON.parse(toolcall.arguments);
 }
 
+/** 让出事件循环，等任务调度的 microtask 链推进到「该入队的都入队了」 */
+const settle = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
+
 beforeEach(() => {
   vi.spyOn(console, 'debug').mockImplementation(() => {});
 });
@@ -194,5 +197,48 @@ describe('tools client task / calling', () => {
     const infos = useRealmState.getState().realmInfos;
     expect(infos[toolcall.id]).toBeUndefined();
     expect(infos.main).toEqual({ title: 'tool.calling_tool' });
+  });
+
+  it('一轮超过并发上限时溢出的调用会排队等待，而不是失败', async () => {
+    const data = await loadCases();
+    const toolName = data.toolName;
+    // 让前 8 个调用都挂在 invoke 里，第 9 个才会撞上并发上限
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const invoke = vi.fn(async (_ctx: CallContext) => {
+      await gate;
+      return data.result.success;
+    });
+    const realm = await createRealm({
+      [toolName]: createTool(toolName, invoke),
+    });
+    const controller = new AbortController();
+
+    // TaskRunner 的并发上限是 8，这里给 9 个调用
+    const toolCalls: ToolCall[] = Array.from({ length: 9 }, (_, index) => ({
+      index,
+      id: `${data.toolCalls.set.id}_${index}`,
+      name: toolName,
+      arguments: data.toolCalls.set.arguments,
+    }));
+    const overflow = toolCalls[8];
+
+    const calling = tools.calling(realm, controller, toolCalls);
+    await settle();
+
+    // 上限内先跑 8 个；第 9 个留在队列里（既不报错，也不写 error 结果）
+    expect(invoke).toHaveBeenCalledTimes(8);
+    expect(overflow.result).toBeUndefined();
+
+    // 空位出现后第 9 个补位执行，全部调用都拿到结果
+    release();
+    await expect(calling).resolves.toBeUndefined();
+
+    expect(invoke).toHaveBeenCalledTimes(9);
+    for (const toolCall of toolCalls) {
+      expect(toolCall.result).toBe(data.result.success);
+    }
   });
 });

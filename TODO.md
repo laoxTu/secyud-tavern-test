@@ -4,7 +4,7 @@
 > `[x]` = 已有用例（可补强），`[ ]` = 待写。
 > 写用例前先看 `GUIDELINES.md`（数据一律 json 动态 import、mock 边界、jsdom 限制、未确认行为先不加断言）。
 > 用例数据统一放 json、用 `(await import('./xxx.json')).default` 动态加载；需要改动时先 `structuredClone` 克隆一份。
-> 当前：**160 文件 / 1802 用例通过 + 3 expected fail，0 failed**（`models` 的待修缺陷 3 条，有意保留，见下）。全量单实例跑通约 60s。
+> 当前：**160 文件 / 1807 用例通过 + 3 expected fail，0 failed**（`models` 的待修缺陷 3 条，有意保留，见下）。全量单实例跑通约 65s。
 > 既有 flaky 用例 `comfyui/editor/generator.test.ts`（约 50% 假失败，详见 comfyui 一节的遗留说明）——它是否出现与本次工作无关。
 >
 > 本轮收官时排掉了一个**卡死全量**的问题，根因与修法见下面「测试卡死排查」一节（是测试侧的循环 mock 死锁，不是 src 缺陷）。
@@ -461,6 +461,21 @@ HEAD 现为 `b6a4933 Merge pull request #60 from laoxTu/develop/merge`，该合�
   - 我**暂时把该文件还原成合并前的形状**（工作树改动，未做 git 操作），`tests/signal` 5 文件 52 用例随之恢复全绿。
   - **待你决定**：(a) 保留我的还原（用例绿，bug 仍在）；(b) 跟随上游改用例（用例绿，bug 仍在）；(c) 真正修好——把 id 作为 `params` 传（或在服务端回落到 `body.id`），并同步用例。
 - `src/models/localization/{en,zh}.json` 被上游各删了 4 行；语言包键集合一致性用例仍绿。
+
+### B 组：按用户定的语义处理（含 §2 的语义纠正）
+
+| 项 | 结论（用户拍板） | 改动 |
+| --- | --- | --- |
+| **tasks 的对象语义** | **`start`/`restart` 必须建新实例；`get`/`delete` 一律按 id 从 `running` 取当前实例；`create` 返回的是入队对象（状态停在 `pending`）——这是有意设计**，不是缺陷。我先前把它记成缺陷并让子代理「就地改」，方向错了，已纠正 | `src/tasks/index.ts`：`start` 恢复 `{...top, controller}` 新实例 + 回写 `running`；`restart` 建新实例后**回写 `this.running.set(id, task)`**（这才是真正的缺陷：原来只建新实例不回写，导致 `get`/`delete` 拿旧 controller，restart 后取消失效）；两处注释写明「运行态按 id 取」 |
+| **并发上限策略** | 「入队后只要 `running` 满就**不 start** 即可」——任务留在 `pending` 等空位，由 `finish()`/`delete()` 再次触发 `start()` 补位，**不向调用方抛错** | `start()` 里 `throw new BusinessError('running task over limit!')` → `return`。连带好处：`comfyui/server/api-models.ts:54` 的下载接口不再「报错但其实已入队」 |
+| **防御的归属** | 由 `Task` 及其子类做，调用层不做 | 撤掉我先前加在 `tools/client/task.ts` 调用循环里的 try/catch（它和子类 `Manager.execute` 里既有的 `error: ...` 兜底重复） |
+| **`finish` 的竞态**（子代理实测发现） | restart 后旧一轮迟到结束时，`finish` 只按 id 删会把**新一轮实例**踢出 `running`（`runningTasks.has(id)` 变 false，而新实例仍在 running 状态） | `finish` 加身份校验：`if (this.running.get(task.id) === task) this.running.delete(task.id)`；`TaskManager.finish` 随后的 `repository.update` 也不会再用旧一轮终态覆盖新一轮 |
+| **B2（stories clone）** | 用户否定「对齐 presets」：**故事的克隆是新存档，只复制本体、有意不复制条目、也不消费请求体**（源码里已有手写注释） | 保留用户的实现；把 S2 写的「复制条目 + 合并改名」测试**改成保护该决定**：断言 `entry.list`/`entry.make` 未被调用、请求体改名不生效、只换新 id |
+| **B6** | 超时统一成秒 | `src/tools/fetchers/client/index.tsx:17` `timeout: 10000 → 10`（`*1000` 保留） |
+| **B9** | 每行都加前缀 | `src/utils/str.ts:21` `replace → replaceAll`（src 下无调用点） |
+| **B1** | 由上面的上限策略 + 子类防御彻底解决 | 用例改为正向断言：9 个调用全部入队执行（先 8 后 1）、溢出项**不写 error**、`calling` 不抛错、`manager.wait()` 等到全部完成 |
+
+**B 组剩余（仍未动，等用户定）**：**B4** `memories/client/realm.ts:90` RAG 关闭时是否注入已编码记忆（我建议维持现状）；**B5** `memories/client/tool.ts:93-95` orama 英文分词器导致中文标签检索恒空（换 CJK 分词器需重建向量索引）；**B7** `models/client/setting.tsx:68` 清空 api_key 是否算「清除」。
 
 ### 测试卡死排查（已修，测试侧问题）
 

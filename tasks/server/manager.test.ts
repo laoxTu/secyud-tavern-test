@@ -114,7 +114,16 @@ describe('tasks manager / 注册与执行', () => {
       status: 'running',
       attempt: 0,
     });
-    expect(manager.get(task.id)).toBeDefined();
+    // manager.get 就是按 id 从 running 表取「运行实例」：它是 start 时新建的实例，
+    // 不是 create 返回的入队对象，运行态断言一律看它
+    const running = manager.get(task.id);
+    expect(running).toBeDefined();
+    expect(running!.id).toBe(task.id);
+    expect(running!.status).toBe('running');
+    expect(running!.controller).toBeInstanceOf(AbortController);
+    expect(running).not.toBe(task);
+    // 入队对象不会被回写：状态始终停在 pending
+    expect(task.status).toBe('pending');
 
     vi.setSystemTime(now + 1000);
     deferreds.splice(0).forEach((u) => u.resolve());
@@ -127,6 +136,9 @@ describe('tasks manager / 注册与执行', () => {
       result: data.result,
     });
     expect(manager.get(task.id)).toBeUndefined();
+    // 终态落在运行实例上；入队对象（create 的返回值）状态不会被回写
+    expect(running!.status).toBe('completed');
+    expect(task.status).toBe('pending');
   });
 
   it('provider 抛错时应当回写 failed 与序列化后的原因', async () => {
@@ -211,7 +223,16 @@ describe('tasks manager / 并发上限', () => {
 
     expect(executeOne).toHaveBeenCalledTimes(8);
     expect(new Set(tasks.map((u) => u.id)).size).toBe(8);
-    for (const task of tasks) expect(manager.get(task.id)).toBeDefined();
+    for (const task of tasks) {
+      // 按 id 取运行实例：它是 start 时的新实例，不是 create 返回的入队对象
+      const running = manager.get(task.id);
+      expect(running).toBeDefined();
+      expect(running!.id).toBe(task.id);
+      expect(running!.status).toBe('running');
+      expect(running!.controller).toBeInstanceOf(AbortController);
+      expect(running).not.toBe(task);
+      expect(task.status).toBe('pending');
+    }
 
     // 第 9 个受上限限制，先留在队列里不执行
     await Promise.allSettled([
@@ -234,23 +255,69 @@ describe('tasks manager / restart', () => {
     const execute = registerProvider(data.providers.one);
     const manager = new TaskManager();
     const task = await manager.create(data.names.one, data.args.one);
+    // 重启前的运行实例：按 id 从 running 表取
     const running = manager.get(task.id)!;
+    const controller = running.controller;
+    const attempt = running.attempt;
 
     await manager.restart(task.id);
 
     expect(mocks.historyAdd).toHaveBeenCalledTimes(1);
     expect(mocks.historyAdd.mock.calls[0][0]).toBe(task.id);
+    // 历史归档的是重启前那个（已被替换掉的）运行实例
     expect(mocks.historyAdd.mock.calls[0][1]).toBe(running);
     expect(execute).toHaveBeenCalledTimes(2);
+    // restart 会新建实例并回写 running：运行态要按 id 重新取，
+    // 旧实例 running 只是上一轮的执行记录，不能拿它断言 attempt/controller
+    const retried = manager.get(task.id)!;
+    expect(retried).not.toBe(running);
+    expect(retried.id).toBe(task.id);
+    expect(retried.status).toBe('running');
+    expect(retried.attempt).toBe(attempt + 1);
+    expect(retried.controller).not.toBe(controller);
+    expect(controller.signal.aborted).toBe(true);
+    expect(retried.controller.signal.aborted).toBe(false);
     expect(mocks.update).toHaveBeenCalledWith(task.id, {
       start: expect.any(Number),
       status: 'running',
       attempt: 1,
     });
+    // 入队对象与旧运行实例都不会被回写
+    expect(task.status).toBe('pending');
+    expect(running.attempt).toBe(attempt);
     // 历史先落库，新的一轮才开始
     expect(mocks.historyAdd.mock.invocationCallOrder[0]).toBeLessThan(
       execute.mock.invocationCallOrder[1],
     );
+  });
+
+  it('restart 之后 delete 应当取消到新一轮的 controller', async () => {
+    const data = await loadCases();
+    const execute = registerProvider(data.providers.one);
+    const manager = new TaskManager();
+    const task = await manager.create(data.names.one, data.args.one);
+    const running = manager.get(task.id)!;
+    const first = running.controller;
+
+    await manager.restart(task.id);
+    // 新一轮的 controller 必须按 id 从 running 表（新实例）上取；
+    // running 实例上挂着的还是上一轮已被 restart 取消的 controller
+    const retried = manager.get(task.id)!;
+    const second = retried.controller;
+    expect(retried).not.toBe(running);
+    expect(second).not.toBe(first);
+    expect(first.signal.aborted).toBe(true);
+
+    await manager.delete(task.id);
+
+    // 关键：取消的是新一轮的 controller，而不是上一轮已经取消过的那个
+    expect(second.signal.aborted).toBe(true);
+    const reason = second.signal.reason as BusinessError;
+    expect(reason.message).toBe('canceled');
+    expect(reason.code).toBe('error.canceled');
+    expect(execute).toHaveBeenCalledTimes(2);
+    expect(mocks.remove).toHaveBeenCalledWith(task.id);
+    expect(manager.get(task.id)).toBeUndefined();
   });
 
   it('restart 非运行中的任务应当报错且不写历史', async () => {
