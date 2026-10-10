@@ -1,0 +1,95 @@
+{
+  "knowledge": {
+    "args": { "type": "lorebook" }
+  },
+  "historyA": {
+    "masterId": "realm",
+    "sequence": 0,
+    "summary": false,
+    "variables": {},
+    "prompts": [{ "content": "甲提问", "variables": [] }],
+    "output": 0,
+    "outputs": [
+      [{ "content": "甲回复", "thought": "", "variables": [] }]
+    ]
+  },
+  "historyB": {
+    "masterId": "realm",
+    "sequence": 1,
+    "summary": false,
+    "variables": {},
+    "prompts": [{ "content": "乙提问", "variables": [] }],
+    "output": 0,
+    "outputs": [
+      [{ "content": "乙回复", "thought": "", "variables": [] }]
+    ]
+  },
+  "callings": [
+    {
+      "index": 0,
+      "id": "call-1",
+      "name": "get_lorebook",
+      "arguments": "{\"content\":\"英雄\"}",
+      "result": "{\"ok\":true}"
+    }
+  ],
+  "toolHistory": {
+    "masterId": "realm",
+    "sequence": 2,
+    "summary": false,
+    "variables": {},
+    "prompts": [],
+    "output": 0,
+    "outputs": [
+      [
+        {
+          "content": "带工具的输出",
+          "thought": "思考",
+          "variables": [],
+          "callings": [
+            {
+              "index": 0,
+              "id": "call-1",
+              "name": "get_lorebook",
+              "arguments": "{\"content\":\"英雄\"}",
+              "result": "{\"ok\":true}"
+            }
+          ]
+        }
+      ]
+    ]
+  },
+  "sequence": {
+    "expected": [
+      "before:0",
+      "prompt:甲提问",
+      "middle:0",
+      "assist:甲回复",
+      "behind:0",
+      "before:1",
+      "prompt:乙提问",
+      "middle:1",
+      "behind:1"
+    ],
+    "currentExpected": [
+      "before:0",
+      "prompt:甲提问",
+      "middle:0",
+      "assist:甲回复",
+      "behind:0",
+      "before:1",
+      "prompt:乙提问",
+      "middle:1",
+      "assist:乙回复",
+      "behind:1"
+    ]
+  },
+  "trim": {
+    "prompts": [
+      { "content": "  第一段", "variables": [] },
+      { "content": "   ", "variables": [] },
+      { "content": "第二段  ", "variables": [] }
+    ],
+    "expected": "第一段\n第二段"
+  }
+}

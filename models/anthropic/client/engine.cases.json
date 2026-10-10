@@ -1,0 +1,369 @@
+{
+  "realm": {
+    "id": "realm-1",
+    "name": "测试领域",
+    "histories": [],
+    "presets": [],
+    "model": {
+      "id": "model-1",
+      "name": "claude",
+      "engine": "anthropic",
+      "builder": "default",
+      "iterations": 20,
+      "stream": true
+    }
+  },
+  "tools": [
+    {
+      "name": "get_weather",
+      "description": "查询天气",
+      "parameters": {
+        "type": "object",
+        "properties": { "city": { "type": "string" } },
+        "required": ["city"]
+      }
+    }
+  ],
+  "configure": {
+    "form": {
+      "model": "claude-sonnet-4",
+      "temperature": "0.35",
+      "top_p": "0.8",
+      "max_tokens": "4096",
+      "url": "https://gateway.local/anthropic",
+      "extras": "{\"top_k\": 7}"
+    },
+    "expectedOption": {
+      "model": "claude-sonnet-4",
+      "temperature": 0.35,
+      "top_p": 0.8,
+      "max_tokens": 4096
+    },
+    "expectedConfig": {
+      "url": "https://gateway.local/anthropic",
+      "extras": "{\"top_k\": 7}"
+    },
+    "invalidExtras": {
+      "extras": "{ 不是 json",
+      "code": "error.json_invalid",
+      "target": "anthropic.extras"
+    }
+  },
+  "history": {
+    "leading": {
+      "masterId": "realm-1",
+      "sequence": 0,
+      "summary": true,
+      "variables": {},
+      "prompts": [],
+      "output": 0,
+      "outputs": []
+    },
+    "trailing": {
+      "masterId": "realm-1",
+      "sequence": 1,
+      "summary": false,
+      "variables": {},
+      "prompts": [{ "content": "第二段历史的问题", "variables": [], "properties": {} }],
+      "output": 0,
+      "outputs": []
+    },
+    "prompts": {
+      "firstQuestion": [
+        { "content": "第一段历史的问题", "variables": [], "properties": {} }
+      ],
+      "signedQuestion": [
+        { "content": "带思考的问题", "variables": [], "properties": {} }
+      ],
+      "callingQuestion": [
+        { "content": "调用工具的问题", "variables": [], "properties": {} }
+      ]
+    },
+    "outputs": {
+      "plainReply": [
+        {
+          "content": "第一段历史的回答",
+          "thought": "",
+          "variables": [],
+          "properties": {}
+        }
+      ],
+      "signedReply": [
+        {
+          "content": "带思考的回答",
+          "thought": "这是思考过程",
+          "variables": [],
+          "properties": { "signature": "sig-123" }
+        }
+      ],
+      "callingReply": [
+        {
+          "content": "我来查一下",
+          "thought": "需要调用工具",
+          "variables": [],
+          "properties": { "signature": "sig-tool" },
+          "callings": [
+            {
+              "index": 0,
+              "id": "toolu_1",
+              "name": "get_weather",
+              "arguments": "{\"city\":\"上海\"}",
+              "result": "晴"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "result": {
+    "output": {
+      "content": "",
+      "thought": "",
+      "variables": [],
+      "properties": {}
+    },
+    "stream": {
+      "toolStart": {
+        "events": [
+          {
+            "type": "content_block_start",
+            "index": 0,
+            "content_block": {
+              "type": "tool_use",
+              "id": "toolu_stream_1",
+              "name": "get_weather",
+              "input": {}
+            }
+          }
+        ],
+        "expectedCallings": [
+          {
+            "index": 0,
+            "id": "toolu_stream_1",
+            "name": "get_weather",
+            "arguments": ""
+          }
+        ]
+      },
+      "arguments": {
+        "events": [
+          {
+            "type": "content_block_start",
+            "index": 0,
+            "content_block": {
+              "type": "tool_use",
+              "id": "toolu_stream_2",
+              "name": "get_weather",
+              "input": {}
+            }
+          },
+          {
+            "type": "content_block_delta",
+            "index": 0,
+            "delta": { "type": "input_json_delta", "partial_json": "{\"city\":" }
+          },
+          {
+            "type": "content_block_delta",
+            "index": 0,
+            "delta": { "type": "input_json_delta", "partial_json": "\"上海\"}" }
+          }
+        ],
+        "expectedArguments": "{\"city\":\"上海\"}",
+        "expectedInput": { "city": "上海" }
+      },
+      "text": {
+        "events": [
+          {
+            "type": "content_block_delta",
+            "index": 0,
+            "delta": { "type": "text_delta", "text": "你好" }
+          },
+          {
+            "type": "content_block_delta",
+            "index": 0,
+            "delta": { "type": "text_delta", "text": "，世界" }
+          }
+        ],
+        "expectedContent": "你好，世界"
+      },
+      "thinking": {
+        "events": [
+          {
+            "type": "content_block_delta",
+            "index": 0,
+            "delta": { "type": "thinking_delta", "thinking": "先想" }
+          },
+          {
+            "type": "content_block_delta",
+            "index": 0,
+            "delta": { "type": "thinking_delta", "thinking": "再答" }
+          }
+        ],
+        "expectedThought": "先想再答"
+      },
+      "signature": {
+        "events": [
+          {
+            "type": "content_block_delta",
+            "index": 0,
+            "delta": { "type": "signature_delta", "signature": "sig-a" }
+          },
+          {
+            "type": "content_block_delta",
+            "index": 0,
+            "delta": { "type": "signature_delta", "signature": "sig-b" }
+          }
+        ],
+        "expectedSignature": "sig-asig-b"
+      },
+      "stop": {
+        "toolUse": {
+          "type": "message_delta",
+          "delta": { "stop_reason": "tool_use" }
+        },
+        "endTurn": {
+          "type": "message_delta",
+          "delta": { "stop_reason": "end_turn" }
+        }
+      }
+    },
+    "message": {
+      "content": {
+        "message": {
+          "id": "msg_nonstream",
+          "type": "message",
+          "role": "assistant",
+          "stop_reason": "end_turn",
+          "content": [
+            {
+              "type": "thinking",
+              "thinking": "先想清楚",
+              "signature": "sig-nonstream"
+            },
+            { "type": "text", "text": "答案是" },
+            { "type": "text", "text": "四十二" }
+          ]
+        },
+        "expected": {
+          "content": "答案是四十二",
+          "thought": "先想清楚",
+          "signature": "sig-nonstream",
+          "stopped": true
+        }
+      },
+      "toolUse": {
+        "message": {
+          "id": "msg_tools",
+          "type": "message",
+          "role": "assistant",
+          "stop_reason": "tool_use",
+          "content": [
+            {
+              "type": "tool_use",
+              "id": "toolu_9",
+              "name": "get_weather",
+              "input": { "city": "北京" }
+            },
+            {
+              "type": "tool_use",
+              "id": "toolu_10",
+              "name": "get_time",
+              "input": null
+            }
+          ]
+        },
+        "expected": {
+          "content": "",
+          "thought": "",
+          "stopped": false,
+          "callings": [
+            {
+              "index": 0,
+              "id": "toolu_9",
+              "name": "get_weather",
+              "arguments": "{\"city\":\"北京\"}"
+            },
+            {
+              "index": 1,
+              "id": "toolu_10",
+              "name": "get_time",
+              "arguments": "{}"
+            }
+          ]
+        }
+      },
+      "empty": {
+        "message": null
+      }
+    }
+  },
+  "expected": {
+    "plainSystem": "",
+    "plainMessages": [
+      { "role": "user", "content": "第一段历史的问题" },
+      { "role": "assistant", "content": "第一段历史的回答" },
+      { "role": "user", "content": "第二段历史的问题" }
+    ],
+    "plainSummaries": [
+      { "role": "system", "content": "" },
+      { "role": "user", "content": "第一段历史的问题" },
+      { "role": "assistant", "content": "第一段历史的回答" },
+      { "role": "user", "content": "第二段历史的问题" }
+    ],
+    "systemContents": ["系统提示 A", "系统提示 B"],
+    "joinedSystem": "系统提示 A\n系统提示 B",
+    "signedMessages": [
+      { "role": "user", "content": "带思考的问题" },
+      {
+        "role": "assistant",
+        "content": [
+          { "type": "text", "text": "带思考的回答" },
+          {
+            "type": "thinking",
+            "thinking": "这是思考过程",
+            "signature": "sig-123"
+          }
+        ]
+      },
+      { "role": "user", "content": "第二段历史的问题" }
+    ],
+    "signedSummaries": [
+      { "role": "system", "content": "" },
+      { "role": "user", "content": "带思考的问题" },
+      { "role": "assistant", "content": "带思考的回答" },
+      { "role": "user", "content": "第二段历史的问题" }
+    ],
+    "callerMessages": [
+      { "role": "user", "content": "调用工具的问题" },
+      {
+        "role": "assistant",
+        "content": [
+          { "type": "text", "text": "我来查一下" },
+          {
+            "type": "thinking",
+            "thinking": "需要调用工具",
+            "signature": "sig-tool"
+          },
+          {
+            "type": "tool_use",
+            "id": "toolu_1",
+            "name": "get_weather",
+            "input": { "city": "上海" }
+          }
+        ]
+      },
+      {
+        "role": "user",
+        "content": [
+          { "type": "tool_result", "tool_use_id": "toolu_1", "content": "晴" }
+        ]
+      },
+      { "role": "user", "content": "第二段历史的问题" }
+    ],
+    "extraCallerContent": "补充的回复",
+    "extraCallerMessage": {
+      "role": "assistant",
+      "content": [{ "type": "text", "text": "补充的回复" }]
+    }
+  }
+}

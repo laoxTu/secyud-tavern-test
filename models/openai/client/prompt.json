@@ -1,0 +1,181 @@
+{
+  "config": {
+    "extras": "{}",
+    "url": "https://api.example.com/v1",
+    "format": "chat",
+    "token": 100000
+  },
+  "tools": [
+    {
+      "type": "variable",
+      "name": "get_weather",
+      "description": "查询天气",
+      "parameters": {
+        "type": "object",
+        "properties": { "city": { "type": "string" } },
+        "required": ["city"]
+      }
+    }
+  ],
+  "histories": [
+    {
+      "masterId": "00000000-0000-0000-0000-000000000001",
+      "sequence": 0,
+      "summary": false,
+      "variables": {},
+      "prompts": [{ "content": "你好", "variables": [] }],
+      "output": 0,
+      "outputs": [
+        [
+          {
+            "content": "我来查一下",
+            "thought": "",
+            "variables": [],
+            "callings": [
+              {
+                "index": 0,
+                "id": "call_1",
+                "name": "get_weather",
+                "arguments": "{\"city\":\"上海\"}",
+                "result": "晴"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "masterId": "00000000-0000-0000-0000-000000000001",
+      "sequence": 1,
+      "summary": false,
+      "variables": {},
+      "prompts": [{ "content": "你好", "variables": [] }],
+      "output": 0,
+      "outputs": []
+    }
+  ],
+  "expected": {
+    "chat": {
+      "messages": [
+        { "role": "system", "content": "你是助手" },
+        { "role": "user", "content": "你好" },
+        { "role": "assistant", "content": "我来查一下" },
+        {
+          "role": "assistant",
+          "content": "我来查一下",
+          "tool_calls": [
+            {
+              "id": "call_1",
+              "type": "function",
+              "function": {
+                "arguments": "{\"city\":\"上海\"}",
+                "name": "get_weather"
+              }
+            }
+          ]
+        },
+        { "role": "tool", "tool_call_id": "call_1", "content": "晴" },
+        { "role": "user", "content": "你好" }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "parameters": {
+              "type": "object",
+              "properties": { "city": { "type": "string" } },
+              "required": ["city"]
+            },
+            "description": "查询天气"
+          }
+        }
+      ],
+      "summaries": [
+        { "role": "system", "content": "你是助手" },
+        { "role": "user", "content": "你好" },
+        { "role": "assistant", "content": "我来查一下" },
+        {
+          "role": "tool: get_weather",
+          "content": "call_1\narguments: \n{\"city\":\"上海\"}\nresponse: \n晴"
+        },
+        { "role": "user", "content": "你好" }
+      ]
+    },
+    "responses": {
+      "instructions": "你是助手",
+      "input": [
+        { "role": "user", "content": "你好" },
+        { "role": "assistant", "content": "我来查一下" },
+        {
+          "type": "function_call",
+          "call_id": "call_1",
+          "arguments": "{\"city\":\"上海\"}",
+          "name": "get_weather"
+        },
+        {
+          "type": "function_call_output",
+          "call_id": "call_1",
+          "output": "晴"
+        },
+        { "role": "user", "content": "你好" }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "name": "get_weather",
+          "parameters": {
+            "type": "object",
+            "properties": { "city": { "type": "string" } },
+            "required": ["city"]
+          },
+          "description": "查询天气",
+          "strict": false
+        }
+      ],
+      "systemSummary": { "content": "你是助手", "role": "system" }
+    }
+  },
+  "tokenOver": {
+    "usage": { "prompt": 90000, "output": 10004 },
+    "history": {
+      "masterId": "00000000-0000-0000-0000-000000000002",
+      "sequence": 0,
+      "summary": false,
+      "variables": {},
+      "prompts": [],
+      "output": 0,
+      "outputs": [
+        [
+          {
+            "content": "旧输出",
+            "thought": "",
+            "variables": [],
+            "properties": { "usage": { "prompt": 90000, "output": 10004 } }
+          }
+        ]
+      ]
+    }
+  },
+  "tokenEqual": {
+    "usage": { "prompt": 99999, "output": 1 },
+    "history": {
+      "masterId": "00000000-0000-0000-0000-000000000003",
+      "sequence": 0,
+      "summary": false,
+      "variables": {},
+      "prompts": [],
+      "output": 0,
+      "outputs": [
+        [
+          {
+            "content": "旧输出",
+            "thought": "",
+            "variables": [],
+            "properties": { "usage": { "prompt": 99999, "output": 1 } }
+          }
+        ]
+      ]
+    }
+  }
+}

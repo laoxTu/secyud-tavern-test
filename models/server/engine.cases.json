@@ -1,0 +1,13 @@
+{
+  "secrets": {
+    "plain": "sk-test-plain",
+    "ivByte": 7
+  },
+  "input": {
+    "messages": [{ "role": "user", "content": "你好" }]
+  },
+  "chunks": [
+    { "choices": [{ "delta": { "content": "你" } }] },
+    { "choices": [{ "delta": { "content": "好" }, "finish_reason": "stop" }] }
+  ]
+}

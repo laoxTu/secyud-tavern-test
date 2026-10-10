@@ -1,0 +1,78 @@
+{
+  "model": {
+    "id": "11111111-1111-4111-8111-111111111111",
+    "name": "测试模型",
+    "stream": true,
+    "builder": "default",
+    "iterations": 20,
+    "properties": {
+      "config": {
+        "url": "https://api.example.com/v1",
+        "format": "chat",
+        "token": 100000,
+        "extras": "{\"temperature\": 0.1, \"top_p\": 0.2, \"user\": \"extras-user\"}"
+      },
+      "option": {
+        "model": "fp-model",
+        "temperature": 0.7,
+        "top_p": 0.8,
+        "presence_penalty": 0.5,
+        "frequency_penalty": 0.25
+      }
+    }
+  },
+  "input": {
+    "messages": [{ "role": "user", "content": "你好" }],
+    "model": "input-model",
+    "user": "input-user"
+  },
+  "apiKey": "test-api-key",
+  "extrasInvalid": "{不是合法的 json",
+  "chat": {
+    "expected": {
+      "messages": [{ "role": "user", "content": "你好" }],
+      "model": "input-model",
+      "temperature": 0.1,
+      "top_p": 0.2,
+      "user": "extras-user",
+      "presence_penalty": 0.5,
+      "frequency_penalty": 0.25,
+      "stream": true,
+      "stream_options": { "include_usage": true }
+    },
+    "createResult": {
+      "id": "chatcmpl-1",
+      "choices": [{ "index": 0, "message": { "role": "assistant", "content": "hi" } }]
+    }
+  },
+  "responses": {
+    "input": {
+      "input": [{ "role": "user", "content": "你好" }],
+      "model": "input-model",
+      "user": "input-user"
+    },
+    "expected": {
+      "input": [{ "role": "user", "content": "你好" }],
+      "model": "input-model",
+      "temperature": 0.1,
+      "top_p": 0.2,
+      "user": "extras-user",
+      "presence_penalty": 0.5,
+      "frequency_penalty": 0.25,
+      "stream": true,
+      "stream_options": { "include_usage": true }
+    },
+    "createResult": {
+      "id": "resp-1",
+      "output_text": "hi"
+    }
+  },
+  "extrasConflict": {
+    "extras": "{\"stream\": false, \"stream_options\": {\"include_usage\": false}, \"model\": \"extras-model\"}",
+    "expected": {
+      "stream": false,
+      "stream_options": { "include_usage": false },
+      "model": "extras-model"
+    }
+  }
+}

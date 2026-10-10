@@ -1,0 +1,52 @@
+{
+  "model": {
+    "engine": "fake",
+    "stream": false
+  },
+  "engineInput": {
+    "messages": [{ "role": "user", "content": "来自引擎的输入" }]
+  },
+  "engineResult": {
+    "content": "引擎返回的内容"
+  },
+  "histories": [
+    {
+      "masterId": "realm",
+      "sequence": 0,
+      "summary": true,
+      "variables": {},
+      "prompts": [],
+      "output": 0,
+      "outputs": []
+    },
+    {
+      "masterId": "realm",
+      "sequence": 1,
+      "summary": false,
+      "variables": {},
+      "prompts": [{ "content": "第二段", "variables": [] }],
+      "output": 0,
+      "outputs": []
+    },
+    {
+      "masterId": "realm",
+      "sequence": 2,
+      "summary": false,
+      "variables": {},
+      "prompts": [{ "content": "第三段", "variables": [] }],
+      "output": 0,
+      "outputs": []
+    }
+  ],
+  "noSummary": [
+    {
+      "masterId": "realm",
+      "sequence": 0,
+      "summary": false,
+      "variables": {},
+      "prompts": [{ "content": "唯一一段", "variables": [] }],
+      "output": 0,
+      "outputs": []
+    }
+  ]
+}

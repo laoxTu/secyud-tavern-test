@@ -1,0 +1,17 @@
+{
+  "listRequest": { "skip": 0, "size": 10 },
+  "createBody": {
+    "name": "新建模型",
+    "stream": true,
+    "builder": "default",
+    "iterations": 20,
+    "key": "sk-secret",
+    "iv": [1, 2, 3]
+  },
+  "cloneBody": { "name": "克隆模型" },
+  "updateBody": { "name": "改名后的模型", "iterations": 30 },
+  "input": { "messages": [{ "role": "user", "content": "你好" }] },
+  "newId": "99999999-9999-4999-8999-999999999999",
+  "packed": "PACKED_STREAM",
+  "result": { "choices": [{ "message": { "content": "你好" } }] }
+}

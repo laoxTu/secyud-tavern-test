@@ -1,0 +1,178 @@
+{
+  "responsesStreamText": {
+    "format": "responses",
+    "stream": true,
+    "message": {
+      "type": "response.output_text.delta",
+      "delta": "流式"
+    },
+    "output": {
+      "content": "",
+      "thought": "",
+      "variables": [],
+      "properties": {}
+    },
+    "deltas": [
+      { "type": "response.output_text.delta", "delta": "流式" },
+      { "type": "response.reasoning_summary_text.delta", "delta": "思考" },
+      { "type": "response.output_text.delta", "delta": "正文" }
+    ],
+    "expected": { "content": "流式正文", "thought": "思考" }
+  },
+  "responsesStreamTools": {
+    "format": "responses",
+    "stream": true,
+    "message": {
+      "type": "response.output_item.added",
+      "item": {
+        "type": "function_call",
+        "id": "fc_1",
+        "call_id": "call_1",
+        "name": "get_weather",
+        "arguments": ""
+      }
+    },
+    "output": {
+      "content": "",
+      "thought": "",
+      "variables": [],
+      "properties": {}
+    },
+    "deltas": [
+      {
+        "type": "response.output_item.added",
+        "item": {
+          "type": "function_call",
+          "id": "fc_1",
+          "call_id": "call_1",
+          "name": "get_weather",
+          "arguments": ""
+        }
+      },
+      { "type": "response.function_call_arguments.delta", "delta": "{\"city\":" },
+      { "type": "response.function_call_arguments.delta", "delta": "\"上海\"}" },
+      {
+        "type": "response.output_item.added",
+        "item": { "type": "message", "id": "msg_1", "content": [] }
+      },
+      {
+        "type": "response.completed",
+        "response": {
+          "id": "resp_stream",
+          "usage": { "input_tokens": 7, "output_tokens": 9, "total_tokens": 16 }
+        }
+      }
+    ],
+    "expected": {
+      "usage": { "prompt": 7, "output": 9 },
+      "callings": [
+        {
+          "index": 0,
+          "id": "fc_1",
+          "name": "get_weather",
+          "arguments": "{\"city\":\"上海\"}"
+        }
+      ]
+    }
+  },
+  "responsesStreamStop": {
+    "format": "responses",
+    "stream": true,
+    "message": {
+      "type": "response.output_text.delta",
+      "delta": "没有工具"
+    },
+    "output": {
+      "content": "",
+      "thought": "",
+      "variables": [],
+      "properties": {}
+    },
+    "deltas": [
+      { "type": "response.output_text.delta", "delta": "没有工具" },
+      { "type": "response.completed", "response": { "id": "resp_stop" } }
+    ]
+  },
+  "responsesComplete": {
+    "format": "responses",
+    "stream": false,
+    "message": {
+      "id": "resp_complete",
+      "output": [
+        {
+          "type": "message",
+          "id": "msg_1",
+          "content": [
+            { "type": "output_text", "text": "普通" },
+            { "type": "refusal", "refusal": "ignored" },
+            { "type": "output_text", "text": "回复" }
+          ]
+        },
+        {
+          "type": "reasoning",
+          "id": "rs_1",
+          "content": [{ "type": "reasoning_text", "text": "深思" }]
+        }
+      ],
+      "usage": { "input_tokens": 3, "output_tokens": 4, "total_tokens": 7 }
+    },
+    "output": {
+      "content": "",
+      "thought": "",
+      "variables": [],
+      "properties": {}
+    },
+    "expected": {
+      "content": "普通回复",
+      "thought": "深思",
+      "usage": { "prompt": 3, "output": 4 }
+    }
+  },
+  "responsesCompleteWithCalling": {
+    "format": "responses",
+    "stream": false,
+    "message": {
+      "id": "resp_complete_calling",
+      "output": [
+        {
+          "type": "function_call",
+          "id": "fc_1",
+          "call_id": "call_1",
+          "name": "get_weather",
+          "arguments": "{}"
+        },
+        {
+          "type": "function_call",
+          "id": "fc_2",
+          "call_id": "call_2",
+          "name": "get_time"
+        }
+      ],
+      "usage": { "input_tokens": 5, "output_tokens": 6, "total_tokens": 11 }
+    },
+    "output": {
+      "content": "",
+      "thought": "",
+      "variables": [],
+      "properties": {},
+      "callings": []
+    },
+    "expected": {
+      "usage": { "prompt": 5, "output": 6 },
+      "callings": [
+        {
+          "index": 0,
+          "id": "call_1",
+          "name": "get_weather",
+          "arguments": "{}"
+        },
+        {
+          "index": 1,
+          "id": "call_2",
+          "name": "get_time",
+          "arguments": ""
+        }
+      ]
+    }
+  }
+}

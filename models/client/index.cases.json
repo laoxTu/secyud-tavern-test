@@ -1,0 +1,38 @@
+{
+  "context": {
+    "role": "user",
+    "type": "input",
+    "history": null
+  },
+  "convert": [
+    {
+      "name": "没有转换器时只做首尾去空白",
+      "text": "  原始内容  ",
+      "steps": [],
+      "expected": "原始内容"
+    },
+    {
+      "name": "多个转换器按顺序依次应用",
+      "text": "abc",
+      "steps": ["upper", "bracket"],
+      "expected": "[ABC]"
+    },
+    {
+      "name": "只有最终结果去空白，中间结果保留",
+      "text": " x ",
+      "steps": ["appendSpace", "upper"],
+      "expected": "X"
+    },
+    {
+      "name": "全文为空白时应当得到空串",
+      "text": "   ",
+      "steps": [],
+      "expected": ""
+    }
+  ],
+  "keys": [
+    { "input": "lorebook", "expected": "model.lorebook" },
+    { "input": "model", "expected": "model.model" },
+    { "input": "", "expected": "model." }
+  ]
+}

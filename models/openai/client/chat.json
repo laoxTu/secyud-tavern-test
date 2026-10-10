@@ -1,0 +1,283 @@
+{
+  "chatComplete": {
+    "format": "chat",
+    "stream": false,
+    "message": {
+      "id": "chatcmpl-complete",
+      "object": "chat.completion",
+      "model": "test-model",
+      "choices": [
+        {
+          "index": 0,
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "完整回复",
+            "reasoning_content": "完整思考",
+            "tool_calls": [
+              {
+                "id": "call_a",
+                "type": "function",
+                "function": {
+                  "name": "get_weather",
+                  "arguments": "{\"city\":\"上海\"}"
+                }
+              },
+              {
+                "id": "call_b",
+                "type": "image",
+                "function": {
+                  "name": "should_be_skipped",
+                  "arguments": "{}"
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 10,
+        "completion_tokens": 20,
+        "total_tokens": 30
+      }
+    },
+    "output": {
+      "content": "",
+      "thought": "",
+      "variables": [],
+      "properties": {},
+      "callings": []
+    },
+    "expected": {
+      "content": "完整回复",
+      "thought": "完整思考",
+      "usage": { "prompt": 10, "output": 20 },
+      "callings": [
+        {
+          "index": 0,
+          "id": "call_a",
+          "name": "get_weather",
+          "arguments": "{\"city\":\"上海\"}"
+        }
+      ]
+    }
+  },
+  "chatCompleteWithoutCallings": {
+    "format": "chat",
+    "stream": false,
+    "message": {
+      "id": "chatcmpl-no-callings",
+      "object": "chat.completion",
+      "choices": [
+        {
+          "index": 0,
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "带工具调用但没有 callings 字段",
+            "tool_calls": [
+              {
+                "id": "call_a",
+                "type": "function",
+                "function": {
+                  "name": "get_weather",
+                  "arguments": "{\"city\":\"上海\"}"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "output": {
+      "content": "",
+      "thought": "",
+      "variables": [],
+      "properties": {}
+    },
+    "expected": {
+      "callings": [
+        {
+          "index": 0,
+          "id": "call_a",
+          "name": "get_weather",
+          "arguments": "{\"city\":\"上海\"}"
+        }
+      ]
+    }
+  },
+  "chatStreamEmpty": {
+    "format": "chat",
+    "stream": true,
+    "message": {
+      "id": "chunk-empty",
+      "object": "chat.completion.chunk",
+      "choices": []
+    },
+    "output": {
+      "content": "",
+      "thought": "",
+      "variables": [],
+      "properties": {}
+    }
+  },
+  "chatStreamText": {
+    "format": "chat",
+    "stream": true,
+    "message": {
+      "id": "chunk-text",
+      "object": "chat.completion.chunk",
+      "choices": [
+        {
+          "index": 0,
+          "finish_reason": null,
+          "delta": {
+            "role": "assistant",
+            "content": "分片正文",
+            "reasoning_content": "分片思考"
+          }
+        }
+      ]
+    },
+    "output": {
+      "content": "",
+      "thought": "",
+      "variables": [],
+      "properties": {}
+    },
+    "expected": {
+      "content": "分片正文",
+      "thought": "分片思考"
+    }
+  },
+  "chatStreamStop": {
+    "format": "chat",
+    "stream": true,
+    "message": {
+      "id": "chunk-stop",
+      "object": "chat.completion.chunk",
+      "choices": [{ "index": 0, "finish_reason": "stop", "delta": {} }]
+    },
+    "output": {
+      "content": "",
+      "thought": "",
+      "variables": [],
+      "properties": {}
+    }
+  },
+  "chatStreamTools": {
+    "format": "chat",
+    "stream": true,
+    "message": {
+      "id": "chunk-tool",
+      "object": "chat.completion.chunk",
+      "choices": [
+        {
+          "index": 0,
+          "finish_reason": null,
+          "delta": {
+            "role": "assistant",
+            "tool_calls": [
+              {
+                "index": 0,
+                "id": "call_1",
+                "type": "function",
+                "function": {
+                  "name": "get_weather",
+                  "arguments": "\u007b\u0022city\u0022\u003a\u0022"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "deltas": [
+      {
+        "id": "chunk-tool-1",
+        "object": "chat.completion.chunk",
+        "choices": [
+          {
+            "index": 0,
+            "finish_reason": null,
+            "delta": {
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "id": "call_1",
+                  "type": "function",
+                  "function": {
+                    "name": "get_weather",
+                    "arguments": "\u007b\u0022city\u0022\u003a\u0022"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "chunk-tool-2",
+        "object": "chat.completion.chunk",
+        "choices": [
+          {
+            "index": 0,
+            "finish_reason": null,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 0,
+                  "function": { "arguments": "\u4e0a\u6d77\u0022\u007d" }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "chunk-tool-3",
+        "object": "chat.completion.chunk",
+        "choices": [
+          {
+            "index": 0,
+            "finish_reason": null,
+            "delta": {
+              "tool_calls": [
+                {
+                  "index": 1,
+                  "id": "call_2",
+                  "type": "function",
+                  "function": { "arguments": "\u007b\u007d" }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "output": {
+      "content": "",
+      "thought": "",
+      "variables": [],
+      "properties": {},
+      "callings": []
+    },
+    "expected": {
+      "callings": [
+        {
+          "index": 0,
+          "id": "call_1",
+          "name": "get_weather",
+          "arguments": "{\"city\":\"上海\"}"
+        },
+        {
+          "index": 1,
+          "id": "call_2",
+          "name": "",
+          "arguments": "{}"
+        }
+      ]
+    }
+  }
+}

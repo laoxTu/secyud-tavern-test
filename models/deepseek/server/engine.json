@@ -1,0 +1,59 @@
+{
+  "baseURL": "https://api.deepseek.com",
+  "apiKey": "sk-test-deepseek",
+  "model": {
+    "id": "22222222-2222-4222-8222-222222222222",
+    "name": "深度求索测试模型",
+    "stream": true,
+    "engine": "deepseek",
+    "builder": "default",
+    "iterations": 20,
+    "properties": {
+      "option": {
+        "model": "deepseek-pro",
+        "thinking": {
+          "type": "enabled"
+        },
+        "reasoning_effort": "max",
+        "temperature": 0.5,
+        "top_p": 0.8,
+        "max_tokens": 2048,
+        "logprobs": true,
+        "top_logprobs": 5
+      }
+    }
+  },
+  "input": {
+    "messages": [{ "role": "user", "content": "你好" }],
+    "temperature": 0.25,
+    "stream": false,
+    "stream_options": { "include_usage": false },
+    "stop": ["\n\n"]
+  },
+  "expected": {
+    "model": "deepseek-pro",
+    "thinking": {
+      "type": "enabled"
+    },
+    "reasoning_effort": "max",
+    "temperature": 0.25,
+    "top_p": 0.8,
+    "max_tokens": 2048,
+    "logprobs": true,
+    "top_logprobs": 5,
+    "messages": [{ "role": "user", "content": "你好" }],
+    "stop": ["\n\n"],
+    "stream": true,
+    "stream_options": { "include_usage": true }
+  },
+  "overrides": {
+    "logprobsOff": { "logprobs": false },
+    "maxTokensZero": { "max_tokens": 0 },
+    "thinkingDisabled": { "thinking": { "type": "disabled" } }
+  },
+  "createResult": {
+    "id": "chatcmpl-test",
+    "object": "chat.completion",
+    "choices": []
+  }
+}

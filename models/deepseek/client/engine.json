@@ -1,0 +1,344 @@
+{
+  "name": "deepseek",
+  "propertyKeys": ["config", "option"],
+  "configure": {
+    "checked": {
+      "entries": [
+        ["model", "deepseek-pro"],
+        ["thinking", "on"],
+        ["reasoning_effort", "max"],
+        ["temperature", "0.75"],
+        ["max_tokens", "512"],
+        ["top_p", "0.9"],
+        ["logprobs", "on"],
+        ["top_logprobs", "7"],
+        ["token_limit", "8000"]
+      ],
+      "config": {
+        "token": 8000
+      },
+      "option": {
+        "model": "deepseek-pro",
+        "thinking": {
+          "type": "enabled"
+        },
+        "reasoning_effort": "max",
+        "temperature": 0.75,
+        "top_p": 0.9,
+        "max_tokens": 512,
+        "logprobs": true,
+        "top_logprobs": 7
+      }
+    },
+    "unchecked": {
+      "entries": [
+        ["model", "deepseek-flash"],
+        ["reasoning_effort", "high"],
+        ["temperature", "0.75"],
+        ["max_tokens", "512"],
+        ["top_p", "0.9"],
+        ["top_logprobs", "7"],
+        ["token_limit", "8000"]
+      ],
+      "config": {
+        "token": 8000
+      },
+      "option": {
+        "model": "deepseek-flash",
+        "thinking": {
+          "type": "disabled"
+        },
+        "reasoning_effort": "high",
+        "temperature": 0.75,
+        "top_p": 0.9,
+        "max_tokens": 512,
+        "logprobs": false,
+        "top_logprobs": 7
+      }
+    }
+  },
+  "realm": {
+    "id": "00000000-0000-0000-0000-000000000002",
+    "name": "测试王国",
+    "presets": [],
+    "histories": [],
+    "model": {
+      "id": "22222222-2222-4222-8222-222222222222",
+      "name": "深度求索测试模型",
+      "stream": true,
+      "engine": "deepseek",
+      "builder": "default",
+      "iterations": 20
+    },
+    "properties": {}
+  },
+  "realmProperties": {
+    "enabled": {
+      "config": {
+        "token": 100000
+      },
+      "option": {
+        "model": "deepseek-pro",
+        "thinking": {
+          "type": "enabled"
+        },
+        "reasoning_effort": "max",
+        "temperature": 0.75,
+        "top_p": 0.9,
+        "max_tokens": 512,
+        "logprobs": true,
+        "top_logprobs": 7
+      }
+    },
+    "disabled": {
+      "config": {
+        "token": 100000
+      },
+      "option": {
+        "model": "deepseek-pro",
+        "thinking": {
+          "type": "disabled"
+        },
+        "reasoning_effort": "max",
+        "temperature": 0.75,
+        "top_p": 0.9,
+        "max_tokens": 512,
+        "logprobs": true,
+        "top_logprobs": 7
+      }
+    },
+    "tinyToken": {
+      "config": {
+        "token": 100
+      },
+      "option": {
+        "model": "deepseek-pro",
+        "thinking": {
+          "type": "disabled"
+        },
+        "reasoning_effort": "max",
+        "temperature": 0.75,
+        "top_p": 0.9,
+        "max_tokens": 512,
+        "logprobs": true,
+        "top_logprobs": 7
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "get_knowledge",
+      "description": "获取知识",
+      "disabled": false,
+      "parameters": {
+        "type": "object",
+        "properties": { "type": { "type": "string" } }
+      }
+    },
+    {
+      "name": "get_time",
+      "description": "获取时间",
+      "disabled": false,
+      "parameters": { "type": "object", "properties": {} }
+    }
+  ],
+  "pools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_knowledge",
+        "description": "获取知识",
+        "parameters": {
+          "type": "object",
+          "properties": { "type": { "type": "string" } }
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "get_time",
+        "description": "获取时间",
+        "parameters": { "type": "object", "properties": {} }
+      }
+    }
+  ],
+  "histories": {
+    "replied": {
+      "masterId": "00000000-0000-0000-0000-000000000002",
+      "sequence": 0,
+      "summary": false,
+      "variables": {},
+      "prompts": [{ "content": "你好", "variables": [], "properties": {} }],
+      "output": 0,
+      "outputs": [
+        [
+          {
+            "content": "回复一",
+            "thought": "思考一",
+            "variables": [],
+            "properties": {}
+          }
+        ]
+      ]
+    },
+    "pending": {
+      "masterId": "00000000-0000-0000-0000-000000000002",
+      "sequence": 1,
+      "summary": false,
+      "variables": {},
+      "prompts": [{ "content": "再见", "variables": [], "properties": {} }],
+      "output": -1,
+      "outputs": []
+    },
+    "calling": {
+      "masterId": "00000000-0000-0000-0000-000000000002",
+      "sequence": 0,
+      "summary": false,
+      "variables": {},
+      "prompts": [{ "content": "查一下", "variables": [], "properties": {} }],
+      "output": 0,
+      "outputs": [
+        [
+          {
+            "content": "",
+            "thought": "想调用",
+            "variables": [],
+            "properties": {},
+            "callings": [
+              {
+                "index": 0,
+                "id": "call_1",
+                "name": "get_knowledge",
+                "arguments": "{\"type\":\"a\"}",
+                "result": "结果A"
+              },
+              {
+                "index": 1,
+                "id": "call_2",
+                "name": "get_time",
+                "arguments": "{}"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    "used": {
+      "masterId": "00000000-0000-0000-0000-000000000002",
+      "sequence": 0,
+      "summary": false,
+      "variables": {},
+      "prompts": [{ "content": "你好", "variables": [], "properties": {} }],
+      "output": 0,
+      "outputs": [
+        [
+          {
+            "content": "回复一",
+            "thought": "思考一",
+            "variables": [],
+            "properties": {
+              "usage": { "prompt": 40000, "output": 50000 }
+            }
+          }
+        ]
+      ]
+    }
+  },
+  "inject": {
+    "assist": "模拟输出",
+    "caller": "模拟调用",
+    "callings": [
+      {
+        "index": 0,
+        "id": "call_9",
+        "name": "lookup",
+        "arguments": "{}",
+        "result": "调用结果"
+      }
+    ]
+  },
+  "toast": {
+    "message": "token is over limit. use summary to compress",
+    "options": { "richColors": true }
+  },
+  "result": {
+    "message": {
+      "id": "chatcmpl-nostream",
+      "object": "chat.completion",
+      "choices": [
+        {
+          "index": 0,
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "",
+            "reasoning_content": "先想一下",
+            "tool_calls": [
+              {
+                "id": "call_7",
+                "type": "function",
+                "function": { "name": "get_time", "arguments": "{}" }
+              }
+            ]
+          }
+        }
+      ],
+      "usage": { "prompt_tokens": 10, "completion_tokens": 20 }
+    }
+  },
+  "expected": {
+    "conversation": {
+      "disabled": [
+        { "role": "user", "content": "你好" },
+        { "role": "assistant", "content": "回复一" },
+        { "role": "user", "content": "再见" }
+      ],
+      "enabled": [
+        { "role": "user", "content": "你好" },
+        { "role": "assistant", "content": "回复一", "reasoning_content": "思考一" },
+        { "role": "user", "content": "再见" }
+      ],
+      "summaries": [
+        { "role": "user", "content": "你好" },
+        { "role": "assistant", "content": "回复一" },
+        { "role": "user", "content": "再见" }
+      ]
+    },
+    "calling": {
+      "messages": [
+        { "role": "user", "content": "查一下" },
+        {
+          "role": "assistant",
+          "content": "",
+          "reasoning_content": "想调用",
+          "tool_calls": [
+            {
+              "id": "call_1",
+              "type": "function",
+              "function": {
+                "name": "get_knowledge",
+                "arguments": "{\"type\":\"a\"}"
+              }
+            },
+            {
+              "id": "call_2",
+              "type": "function",
+              "function": { "name": "get_time", "arguments": "{}" }
+            }
+          ]
+        },
+        { "role": "tool", "tool_call_id": "call_1", "content": "结果A" },
+        { "role": "tool", "tool_call_id": "call_2", "content": "error" },
+        { "role": "user", "content": "再见" }
+      ]
+    },
+    "inject": {
+      "reasoningContent": "user generated calling",
+      "summaries": [
+        { "role": "assistant", "content": "模拟输出" },
+        { "role": "assistant", "content": "模拟调用" }
+      ]
+    }
+  }
+}

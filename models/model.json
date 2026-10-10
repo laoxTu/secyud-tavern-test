@@ -1,0 +1,23 @@
+{
+  "id": "11111111-1111-4111-8111-111111111111",
+  "name": "测试模型",
+  "stream": true,
+  "engine": "fake",
+  "builder": "default",
+  "iterations": 20,
+  "properties": {
+    "config": {
+      "url": "https://api.example.com/v1",
+      "format": "chat",
+      "token": 100000,
+      "extras": "{}"
+    },
+    "option": {
+      "model": "test-model",
+      "temperature": 0.5,
+      "top_p": 1,
+      "presence_penalty": 0,
+      "frequency_penalty": 0
+    }
+  }
+}

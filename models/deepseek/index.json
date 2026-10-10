@@ -1,0 +1,22 @@
+{
+  "default": {
+    "config": {
+      "token": 100000
+    },
+    "options": {
+      "logprobs": false,
+      "max_tokens": 0,
+      "model": "deepseek-flash",
+      "reasoning_effort": "high",
+      "temperature": 1,
+      "thinking": {
+        "type": "enabled"
+      },
+      "top_logprobs": 10,
+      "top_p": 1
+    }
+  },
+  "models": ["deepseek-flash", "deepseek-pro"],
+  "name": "deepseek",
+  "reasoningEfforts": ["high", "max"]
+}

@@ -1,0 +1,43 @@
+{
+  "create": {
+    "invalidId": "not-a-uuid",
+    "simple": {
+      "id": "33333333-3333-4333-8333-333333333333",
+      "name": "新模型",
+      "stream": true,
+      "builder": "default",
+      "iterations": 20
+    },
+    "blankName": {
+      "id": "44444444-4444-4444-8444-444444444444",
+      "name": "   ",
+      "stream": true,
+      "builder": "default",
+      "iterations": 20
+    },
+    "noName": {
+      "id": "55555555-5555-4555-8555-555555555555",
+      "stream": true,
+      "builder": "default",
+      "iterations": 20
+    }
+  },
+  "update": {
+    "blankName": { "name": "  " },
+    "onlyName": { "name": "改名后的模型" },
+    "plainKey": "sk-test-plain",
+    "noKey": { "name": "没有密钥" },
+    "withId": {
+      "id": "66666666-6666-4666-8666-666666666666",
+      "name": "带 id 的更新"
+    }
+  },
+  "requests": {
+    "paged": { "skip": 20, "size": 10 },
+    "fuzzy": { "search": { "fuzzy": "测试" } }
+  },
+  "list": {
+    "mapKeys": ["id", "name"],
+    "sorterLength": 2
+  }
+}

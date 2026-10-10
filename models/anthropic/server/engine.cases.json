@@ -1,0 +1,87 @@
+{
+  "apiKey": "sk-ant-test-key",
+  "model": {
+    "id": "model-1",
+    "name": "claude",
+    "engine": "anthropic",
+    "builder": "default",
+    "iterations": 20,
+    "stream": true
+  },
+  "create": {
+    "url": "https://gateway.local/anthropic",
+    "extras": "{}",
+    "input": {
+      "system": "系统提示词",
+      "messages": [{ "role": "user", "content": "你好" }]
+    }
+  },
+  "parameters": {
+    "option": {
+      "model": "claude-from-option",
+      "max_tokens": 4096,
+      "temperature": 0.5,
+      "top_p": 0.9
+    },
+    "cases": {
+      "inputOverridesOptions": {
+        "extras": "{\"top_k\": 7}",
+        "input": {
+          "max_tokens": 2048,
+          "system": "系统提示词",
+          "messages": [{ "role": "user", "content": "你好" }]
+        },
+        "expected": {
+          "model": "claude-from-option",
+          "max_tokens": 2048,
+          "temperature": 0.5,
+          "top_p": 0.9,
+          "top_k": 7,
+          "stream": true,
+          "system": "系统提示词",
+          "messages": [{ "role": "user", "content": "你好" }]
+        }
+      },
+      "streamFromModel": {
+        "extras": "{}",
+        "input": { "stream": false, "messages": [] },
+        "expected": {
+          "model": "claude-from-option",
+          "max_tokens": 4096,
+          "temperature": 0.5,
+          "top_p": 0.9,
+          "stream": true,
+          "messages": []
+        }
+      },
+      "extrasOverridesAll": {
+        "extras": "{\"model\":\"claude-from-extras\",\"temperature\":0.25,\"stream\":false,\"top_k\":7}",
+        "input": { "max_tokens": 2048, "messages": [] },
+        "expected": {
+          "model": "claude-from-extras",
+          "max_tokens": 2048,
+          "temperature": 0.25,
+          "top_p": 0.9,
+          "stream": false,
+          "top_k": 7,
+          "messages": []
+        }
+      },
+      "invalidExtras": {
+        "extras": "{ 不是 json",
+        "input": { "messages": [] },
+        "expected": {
+          "model": "claude-from-option",
+          "max_tokens": 4096,
+          "temperature": 0.5,
+          "top_p": 0.9,
+          "stream": true,
+          "messages": []
+        }
+      }
+    }
+  },
+  "fallback": {
+    "input": { "messages": [] }
+  }
+}

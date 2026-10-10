@@ -1,0 +1,19 @@
+{
+  "name": "openai",
+  "formats": ["chat", "responses"],
+  "default": {
+    "config": {
+      "extras": "{}",
+      "token": 100000,
+      "format": "chat",
+      "url": "https://api.openai.com/v1"
+    },
+    "options": {
+      "model": "",
+      "temperature": 1,
+      "top_p": 1,
+      "presence_penalty": 0,
+      "frequency_penalty": 0
+    }
+  }
+}
