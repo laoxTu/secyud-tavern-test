@@ -114,6 +114,9 @@ describe('memories tool / provider', () => {
     expect(properties.types.type).toBe('array');
     expect(properties.types.items.enum).toEqual(memories.types);
     expect(properties.tags.type).toBe('array');
+    // 标签按英文（ASCII）存：检索侧的 filter 是按 token 匹配的，非 ASCII 标签永远匹配不到，
+    // 所以在 schema 描述里把这条契约写给模型看
+    expect(properties.tags.description).toMatch(/english/i);
     expect(properties.limit).toEqual({
       type: 'integer',
       description: expect.any(String),
@@ -155,6 +158,10 @@ describe('memories tool / provider', () => {
     expect(properties.importance.minimum).toBe(1);
     expect(properties.importance.maximum).toBe(10);
     expect(properties.importance.default).toBe(memories.default.importance);
+    expect(properties.tags.type).toBe('array');
+    // 标签只存英文：非 ASCII 标签在检索时（按 token 匹配）永远命中不到，
+    // 这里把这条契约锁在 schema 描述上，防止以后被删掉
+    expect(properties.tags.description).toMatch(/english/i);
     expect(tool.description).toBeTruthy();
   });
 });

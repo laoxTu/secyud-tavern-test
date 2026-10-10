@@ -475,7 +475,11 @@ HEAD 现为 `b6a4933 Merge pull request #60 from laoxTu/develop/merge`，该合�
 | **B9** | 每行都加前缀 | `src/utils/str.ts:21` `replace → replaceAll`（src 下无调用点） |
 | **B1** | 由上面的上限策略 + 子类防御彻底解决 | 用例改为正向断言：9 个调用全部入队执行（先 8 后 1）、溢出项**不写 error**、`calling` 不抛错、`manager.wait()` 等到全部完成 |
 
-**B 组剩余（仍未动，等用户定）**：**B4** `memories/client/realm.ts:90` RAG 关闭时是否注入已编码记忆（我建议维持现状）；**B5** `memories/client/tool.ts:93-95` orama 英文分词器导致中文标签检索恒空（换 CJK 分词器需重建向量索引）；**B7** `models/client/setting.tsx:68` 清空 api_key 是否算「清除」。
+**B 组剩余三条的最终处置（用户拍板，均只记录/仅一处描述改动）**：
+
+- **B4（`memories/client/realm.ts:90` RAG 关闭时不注入已编码记忆）——有意设计，不改**：RAG 关闭即「所有记忆不可用」。
+- **B7（`models/client/setting.tsx:68` 清空 api_key 无法清除）——不改**。核实结论：**密钥在库里本就是密文**——`src/models/server/repository.ts:43-44` 写库前 `hasher.encrypt(model.key, iv)`（AES-128-CBC，`utils/server/hasher.ts`，iv 随记录存），读取时 `models/server/engine.ts:27` 解密。所以 `models/server/storage.ts:37` 导出的是**密文 + iv**，不含明文密钥；清空输入框的语义不影响使用（用户必须配置 key），**不构成泄露**。
+- **B5（`memories/client/tool.ts` 中文标签检索恒空）——只改 schema 描述，检索逻辑不动**。文档依据（官方 Filters 页）：string 属性是「**exact matching on tokens**」；`string[]` 是「**至少一个数组元素匹配**」（即 OR，等价于 token 版 `containsAny`）；而 `containsAll`/`containsAny` 属 **`enum[]`** 算子，**不适用于自由标签的 `string[]`**。官方对中文的方案是引入 `@orama/tokenizers` 的自定义 tokenizer（需新增依赖，本项目不引入）。最终口径：**tags 只存英文（ASCII）**，并在 `set_memory`/`get_memory` 的 JSON schema 描述里把这条契约写给模型（`tests/memories/tool.test.ts` 加了两条 `description` 匹配 `/english/i` 的断言锁住它）。
 
 ### 测试卡死排查（已修，测试侧问题）
 
