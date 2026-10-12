@@ -13,7 +13,7 @@ function createItem(item: any) {
 }
 
 beforeEach(() => {
-  useElicitState.setState({ render: 0, items: [], item: null });
+  useElicitState.setState({ render: 0, item: null });
 });
 
 describe('tools elicits states / 初始状态', () => {
@@ -21,7 +21,6 @@ describe('tools elicits states / 初始状态', () => {
     const initial = useElicitState.getInitialState();
 
     expect(initial.render).toBe(0);
-    expect(initial.items).toEqual([]);
     expect(initial.item).toBeNull();
     expect(typeof initial.pop).toBe('function');
     expect(typeof initial.push).toBe('function');
@@ -38,8 +37,6 @@ describe('tools elicits states / push', () => {
     const state = useElicitState.getState();
     expect(state.item).toBe(item);
     expect(state.render).toBe(1);
-    // 直接展示的那一项不进队列
-    expect(state.items).toEqual([]);
   });
 
   it('已有当前项时入队，当前项与渲染计数都不变', async () => {
@@ -53,7 +50,6 @@ describe('tools elicits states / push', () => {
 
     const state = useElicitState.getState();
     expect(state.item).toBe(first);
-    expect(state.items).toEqual([second]);
     expect(state.render).toBe(before);
   });
 
@@ -64,7 +60,6 @@ describe('tools elicits states / push', () => {
     for (const item of list) useElicitState.getState().push(item);
 
     expect(useElicitState.getState().item).toBe(list[0]);
-    expect(useElicitState.getState().items).toEqual(list.slice(1));
     expect(useElicitState.getState().render).toBe(1);
   });
 });
@@ -82,7 +77,6 @@ describe('tools elicits states / pop', () => {
 
     const state = useElicitState.getState();
     expect(state.item).toBe(second);
-    expect(state.items).toEqual([]);
     expect(state.render).toBe(before + 1);
   });
 
@@ -94,7 +88,6 @@ describe('tools elicits states / pop', () => {
 
     const state = useElicitState.getState();
     expect(state.item).toBeNull();
-    expect(state.items).toEqual([]);
     expect(state.render).toBe(2);
   });
 

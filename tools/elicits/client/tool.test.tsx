@@ -13,7 +13,7 @@ function toCallContext(args: any) {
 }
 
 beforeEach(() => {
-  useElicitState.setState({ render: 0, items: [], item: null });
+  useElicitState.setState({ render: 0, item: null });
 });
 
 describe('tools elicits tool / 注册契约', () => {
@@ -69,7 +69,6 @@ describe('tools elicits tool / create', () => {
     expect(typeof items[0].invoke).toBe('function');
     // 建工具这一步不碰状态机
     expect(useElicitState.getState().item).toBeNull();
-    expect(useElicitState.getState().items).toEqual([]);
   });
 });
 
@@ -92,7 +91,6 @@ describe('tools elicits tool / invoke', () => {
     expect(state.item!.examples).toEqual(data.args.examples);
     expect(typeof state.item!.reply).toBe('function');
     expect(state.render).toBe(1);
-    expect(state.items).toEqual([]);
 
     await state.item!.reply(answer);
 
@@ -107,9 +105,6 @@ describe('tools elicits tool / invoke', () => {
 
     // 弹出的窗口仍然是第一个问题，第二个问题排队
     expect(useElicitState.getState().item).toMatchObject(data.args);
-    expect(
-      useElicitState.getState().items.map((u) => u.question),
-    ).toEqual([data.secondArgs.question]);
 
     await useElicitState.getState().item!.reply('红');
     await expect(first).resolves.toBe('红');

@@ -65,12 +65,17 @@ function toFormData(fields: Record<string, any> = {}) {
 /** 把一项推进状态机并渲染弹窗，返回最近一次注册的表单回调 */
 async function setup(index: number, fields: Record<string, any> = {}) {
   const data = await loadCases();
-  const item = { ...data.items[index], reply: mocks.reply };
+  const item = { ...data.items[index], reply: mocks.reply, id: 'test' };
   useElicitState.getState().push(item);
 
   render(<feature.component />);
 
-  return { data, item, form: toFormData(fields), action: mocks.actions.at(-1)! };
+  return {
+    data,
+    item,
+    form: toFormData(fields),
+    action: mocks.actions.at(-1)!,
+  };
 }
 
 /** 表单提交会改状态机，包在 act 里避免 React 的 act 警告 */
@@ -88,7 +93,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   mocks.actions.length = 0;
   for (const key of Object.keys(mocks.controls)) delete mocks.controls[key];
-  useElicitState.setState({ render: 0, items: [], item: null });
+  useElicitState.setState({ render: 0, item: null });
 });
 
 describe('tools elicits feature / 注册契约', () => {
@@ -162,7 +167,9 @@ describe('tools elicits feature / 提交', () => {
 
   it('选中自定义项时回填输入框里的文本', async () => {
     const data = await loadCases();
-    useElicitState.getState().push({ ...data.items[0], reply: mocks.reply });
+    useElicitState
+      .getState()
+      .push({ ...data.items[0], reply: mocks.reply, id: 'test' });
     render(<feature.component />);
     const action = mocks.actions.at(-1)!;
 
@@ -201,8 +208,12 @@ describe('tools elicits feature / 提交', () => {
 
   it('回答后队列里的下一个问题顶上来', async () => {
     const data = await loadCases();
-    useElicitState.getState().push({ ...data.items[0], reply: mocks.reply });
-    useElicitState.getState().push({ ...data.items[1], reply: mocks.reply });
+    useElicitState
+      .getState()
+      .push({ ...data.items[0], reply: mocks.reply, id: 'test1' });
+    useElicitState
+      .getState()
+      .push({ ...data.items[1], reply: mocks.reply, id: 'test2' });
     render(<feature.component />);
     const action = mocks.actions.at(-1)!;
 
@@ -212,7 +223,6 @@ describe('tools elicits feature / 提交', () => {
     expect(useElicitState.getState().item).toMatchObject({
       question: data.items[1].question,
     });
-    expect(useElicitState.getState().items).toEqual([]);
   });
 
   it('没有当前项时提交不报错，只推进渲染计数', async () => {
