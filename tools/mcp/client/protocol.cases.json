@@ -1,0 +1,56 @@
+{
+  "call": {
+    "arguments": { "text": "hi" },
+    "name": "echo"
+  },
+  "callEmpty": { "content": [] },
+  "callError": {
+    "content": [{ "text": "boom", "type": "text" }],
+    "isError": true
+  },
+  "callMulti": {
+    "content": [
+      { "text": "a", "type": "text" },
+      { "data": "xx", "mimeType": "image/png", "type": "image" }
+    ]
+  },
+  "callText": { "content": [{ "text": "hello", "type": "text" }] },
+  "config": {
+    "code": "demo",
+    "headers": { "X-Token": "t1" },
+    "includes": [],
+    "maxLength": 8000,
+    "timeout": 30,
+    "url": "https://mcp.example.com/mcp"
+  },
+  "expected": {
+    "callEmpty": "",
+    "callError": "error: boom",
+    "callText": "hello"
+  },
+  "initializeResult": {
+    "capabilities": { "tools": {} },
+    "protocolVersion": "2025-06-18",
+    "serverInfo": { "name": "demo-server", "version": "1.0.0" }
+  },
+  "jsonrpcError": { "code": -32601, "message": "method not found" },
+  "sessionId": "sess-1",
+  "tools": {
+    "tools": [
+      {
+        "description": "回显文本",
+        "inputSchema": {
+          "properties": { "text": { "type": "string" } },
+          "required": ["text"],
+          "type": "object"
+        },
+        "name": "echo"
+      },
+      {
+        "description": "不在白名单里的工具",
+        "inputSchema": { "type": "object" },
+        "name": "secret"
+      }
+    ]
+  }
+}

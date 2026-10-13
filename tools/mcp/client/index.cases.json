@@ -1,0 +1,133 @@
+{
+  "config": {
+    "code": "demo",
+    "headers": { "X-Token": "t1" },
+    "includes": [],
+    "maxLength": 8000,
+    "timeout": 30,
+    "url": "https://mcp.example.com/mcp"
+  },
+  "configure": [
+    {
+      "expected": {
+        "code": "demo",
+        "headers": { "X-Token": "t1" },
+        "includes": ["echo", "secret"],
+        "maxLength": 8000,
+        "timeout": 30,
+        "url": "https://mcp.example.com/mcp"
+      },
+      "fields": {
+        "code": "demo",
+        "headers": "{\"X-Token\": \"t1\"}",
+        "includes": "echo, secret",
+        "max_length": "8000",
+        "timeout": "30",
+        "url": "https://mcp.example.com/mcp"
+      },
+      "name": "全部字段"
+    },
+    {
+      "expected": {
+        "code": "demo",
+        "headers": {},
+        "includes": [],
+        "maxLength": 8000,
+        "timeout": 30,
+        "url": "https://mcp.example.com/mcp"
+      },
+      "fields": {
+        "code": "demo",
+        "headers": "  ",
+        "includes": "",
+        "max_length": "8000",
+        "timeout": "30",
+        "url": "https://mcp.example.com/mcp"
+      },
+      "name": "请求头与白名单留空"
+    },
+    {
+      "expected": {
+        "code": null,
+        "headers": {},
+        "includes": ["echo", "secret", "bare"],
+        "maxLength": 100,
+        "timeout": 10,
+        "url": null
+      },
+      "fields": {
+        "headers": "{}",
+        "includes": "echo\nsecret bare",
+        "max_length": "100",
+        "timeout": "10"
+      },
+      "name": "白名单用换行与空格分隔"
+    },
+    {
+      "error": { "code": "error.json_invalid", "target": "mcp.headers" },
+      "fields": { "headers": "not a json" },
+      "name": "请求头不是 json"
+    },
+    {
+      "error": { "code": "error.json_invalid", "target": "mcp.headers" },
+      "fields": { "headers": "null" },
+      "name": "请求头是 json 字面量 null"
+    },
+    {
+      "error": { "code": "error.json_invalid", "target": "mcp.headers" },
+      "fields": { "headers": "[\"a\"]" },
+      "name": "请求头是数组"
+    }
+  ],
+  "editor": {
+    "config": {
+      "code": "demo",
+      "headers": { "X-Token": "t1" },
+      "includes": ["echo"],
+      "maxLength": 100,
+      "timeout": 20,
+      "url": "https://mcp.example.com/mcp"
+    },
+    "defaultFields": {
+      "code": "",
+      "headers": "{}",
+      "includes": "",
+      "max_length": "8000",
+      "timeout": "30",
+      "url": ""
+    },
+    "fields": {
+      "code": "demo",
+      "headers": "{\n  \"X-Token\": \"t1\"\n}",
+      "includes": "echo",
+      "max_length": "100",
+      "timeout": "20",
+      "url": "https://mcp.example.com/mcp"
+    }
+  },
+  "initializeResult": {
+    "protocolVersion": "2025-06-18",
+    "serverInfo": { "name": "demo-server", "version": "1.0.0" }
+  },
+  "longText": "0123456789abcdefghij",
+  "sessionId": "sess-1",
+  "tools": {
+    "tools": [
+      {
+        "description": "回显文本",
+        "inputSchema": {
+          "properties": { "text": { "type": "string" } },
+          "required": ["text"],
+          "type": "object"
+        },
+        "name": "echo"
+      },
+      {
+        "description": "不在白名单里的工具",
+        "inputSchema": { "type": "object" },
+        "name": "secret"
+      },
+      { "description": "没有 schema 的工具", "name": "bare" }
+    ]
+  }
+}
