@@ -16,7 +16,7 @@ vi.mock('@/client', () => ({
 
 import { callbacks } from '@/comfyui/callback/client';
 import { images } from '@/stories/images';
-import { realms } from '@/stories/client/realms';
+import { realms } from '@/stories/realms/client';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadCases() {

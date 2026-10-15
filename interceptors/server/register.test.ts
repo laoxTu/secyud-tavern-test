@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { getRegistry } from '@/global';
 import type { InterceptorHandler } from '@/interceptors/server';
 import { manager } from '@/interceptors/server';
 import { errorInterceptor } from '@/interceptors/server/error';
 import registerServerInterceptors from '@/interceptors/server/register';
-import { getRegistry } from '@/plugins';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadCases() {

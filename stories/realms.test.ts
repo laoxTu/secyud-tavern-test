@@ -36,7 +36,7 @@ vi.mock('@/models/client', () => ({
   },
 }));
 
-import { realms, useRealmState } from '@/stories/client/realms';
+import { realms, useRealmState } from '@/stories/realms/client';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadCases() {
@@ -571,7 +571,8 @@ describe('stories realms / generate', () => {
     setupRealm(data, [structuredClone(data.emptyHistory)]);
     const infos: any[] = [];
     const unsubscribe = useRealmState.subscribe((state, prev) => {
-      if (state.realmInfos !== prev.realmInfos) infos.push(state.realmInfos.main);
+      if (state.realmInfos !== prev.realmInfos)
+        infos.push(state.realmInfos.main);
     });
     stubGenerate(data.generate.steps);
 

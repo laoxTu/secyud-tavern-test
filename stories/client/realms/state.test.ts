@@ -35,8 +35,8 @@ vi.mock('@/models/client', () => ({
   },
 }));
 
-import { realms } from '@/stories/client/realms';
-import { useRealmState } from '@/stories/client/realms/state';
+import { realms } from '@/stories/realms/client';
+import { useRealmState } from '@/stories/realms/client/state';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadCases() {
@@ -157,7 +157,9 @@ describe('stories realms state / setRealmInfo', () => {
       main: { title: 'realm.thinking', content: '1' },
     });
 
-    useRealmState.getState().setRealmInfo('main', { title: 'realm.generating' });
+    useRealmState
+      .getState()
+      .setRealmInfo('main', { title: 'realm.generating' });
     expect(useRealmState.getState().realmInfos.main).toEqual({
       title: 'realm.generating',
     });
@@ -323,7 +325,9 @@ describe('stories realms state / initPager', () => {
     await useRealmState.getState().initPager();
 
     expect(useRealmState.getState().index).toEqual({ max: 0, cur: 0 });
-    expect(useRealmState.getState().output).toEqual(data.expected.openingOutput);
+    expect(useRealmState.getState().output).toEqual(
+      data.expected.openingOutput,
+    );
     expect(realm.context.opening).toBeDefined();
     expect(mocks.historySet).not.toHaveBeenCalled();
   });

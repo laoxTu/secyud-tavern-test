@@ -7,7 +7,7 @@
  * 因此按 feature.tsx 那一行 import 用到的导出名给具名最小桩；
  * `dialogs.info` / `useRefresh` / `useFormRef` 被当普通函数/对象用，单独给最小实现。
  * 注：这里不用 Proxy 全量桩 —— vitest 的 mock 包装层遇到"未定义的导出名"会直接抛错。
- * `@/stories/client/realms`（realms + useRealmState）、`@/stories/client`、`@/models/client`、
+ * `@/stories/realms/client`（realms + useRealmState）、`@/stories/client`、`@/models/client`、
  * `@/global`、`@/utils`、`@/interceptors*`、`next-intl`、`next/navigation` 全部最小桩，
  * 保证观察到的调用都来自被测组件本身。
  */
@@ -51,11 +51,7 @@ const mocks = vi.hoisted(() => {
 vi.mock('@/components', () => {
   const stub = (name: string) =>
     function Stub(props: any) {
-      return React.createElement(
-        'div',
-        { 'data-stub': name },
-        props?.children,
-      );
+      return React.createElement('div', { 'data-stub': name }, props?.children);
     };
 
   const special: Record<string, any> = {
@@ -143,7 +139,7 @@ vi.mock('@/components', () => {
   return exported;
 });
 
-vi.mock('@/stories/client/realms', () => {
+vi.mock('@/stories/realms/client', () => {
   const useRealmState: any = () => ({
     index: mocks.index,
     setIndex: mocks.setIndex,
@@ -249,7 +245,7 @@ vi.mock('lucide-react', () => {
   };
 });
 
-import { feature } from '@/stories/client/realms/feature';
+import { feature } from '@/stories/realms/client/feature';
 
 function componentOf(id: string): React.ComponentType {
   const item = feature.find((u) => u.id === id);

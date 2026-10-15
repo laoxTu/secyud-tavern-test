@@ -9,10 +9,10 @@ vi.mock('@/models/client/proxy', () => ({
   proxy: { engine: { generate: mocks.generate } },
 }));
 
-import { models } from '@/models/client';
 import type { Processer } from '@/models/client';
-import { realms } from '@/stories/client/realms';
+import { models } from '@/models/client';
 import type { Realm, RealmHistory } from '@/stories';
+import { realms } from '@/stories/realms/client';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadCases() {
@@ -224,7 +224,10 @@ describe('models processer / generate', () => {
     const controller = new AbortController();
 
     const items: any[] = [];
-    for await (const item of models.processers.generate({ realm, controller })) {
+    for await (const item of models.processers.generate({
+      realm,
+      controller,
+    })) {
       items.push(item);
     }
 

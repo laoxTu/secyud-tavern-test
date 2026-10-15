@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 
 import type { ComfyUIParam, ComfyUIWorkflowInput } from '@/comfyui';
-import { Registry } from '@/plugins/registry';
+import { Registry } from '@/global/registry';
 
 /**
  * Monaco 编辑器只在浏览器里可用，导入 `@/components/input` 一次要 6s 以上；
@@ -33,9 +33,10 @@ vi.mock('next-intl', () => ({
  * `default` 刻意只给 schema，用来验证 agentText 的合并顺序。
  */
 vi.mock('@/tools/agents/client', async () => {
-  const mainModule = (await vi.importActual(
-    '@/tools/agents/client',
-  )) as Record<string, any>;
+  const mainModule = (await vi.importActual('@/tools/agents/client')) as Record<
+    string,
+    any
+  >;
   const main = (await import('@/tools/agents')).agents;
   return {
     ...mainModule,
@@ -126,9 +127,7 @@ const PAINT: any = {
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadCases() {
-  return structuredClone(
-    (await import('./configurators.cases.json')).default,
-  );
+  return structuredClone((await import('./configurators.cases.json')).default);
 }
 
 describe('comfyui editor 配置器', () => {
@@ -179,17 +178,11 @@ describe('comfyui editor 配置器', () => {
 
     it('text 与 prompt 应当各自可寻址，不再互相覆盖', () => {
       const registry = new Registry('comfyui-param-configurator-report');
-      registry.register(
-        editors.configurator.text,
-        editors.configurator.prompt,
-      );
+      registry.register(editors.configurator.text, editors.configurator.prompt);
 
       expect(registry.record('text')).toBe(editors.configurator.text);
       expect(registry.record('prompt')).toBe(editors.configurator.prompt);
-      expect(Object.keys(registry.records).sort()).toEqual([
-        'prompt',
-        'text',
-      ]);
+      expect(Object.keys(registry.records).sort()).toEqual(['prompt', 'text']);
     });
   });
 

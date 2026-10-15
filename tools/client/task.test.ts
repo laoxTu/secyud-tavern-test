@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { Realm } from '@/stories';
-import { useRealmState } from '@/stories/client/realms';
+import { useRealmState } from '@/stories/realms/client';
 import type { ToolCall } from '@/tools';
 import type { CallContext } from '@/tools/client';
 import { tools } from '@/tools/client';
@@ -15,7 +15,9 @@ async function loadCases() {
  * task.ts 的工具表来自 tools.cache(realm)，也就是 realm.context['model.tool']。
  * 这里直接把缓存造好，绕开 processer 的初始化。
  */
-async function createRealm(cacheTools: Record<string, any> = {}): Promise<Realm> {
+async function createRealm(
+  cacheTools: Record<string, any> = {},
+): Promise<Realm> {
   const realm = structuredClone(
     (await import('../../stories/realm.json')).default,
   );
@@ -90,8 +92,14 @@ describe('tools client task / calling', () => {
     const setCall = data.toolCalls.set as ToolCall;
     const getCall = data.toolCalls.get as ToolCall;
     const realm = await createRealm({
-      [setName]: createTool(setName, vi.fn(async () => 'done')),
-      [getName]: createTool(getName, vi.fn(async () => 'value')),
+      [setName]: createTool(
+        setName,
+        vi.fn(async () => 'done'),
+      ),
+      [getName]: createTool(
+        getName,
+        vi.fn(async () => 'value'),
+      ),
     });
 
     await tools.calling(realm, new AbortController(), [setCall, getCall]);

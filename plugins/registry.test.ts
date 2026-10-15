@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { Registry, type Registerable } from '@/plugins';
+import type { Registerable } from '@/global';
+import { Registry } from '@/global';
 
 interface Item extends Registerable {
   label?: string;

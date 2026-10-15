@@ -9,7 +9,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { Entries } from '@/database';
 import type { Storage } from '@/database/server/storage';
-import { Registry } from '@/plugins';
+import { Registry } from '@/global';
 
 const mocks = vi.hoisted(() => {
   const calls = {

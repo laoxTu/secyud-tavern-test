@@ -6,13 +6,10 @@ import { memories } from '@/memories/client';
 import { rags, useRagState } from '@/memories/client/rag';
 import type { MemoryCache } from '@/memories/client/realm';
 import { processer } from '@/memories/client/realm';
+import type { ModelInjectContext, ModelPromptContext } from '@/models/client';
 import { models } from '@/models/client';
-import type {
-  ModelInjectContext,
-  ModelPromptContext,
-} from '@/models/client';
 import type { Realm, RealmHistory } from '@/stories';
-import { realms } from '@/stories/client/realms';
+import { realms } from '@/stories/realms/client';
 
 // 设置持久化会走请求层，这里整体替换掉，避免用例里出现真实请求
 vi.mock('@/client', () => ({
@@ -28,7 +25,9 @@ async function loadCases() {
   return structuredClone((await import('./realm.cases.json')).default);
 }
 
-async function createRealm(overrides: Record<string, any> = {}): Promise<Realm> {
+async function createRealm(
+  overrides: Record<string, any> = {},
+): Promise<Realm> {
   return {
     ...structuredClone((await import('../stories/realm.json')).default),
     context: {},

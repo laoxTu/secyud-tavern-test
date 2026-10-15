@@ -23,7 +23,8 @@ const mocks = vi.hoisted(() => {
     record: (id?: string) => registryTabs.find((u) => u.id === id),
     register: (...items: any[]) => {
       for (const item of items) {
-        if (!registryTabs.some((u) => u.id === item.id)) registryTabs.push(item);
+        if (!registryTabs.some((u) => u.id === item.id))
+          registryTabs.push(item);
       }
     },
     unregister: (...ids: string[]) => {
@@ -57,9 +58,9 @@ const mocks = vi.hoisted(() => {
     validJsonOrEmpty: vi.fn((text: string) =>
       text && text.trim() ? JSON.parse(text) : undefined,
     ),
-    getImageFileId: vi.fn<(data: FormData, srcName?: string) => Promise<string>>(
-      async () => 'file-id-9',
-    ),
+    getImageFileId: vi.fn<
+      (data: FormData, srcName?: string) => Promise<string>
+    >(async () => 'file-id-9'),
     onFileChange: vi.fn(),
     readText: vi.fn(async () => ''),
     push: vi.fn(),
@@ -79,8 +80,8 @@ vi.mock('next/navigation', () => ({
   usePathname: () => '/',
 }));
 
-// 注册表（getRegistry）换成本文件的替身，避免拉起 @/plugins
-vi.mock('@/plugins', () => ({
+// 注册表（getRegistry）换成本文件的替身，避免拉起 @/global
+vi.mock('@/global', () => ({
   getRegistry: () => mocks.registry,
 }));
 
@@ -206,7 +207,9 @@ vi.mock('@/components', async () => {
 
   const pick = (props: any, keys: string[]) =>
     Object.fromEntries(
-      keys.filter((key) => props[key] !== undefined).map((key) => [key, props[key]]),
+      keys
+        .filter((key) => props[key] !== undefined)
+        .map((key) => [key, props[key]]),
     );
   const box = (name: string) => (props: any) =>
     h('div', { 'data-stub': name }, props?.children);
@@ -223,16 +226,21 @@ vi.mock('@/components', async () => {
     Field: ({ children }: any) => h('div', { 'data-field': 'true' }, children),
     FieldGroup: box('FieldGroup'),
     FieldContent: box('FieldContent'),
-    FieldLabel: ({ children, htmlFor }: any) => h('label', { htmlFor }, children),
+    FieldLabel: ({ children, htmlFor }: any) =>
+      h('label', { htmlFor }, children),
     ItemContent: box('ItemContent'),
     ItemDescription: box('ItemDescription'),
     ItemMedia: box('ItemMedia'),
     ItemTitle: box('ItemTitle'),
     InputGroup: box('InputGroup'),
     InputGroupAddon: box('InputGroupAddon'),
-    TextTooltip: ({ text }: any) => h('span', { 'data-tooltip-text': 'true' }, text),
+    TextTooltip: ({ text }: any) =>
+      h('span', { 'data-tooltip-text': 'true' }, text),
     ImageUploader: ({ id, name, value }: any) =>
-      h('div', { 'data-image-uploader': name ?? id ?? '', 'data-value': String(value ?? '') }),
+      h('div', {
+        'data-image-uploader': name ?? id ?? '',
+        'data-value': String(value ?? ''),
+      }),
     Checkbox: ({ checked, onCheckedChange, id }: any) =>
       h('input', {
         type: 'checkbox',
@@ -310,7 +318,9 @@ vi.mock('@/components', async () => {
         },
         h('span', { 'data-dialog-tooltip': 'true' }, tooltip),
         children,
-        onSubmit ? h('button', { type: 'submit', 'data-ensure': 'true' }, 'ensure') : null,
+        onSubmit
+          ? h('button', { type: 'submit', 'data-ensure': 'true' }, 'ensure')
+          : null,
       ),
     UpdateForm: ({ form, onSubmit, children }: any) =>
       h(
@@ -327,7 +337,11 @@ vi.mock('@/components', async () => {
         h('button', { type: 'submit', 'data-save': 'true' }, 'save'),
       ),
     DeleteDialog: ({ itemName, onDelete }: any) =>
-      h('button', { 'data-delete': itemName, onClick: () => void onDelete?.() }, 'delete'),
+      h(
+        'button',
+        { 'data-delete': itemName, onClick: () => void onDelete?.() },
+        'delete',
+      ),
     IconTooltip: ({ children, text, onClick }: any) =>
       h('button', { 'data-icon': text, onClick }, children),
     InputGroupButton: ({ children, type = 'button', onClick }: any) =>
@@ -348,7 +362,10 @@ vi.mock('@/components', async () => {
         ]),
       ),
     Textarea: (props: any) =>
-      h('textarea', pick(props, ['name', 'id', 'defaultValue', 'onChange', 'onKeyDown'])),
+      h(
+        'textarea',
+        pick(props, ['name', 'id', 'defaultValue', 'onChange', 'onKeyDown']),
+      ),
     // 真实 Monaco 在 jsdom 下不可用，换成同样进 FormData 的 textarea
     MonacoEditor: ({ name, value, language }: any) => {
       const [content, setContent] = React.useState(value ?? '');
@@ -394,7 +411,8 @@ vi.mock('@/components', async () => {
           : h('div', { 'data-empty': 'true' }, props.entryName ?? ''),
       );
     },
-    EmptySelectContent: ({ module }: any) => h('div', { 'data-empty-select': module }),
+    EmptySelectContent: ({ module }: any) =>
+      h('div', { 'data-empty-select': module }),
   };
 
   return explicit;
@@ -459,7 +477,8 @@ beforeEach(() => {
     sequence: 10,
     label: 'entries.label',
     icon: () => null,
-    content: () => React.createElement('span', { 'data-tab-content': 'entries' }, 'entries'),
+    content: () =>
+      React.createElement('span', { 'data-tab-content': 'entries' }, 'entries'),
   } as any);
 
   usePresetState.setState({
@@ -594,9 +613,7 @@ describe('presets client content / 工具栏', () => {
     render(<Content />);
     fireEvent.click(q('[data-delete="preset.id"]'));
 
-    await waitFor(() =>
-      expect(mocks.remove).toHaveBeenCalledWith('preset-b'),
-    );
+    await waitFor(() => expect(mocks.remove).toHaveBeenCalledWith('preset-b'));
     expect(mocks.success).toHaveBeenCalledWith('message.delete.success');
     expect(mocks.fetch).toHaveBeenCalledTimes(1);
     // 删除后回到列表首项

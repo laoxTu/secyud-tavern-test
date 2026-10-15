@@ -2,8 +2,13 @@ import { act, renderHook } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 
 // 直接从 hooks 模块取，避免拉起 @/components 桶（里面会加载 monaco，jsdom 下极易 OOM）
-import { useFormRef, useIsClient, useRefresh, useTabs } from '@/components/hooks';
-import { Registry } from '@/plugins';
+import {
+  useFormRef,
+  useIsClient,
+  useRefresh,
+  useTabs,
+} from '@/components/hooks';
+import { Registry } from '@/global';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadCases() {
@@ -76,9 +81,9 @@ describe('components hooks / useTabs', () => {
     const { result } = renderHook(() => useTabs(registry, undefined));
 
     // renderHook 已经把 effect 跑完，所以这里直接能看到结果
-    expect(result.current.showTabs.length + (result.current.hideTabs?.length ?? 0)).toBe(
-      data.tabs.length,
-    );
+    expect(
+      result.current.showTabs.length + (result.current.hideTabs?.length ?? 0),
+    ).toBe(data.tabs.length);
   });
 });
 

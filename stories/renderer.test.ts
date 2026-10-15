@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { renderers } from '@/stories/client/renderer';
+
 const mocks = vi.hoisted(() => ({
   initContext: vi.fn(),
   cache: vi.fn(),
@@ -12,7 +14,7 @@ const mocks = vi.hoisted(() => ({
 vi.mock('@/models/client', () => ({
   models: { convert: mocks.convert },
 }));
-vi.mock('@/stories/client/realms', () => ({
+vi.mock('@/stories/realms/client', () => ({
   realms: {
     initContext: mocks.initContext,
     cache: mocks.cache,
@@ -23,8 +25,6 @@ vi.mock('@/stories/client/realms', () => ({
     },
   },
 }));
-
-import { renderers } from '@/stories/client/renderer';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadCases() {

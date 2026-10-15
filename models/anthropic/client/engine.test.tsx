@@ -30,7 +30,7 @@ vi.mock('@/tools/client', () => ({
 }));
 
 // 历史输出直接由 fixture 提供，不依赖真实的故事状态
-vi.mock('@/stories/client/realms', () => ({
+vi.mock('@/stories/realms/client', () => ({
   realms: { outputs: mocks.outputs },
   useRealmState: { getState: () => ({ setRealmInfo: () => {} }) },
 }));
@@ -136,7 +136,10 @@ describe('models anthropic client / configureObject', () => {
     const data = await loadCases();
     const model = { id: 'model-1', name: 'claude' } as Partial<Model>;
 
-    const returned = engine.configureObject(createFormData(data.configure.form), model);
+    const returned = engine.configureObject(
+      createFormData(data.configure.form),
+      model,
+    );
 
     expect(returned).toBe(model);
     expect(model.properties?.[models.names.options]).toEqual(
@@ -302,7 +305,11 @@ describe('models anthropic client / prompt 工具调用', () => {
 
     const result = await engine.prompt(ctx);
 
-    expect(mocks.calling).toHaveBeenCalledWith(ctx.realm, ctx.controller, callings);
+    expect(mocks.calling).toHaveBeenCalledWith(
+      ctx.realm,
+      ctx.controller,
+      callings,
+    );
     expect(mocks.summary).toHaveBeenCalledWith(callings, result.summaries);
     expect(result.input.messages).toEqual(data.expected.callerMessages);
   });

@@ -4,7 +4,7 @@ import { Preset } from '@/presets';
 import type { Style } from '@/presets/styles';
 import { styles } from '@/presets/styles/client';
 import { Realm } from '@/stories';
-import { realms } from '@/stories/client/realms';
+import { realms } from '@/stories/realms/client';
 
 describe('style_realm', () => {
   let realm: Realm = null!;
@@ -77,9 +77,7 @@ async function createRealm(entries: unknown[]): Promise<Realm> {
   return {
     ...realm,
     properties: {},
-    presets: [
-      { ...preset, entries: { styles: entries } } as unknown as Preset,
-    ],
+    presets: [{ ...preset, entries: { styles: entries } } as unknown as Preset],
   } as unknown as Realm;
 }
 

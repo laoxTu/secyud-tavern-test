@@ -1,8 +1,8 @@
 import { insert, search } from '@orama/orama';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { getRegistry } from '@/global';
 import { rags, useRagState } from '@/memories/client/rag';
-import { getRegistry } from '@/plugins';
 
 // 持久化会走设置接口，这里整体替换掉，避免用例里出现真实请求
 vi.mock('@/client', () => ({
@@ -221,15 +221,18 @@ describe('rags / create', () => {
     useRagState.setState({ embedder: { type: 'fake', config: {} } });
     const rag = await rags.create(data.schema);
 
-    await insert(rag!.database as any, {
-      entryId: 1,
-      title: '初遇',
-      tags: ['主角'],
-      type: 'event',
-      importance: 8,
-      sequence: 100,
-      embedding: data.vectors.first,
-    } as any);
+    await insert(
+      rag!.database as any,
+      {
+        entryId: 1,
+        title: '初遇',
+        tags: ['主角'],
+        type: 'event',
+        importance: 8,
+        sequence: 100,
+        embedding: data.vectors.first,
+      } as any,
+    );
     const results = await search(rag!.database, {
       mode: 'vector',
       vector: { value: data.vectors.first, property: 'embedding' },

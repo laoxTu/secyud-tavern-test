@@ -10,11 +10,11 @@ vi.mock('@/generated/server-registerer', () => ({
   registerServerPlugin: mocks.registerServerPlugin,
 }));
 
+import { getRegistry } from '@/global';
 import { BusinessError } from '@/interceptors';
 import type { InterceptorHandler } from '@/interceptors/server';
 import { manager, route } from '@/interceptors/server';
 import { errorInterceptor } from '@/interceptors/server/error';
-import { getRegistry } from '@/plugins';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadCases() {

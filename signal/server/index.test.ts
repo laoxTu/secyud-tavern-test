@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { getRegistry } from '@/plugins';
+import { getRegistry } from '@/global';
 import type { ToastMessage } from '@/signal';
 import { signals } from '@/signal';
 import { registry, signals as serverSignals } from '@/signal/server';

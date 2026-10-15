@@ -77,7 +77,7 @@ vi.mock('@/stories/client', () => ({
   stories: { proxy: { realm: { get: mocks.realmGet } } },
 }));
 
-vi.mock('@/stories/client/realms', () => ({
+vi.mock('@/stories/realms/client', () => ({
   useRealmState: { getState: () => ({ setRealmInfo: mocks.setRealmInfo }) },
 }));
 
@@ -503,7 +503,12 @@ describe('agents client / invoke', () => {
     });
   }
 
-  const toolcall = { index: 0, id: 'call-1', name: 'sub_agent', arguments: '{}' };
+  const toolcall = {
+    index: 0,
+    id: 'call-1',
+    name: 'sub_agent',
+    arguments: '{}',
+  };
 
   it('应当把参数与克隆后的历史交给 processers.generate，并返回最后一段正文', async () => {
     const { data, realm, item } = await createAgent({ output: mocks.info });

@@ -1,7 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { getRegistry } from '@/plugins/registry';
-import { archives, type Archive } from '@/utils/archive';
+import { getRegistry } from '@/global/registry';
+import type { Archive } from '@/utils/archive';
+import { archives } from '@/utils/archive';
 
 // ToolProvider 在源码里只是类型导入（运行期会被抹掉），
 // 挡一层避免把 tools/server 的注册链（presets / database）拉进来。

@@ -4,7 +4,7 @@ import type { Preset } from '@/presets';
 import type { Script } from '@/presets/scripts';
 import { scripts } from '@/presets/scripts/client';
 import type { Realm, RealmHistory } from '@/stories';
-import { realms } from '@/stories/client/realms';
+import { realms } from '@/stories/realms/client';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadData() {
@@ -202,9 +202,7 @@ describe('scripts / output（内联与 importmap）', () => {
 
     await scripts.renderer.output!(createContext(realm), cache);
 
-    expect(
-      iframe.contentDocument!.getElementById('sct-import-map'),
-    ).toBeNull();
+    expect(iframe.contentDocument!.getElementById('sct-import-map')).toBeNull();
   });
 });
 

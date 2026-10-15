@@ -83,14 +83,19 @@ vi.mock('@/components', async () => {
     Item: ({ children }: any) => React.createElement('div', null, children),
     ItemContent: ({ children }: any) =>
       React.createElement('div', null, children),
-    ItemMedia: ({ children }: any) => React.createElement('div', null, children),
-    ItemTitle: ({ children }: any) => React.createElement('div', null, children),
+    ItemMedia: ({ children }: any) =>
+      React.createElement('div', null, children),
+    ItemTitle: ({ children }: any) =>
+      React.createElement('div', null, children),
     Label: ({ children, htmlFor }: any) =>
       React.createElement('label', { htmlFor }, children),
     Spinner: () => React.createElement('span', { 'data-spinner': 'true' }),
     // 与 @/components 里的真实实现一致
     submitTargetFormOnKey: (e: any) => {
-      if ((e.ctrlKey || e.metaKey) && (e.code === 'Enter' || e.code === 'KeyS')) {
+      if (
+        (e.ctrlKey || e.metaKey) &&
+        (e.code === 'Enter' || e.code === 'KeyS')
+      ) {
         e.preventDefault();
         e.stopPropagation();
         e.currentTarget?.form?.requestSubmit();
@@ -151,9 +156,9 @@ vi.mock('@/stories/client', async () => {
   };
 });
 
-import RealmPage from '@/stories/client/realms/page';
-import { realms, useRealmState } from '@/stories/client/realms';
 import { stories } from '@/stories/client';
+import { realms, useRealmState } from '@/stories/realms/client';
+import RealmPage from '@/stories/realms/client/page';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadCases() {
@@ -384,7 +389,9 @@ describe('stories realms page / 输入与生成', () => {
     );
 
     expect(controller.signal.aborted).toBe(true);
-    expect((controller.signal.reason as any).code).toBe('message.user_canceled');
+    expect((controller.signal.reason as any).code).toBe(
+      'message.user_canceled',
+    );
   });
 
   it('生成中应当按 realmInfos 渲染顶部提示', async () => {
@@ -455,11 +462,17 @@ describe('stories realms page / 页面级编排', () => {
     await renderPage(data);
 
     // beforeEach 里 pinned 为 true，所以初始提示是「取消固定」
-    fireEvent.click(document.querySelector('[data-tooltip="realm.unpin_chatbox"]')!);
+    fireEvent.click(
+      document.querySelector('[data-tooltip="realm.unpin_chatbox"]')!,
+    );
     expect(useRealmState.getState().pinned).toBe(false);
-    expect(document.querySelector('[data-tooltip="realm.pin_chatbox"]')).not.toBeNull();
+    expect(
+      document.querySelector('[data-tooltip="realm.pin_chatbox"]'),
+    ).not.toBeNull();
 
-    fireEvent.click(document.querySelector('[data-tooltip="realm.back_home_tip"]')!);
+    fireEvent.click(
+      document.querySelector('[data-tooltip="realm.back_home_tip"]')!,
+    );
     expect(mocks.replace).toHaveBeenCalledWith('/');
   });
 });

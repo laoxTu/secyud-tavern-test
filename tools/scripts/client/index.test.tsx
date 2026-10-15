@@ -39,7 +39,7 @@ vi.mock('@/components', async () => {
   };
 });
 // 只读 realms.iframe 与 realms.history.get，真实实现会拉起 models / stories 一大串
-vi.mock('@/stories/client/realms', () => ({ realms: mocks.realms }));
+vi.mock('@/stories/realms/client', () => ({ realms: mocks.realms }));
 // 被测文件只用到 tools client 桶里的类型（运行期会被抹掉），挡一层避免拉起整条链
 vi.mock('@/tools/client', () => ({}));
 vi.mock('next-intl', () => ({
@@ -90,9 +90,7 @@ function fieldNames(container: HTMLElement) {
 
 function fieldElement(container: HTMLElement, name: string) {
   const element = container.querySelector(`[name="${name}"]`) as
-    | HTMLInputElement
-    | HTMLTextAreaElement
-    | null;
+    HTMLInputElement | HTMLTextAreaElement | null;
   expect(element, `找不到字段 ${name}`).not.toBeNull();
   return element!;
 }
@@ -226,7 +224,9 @@ describe('tools scripts client / 上下文注入', () => {
       mocks.historyGet.mockResolvedValue({
         variables: structuredClone(data.variables),
       });
-      mocks.realms.iframe = item.enableDoc ? structuredClone(data.iframe) : null;
+      mocks.realms.iframe = item.enableDoc
+        ? structuredClone(data.iframe)
+        : null;
       const realm = { id: 'realm-1' };
 
       const tool = await createScript(
