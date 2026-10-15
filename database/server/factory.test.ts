@@ -1,4 +1,3 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { getTableName } from 'drizzle-orm';
 import {
   getTableConfig,
@@ -6,6 +5,7 @@ import {
   sqliteTable,
   text,
 } from 'drizzle-orm/sqlite-core';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { Entries } from '@/database';
 import type { Storage } from '@/database/server/storage';
@@ -57,7 +57,8 @@ const mocks = vi.hoisted(() => {
         return node;
       },
       get: async () => state.row,
-      then: (resolve: (value: unknown) => unknown) => resolve(state.queue.shift()),
+      then: (resolve: (value: unknown) => unknown) =>
+        resolve(state.queue.shift()),
     };
     return node;
   };
@@ -138,11 +139,11 @@ vi.mock('drizzle-orm', async (importOriginal) => {
 
 import {
   boolean,
-  foreignKey,
   json,
   repositories,
   schemas,
   storages,
+  withForeign,
 } from '@/database/server/factory';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
@@ -208,7 +209,7 @@ describe('database server factory / foreignKey', () => {
     const data = await loadCases();
     const master = createMaster(data.masterTable);
     const child = sqliteTable('children', {
-      masterId: foreignKey(data.columns.foreignKey.name, () => master.id),
+      masterId: withForeign(data.columns.foreignKey.name, () => master.id),
     });
 
     expect(child.masterId.name).toBe(data.columns.foreignKey.name);
@@ -253,9 +254,9 @@ describe('database server factory / schemas.entry', () => {
       }
     }
 
-    expect(
-      config.primaryKeys[0].columns.map((u) => u.name),
-    ).toEqual(data.pkColumns);
+    expect(config.primaryKeys[0].columns.map((u) => u.name)).toEqual(
+      data.pkColumns,
+    );
     expect(config.indexes.map((u) => u.config.name)).toEqual(
       data.indexes.map((u) => `${data.entryTable}${u.suffix}`),
     );
@@ -431,7 +432,10 @@ describe('database server factory / repositories.entry make 与 add', () => {
       })),
     );
     expect(manager.criteria).toHaveBeenCalledTimes(data.entries.length);
-    expect(manager.criteria).toHaveBeenCalledWith(data.entryType, data.entries[0]);
+    expect(manager.criteria).toHaveBeenCalledWith(
+      data.entryType,
+      data.entries[0],
+    );
   });
 
   it('entries 为空数组时应当直接返回，不查最大 entryId 也不写库', async () => {
