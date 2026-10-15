@@ -10,7 +10,7 @@ const mocks = vi.hoisted(() => ({
 vi.mock('@/presets/server', () => ({
   presets: { repository: { create: mocks.presetCreate } },
 }));
-vi.mock('@/files/server', () => ({
+vi.mock('@/database/files/server', () => ({
   files: { repository: { create: mocks.fileCreate } },
 }));
 // route 只负责拦截器编排，这里直接暴露处理函数
@@ -26,16 +26,15 @@ vi.mock('@/client', () => ({
   open: vi.fn(),
 }));
 
+import { BusinessError } from '@/interceptors';
 // parsecard 只安装在插件自己的 node_modules 下（根 node_modules 没有这个包），
 // 所以这里按 @plugins 别名进到插件的依赖目录里取类，跟源码解析到的是同一份实现。
+import { proxy } from '@plugins/secyud-tavern-importer/client/proxy';
 import {
   CharacterCard,
   createMinimalPNG,
 } from '@plugins/secyud-tavern-importer/node_modules/parsecard/dist/index.js';
-import { proxy } from '@plugins/secyud-tavern-importer/client/proxy';
 import api from '@plugins/secyud-tavern-importer/server/api';
-
-import { BusinessError } from '@/interceptors';
 
 const routes = api as any;
 /** route 已被替换为直通，POST 处理函数就是 (request) => NextResponse */
@@ -50,9 +49,7 @@ async function loadCases() {
 
 /** 角色卡与酒馆预设的样本数据跟 silly-tavern 用例共用一份，避免两处手写 */
 async function loadSamples() {
-  return structuredClone(
-    (await import('./silly-tavern.cases.json')).default,
-  );
+  return structuredClone((await import('./silly-tavern.cases.json')).default);
 }
 
 /**
@@ -140,9 +137,7 @@ describe('silly-tavern-importer api / JSON 导入', () => {
     expect(created.version).toBe('1.0.0');
     expect(created.tags).toEqual(['preset', 'silly-tavern']);
     expect(created.requires).toEqual([]);
-    expect(created.entries.lorebooks).toHaveLength(
-      openaiPreset.prompts.length,
-    );
+    expect(created.entries.lorebooks).toHaveLength(openaiPreset.prompts.length);
     expect(created.entries.macros).toEqual([]);
     await expect(response.json()).resolves.toEqual({ id: data.createdId });
   });

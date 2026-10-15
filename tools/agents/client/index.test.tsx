@@ -292,9 +292,6 @@ describe('agents client / Editor 表单契约', () => {
     expect(controlProps('Checkbox', 'disable_preset').defaultChecked).toBe(
       agents.default.disablePreset,
     );
-    expect(controlProps('Input', 'max_length').defaultValue).toBe(
-      agents.default.maxLength,
-    );
     expect(controlProps('ModelNameValueField', 'model').value).toBe(
       agents.default.model,
     );

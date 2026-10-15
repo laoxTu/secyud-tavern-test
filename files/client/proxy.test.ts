@@ -17,7 +17,7 @@ vi.mock('@/client', () => ({
   open: mocks.open,
 }));
 
-import { proxy } from '@/files/client/proxy';
+import { proxy } from '@/database/files/client/proxy';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadCases() {

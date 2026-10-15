@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { memories as main } from '@/memories';
-import { memories } from '@/memories/client';
 import type { RealmOutput } from '@/stories';
+import { memories as main } from '@/stories/memories';
+import { memories } from '@/stories/memories/client';
 
 // 设置持久化会走请求层，这里整体替换掉，避免用例里出现真实请求
 vi.mock('@/client', () => ({
@@ -106,7 +106,9 @@ describe('memories / codes', () => {
 
   it('写入的编码可以被后续追加', async () => {
     const data = await loadCases();
-    const output = createOutput({ memory: structuredClone(data.codes.existing) });
+    const output = createOutput({
+      memory: structuredClone(data.codes.existing),
+    });
 
     memories.codes(output)!.push(data.codes.appended);
 

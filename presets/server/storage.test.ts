@@ -2,12 +2,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import type { Preset } from '@/presets';
 import { storage } from '@/presets/server/storage';
-import {
-  archives,
-  type Archive,
-  type ArchiveFile,
-  type ArchiveFolder,
-} from '@/utils/archive';
+import type { Archive, ArchiveFile, ArchiveFolder } from '@/utils/archive';
+import { archives } from '@/utils/archive';
 
 const mocks = vi.hoisted(() => ({
   get: vi.fn(),
@@ -15,7 +11,7 @@ const mocks = vi.hoisted(() => ({
 }));
 
 // 封面走文件仓库，这里整体替换掉，避免真实落盘
-vi.mock('@/files/server', () => ({
+vi.mock('@/database/files/server', () => ({
   files: { repository: { get: mocks.get, create: mocks.create } },
 }));
 

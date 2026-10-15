@@ -1,9 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import type { Lorebook } from '@/lorebooks';
-import { storage } from '@/lorebooks/server/storage';
 import type { Preset } from '@/presets';
-import { archives, type Archive } from '@/utils/archive';
+import type { Lorebook } from '@/presets/lorebooks';
+import { storage } from '@/presets/lorebooks/server/storage';
+import type { Archive } from '@/utils/archive';
+import { archives } from '@/utils/archive';
 
 // 只用到 archive 部分，数据库整体替换掉
 vi.mock('@/presets/server/repository', () => ({
@@ -16,7 +17,9 @@ async function loadData() {
 }
 
 async function createContext(entries: unknown[], cur: Archive = {}) {
-  const preset = structuredClone((await import('../../presets/preset.json')).default);
+  const preset = structuredClone(
+    (await import('../../presets/preset.json')).default,
+  );
 
   return {
     cur,
@@ -31,7 +34,9 @@ async function createContext(entries: unknown[], cur: Archive = {}) {
 }
 
 async function createTarget(): Promise<Preset> {
-  const preset = structuredClone((await import('../../presets/preset.json')).default);
+  const preset = structuredClone(
+    (await import('../../presets/preset.json')).default,
+  );
 
   return { ...preset, id: 'p', entries: {} } as unknown as Preset;
 }

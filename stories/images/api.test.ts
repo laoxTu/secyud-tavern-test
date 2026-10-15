@@ -28,7 +28,7 @@ vi.mock('@/database/server/provider', () => ({
   },
 }));
 // 只把文件仓库换掉，deserializeMimeType 等 files 上的真实实现保留
-vi.mock('@/files/server', async (importOriginal) => {
+vi.mock('@/database/files/server', async (importOriginal) => {
   const actual = await importOriginal<{ files: Record<string, any> }>();
   return { files: { ...actual.files, repository: mocks.filesRepo } };
 });

@@ -2,7 +2,7 @@ import { insert, search } from '@orama/orama';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { getRegistry } from '@/global';
-import { rags, useRagState } from '@/memories/client/rag';
+import { rags, useRagState } from '@/stories/memories/client/rag';
 
 // 持久化会走设置接口，这里整体替换掉，避免用例里出现真实请求
 vi.mock('@/client', () => ({

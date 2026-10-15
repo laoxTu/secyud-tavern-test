@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { Lorebook, lorebooks } from '@/lorebooks';
+import { Lorebook, lorebooks } from '@/presets/lorebooks';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadCases() {
@@ -54,9 +54,9 @@ describe('lorebooks / compare', () => {
     const { adjacentCases } = await loadCases();
 
     for (const { left, right } of adjacentCases) {
-      expect(lorebooks.compare(left as Lorebook, right as Lorebook)).toBeLessThan(
-        0,
-      );
+      expect(
+        lorebooks.compare(left as Lorebook, right as Lorebook),
+      ).toBeLessThan(0);
       expect(
         lorebooks.compare(right as Lorebook, left as Lorebook),
       ).toBeGreaterThan(0);

@@ -292,35 +292,35 @@ tests/
 
 这些是树里已列出、但目前**没有**用例的展示层目标（源码行数越大越可能有真逻辑）：
 
-| 目标用例 | 源码 | 行数 | 备注 |
-| --- | --- | --- | --- |
-| `presets/client/content.test.tsx` | `src/presets/client/content.tsx` | 599 | 表单/条目编辑交互，逻辑最多 |
-| `stories/client/realms/feature.test.tsx` | `src/stories/client/realms/feature.tsx` | 368 | realm 界面编排，含状态与提交流程 |
-| `stories/client/realms/page.test.tsx` | `src/stories/client/realms/page.tsx` | 354 | 页面级编排 |
-| `stories/client/content.test.tsx` | `src/stories/client/content.tsx` | 322 | 历史/条目交互 |
-| `models/client/setting.test.tsx` | `src/models/client/setting.tsx` | 269 | ✅ 已补（14 用例） |
-| `components/pager.test.tsx` | `src/components/pager.tsx` | 230 | ✅ 已补（14 用例，见下） |
-| `lorebooks/client/content.test.tsx` | `src/lorebooks/client/content.tsx` | 208 | |
-| `stories/client/component.test.tsx` | `src/stories/client/component.tsx` | 205 | |
-| `stories/images/client.test.tsx` | `src/stories/images/client/index.tsx` | 195 | 图片列表/上传 |
-| `presets/macros/feature.test.tsx` | `src/presets/macros/client/feature.tsx` | 173 | |
-| `global/client/menu.test.tsx` | `src/global/client/menu.tsx` | 169 | |
-| `memories/content.test.tsx` | `src/memories/client/content.tsx` | 147 | |
-| `tasks/client/content.test.tsx` | `src/tasks/client/content.tsx` | 137 | |
-| `memories/setting.test.tsx` | `src/memories/client/setting.tsx` | 130 | |
-| `files/client/content.test.tsx` | `src/files/client/content.tsx` | 96 | 逻辑很少（主要是表单提交） |
+| 目标用例                                 | 源码                                    | 行数 | 备注                             |
+| ---------------------------------------- | --------------------------------------- | ---- | -------------------------------- |
+| `presets/client/content.test.tsx`        | `src/presets/client/content.tsx`        | 599  | 表单/条目编辑交互，逻辑最多      |
+| `stories/client/realms/feature.test.tsx` | `src/stories/client/realms/feature.tsx` | 368  | realm 界面编排，含状态与提交流程 |
+| `stories/client/realms/page.test.tsx`    | `src/stories/client/realms/page.tsx`    | 354  | 页面级编排                       |
+| `stories/client/content.test.tsx`        | `src/stories/client/content.tsx`        | 322  | 历史/条目交互                    |
+| `models/client/setting.test.tsx`         | `src/models/client/setting.tsx`         | 269  | ✅ 已补（14 用例）               |
+| `components/pager.test.tsx`              | `src/components/pager.tsx`              | 230  | ✅ 已补（14 用例，见下）         |
+| `lorebooks/client/content.test.tsx`      | `src/lorebooks/client/content.tsx`      | 208  |                                  |
+| `stories/client/component.test.tsx`      | `src/stories/client/component.tsx`      | 205  |                                  |
+| `stories/images/client.test.tsx`         | `src/stories/images/client/index.tsx`   | 195  | 图片列表/上传                    |
+| `presets/macros/feature.test.tsx`        | `src/presets/macros/client/feature.tsx` | 173  |                                  |
+| `global/client/menu.test.tsx`            | `src/global/client/menu.tsx`            | 169  |                                  |
+| `memories/content.test.tsx`              | `src/memories/client/content.tsx`       | 147  |                                  |
+| `tasks/client/content.test.tsx`          | `src/tasks/client/content.tsx`          | 137  |                                  |
+| `memories/setting.test.tsx`              | `src/memories/client/setting.tsx`       | 130  |                                  |
+| `files/client/content.test.tsx`          | `src/files/client/content.tsx`          | 96   | 逻辑很少（主要是表单提交）       |
 
 合计 15 个文件 / 约 3600 行源码。**最终结果：前 7 个（含 pager）全部补完并跑绿，后 8 个按用户决定「有意不补」**：
 
-| 目标用例 | 结果 |
-| --- | --- |
-| `presets/client/content.test.tsx` | ✅ 8 用例 |
-| `stories/client/realms/feature.test.tsx` | ✅ 8 用例 |
-| `stories/client/realms/page.test.tsx` | ✅ 15 用例 |
-| `stories/client/content.test.tsx` | ✅ 12 用例 |
-| `models/client/setting.test.tsx` | ✅ 14 用例 |
-| `components/pager.test.tsx` | ✅ 14 用例 |
-| `lorebooks/client/content.test.tsx` | ✅ 12 用例 |
+| 目标用例                                                                                                                                              | 结果                            |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| `presets/client/content.test.tsx`                                                                                                                     | ✅ 8 用例                       |
+| `stories/client/realms/feature.test.tsx`                                                                                                              | ✅ 8 用例                       |
+| `stories/client/realms/page.test.tsx`                                                                                                                 | ✅ 15 用例                      |
+| `stories/client/content.test.tsx`                                                                                                                     | ✅ 12 用例                      |
+| `models/client/setting.test.tsx`                                                                                                                      | ✅ 14 用例                      |
+| `components/pager.test.tsx`                                                                                                                           | ✅ 14 用例                      |
+| `lorebooks/client/content.test.tsx`                                                                                                                   | ✅ 12 用例                      |
 | 其余 8 个（memories 的 setting/content、tasks/content、files/content、global/menu、stories/component、stories/images/client、presets/macros/feature） | 有意不补（不在已批准的 7 个里） |
 
 注意：`src/models/client/component.tsx`、`src/comfyui/client/feature.tsx` 等属于「跳过」清单里的纯展示包装，本来就不建用例（`comfyui/client/feature.test.tsx` 已作为逻辑用例存在）。
@@ -353,6 +353,7 @@ tests/
 - 剩余展示层未做：`lorebooks/client/content.test.tsx`（与 `presets/client/content.test.tsx` 保持一致，暂缓；`content.tsx` 里真正的逻辑只有表单提交）。
 
 ### utils：已完成
+
 - 用例：`utils/**` 共 12 个文件 / 142 用例，数据落在 7 个 fixture json（`archive.cases.json`、`array.cases.json`、`str.cases.json`、`cn.cases.json`、`cache.cases.json`、`file.cases.json`、`response.cases.json`）。
 - 新增（本轮）：`array`（intersperse/join/groupSerial/joinPath）、`str`（random/wrap/fnv1a64Bytes/buffer，FNV 用 FNV-1a 64 参考值校验）、`cn`（clsx + tailwind-merge 冲突消解）、`mutex`（串行执行/失败不阻塞）、`cache`（命中/未命中/factory/滑动过期/容量淘汰，用假时钟）、`file`（exists/mkdir/writeFile/copy/listDirs/listFiles/两种流/download 的四种回调/execute）、`response`（json/null/create/download/resource）、`use-mobile`（伪造 matchMedia + renderHook）、`archive`（set/get/fuzzy 与 zip 往返、root 前缀、空内容不落盘）。
 - 两个补的：TODO 树原本漏列 `src/utils/mutex.ts`（`src/tasks/index.ts` 在用）与 `src/utils/archive.ts`（此前只在 presets 测试里被 mock 掉 / 当作助手用，`archiveToZip`/`zipToArchive` 从未被直接测过）。
@@ -360,6 +361,7 @@ tests/
 - 未覆盖：`src/utils/index.ts`（桶文件）、`src/utils/json-schema.ts`（纯类型），均在「跳过」清单内。
 
 ### 按树顺序推进：client / plugins / database / interceptors / signal / files / generated / localization / components（逻辑层已完成）
+
 - 用例：新增 **30 个文件 / 338 用例**，数据落在 30 个 fixture json。各模块（文件数 / 用例数）：client 1/18、plugins/secyud-tavern-importer 2/25、database 6/75、interceptors 5/72、signal 5/52、files 4/44、generated 3/17、localization 2/15、components 2/20。
 - 几个用例侧的取舍：
   - `client.test.ts`：jsdom 的 `window.open` 是原型 getter，`vi.spyOn` 拦不住，直接给自己属性；`Response` 的 body 只能读一次，mock fetch 必须每次返回新对象。
@@ -370,6 +372,7 @@ tests/
 - 尚未开始：`global`（5 个逻辑文件 + 1 个展示文件）、`memories`（6 + 2）、`stories`（约 9 + 5）、`tasks`（6 + 1）、`tools`（约 13 + 3）。
 
 ### 第二轮：global / memories / stories / tasks / tools（逻辑层）
+
 - `global`：5 个文件 / 36 用例（index 9、client/state 5、client/proxy 4、server/repository 8、server/api 10），父 agent 已复核 `pnpm exec vitest run tests/global` 全绿。
 - `stories` client 侧（父 agent 亲自写）：`client/proxy` 8、`client/state` 6、`client/factory` 6、`renderer` 7 = 4 个文件 / 27 用例全绿。
 - 父 agent 复核过的 scoped 结果（单实例跑）：`tests/tasks` **6 文件 / 55 用例全绿**；`tests/stories` **10 文件 / 159 用例全绿**；`tests/global` **5 文件 / 36 用例全绿**；`tests/tools` + `tests/memories` **19 文件 / 204 用例全绿**（含 memories/tool 修好后的 16 条）；`tests/memories` 补齐后 **6 文件 / 83 用例全绿**。
@@ -382,6 +385,7 @@ tests/
 - 本轮踩到的环境坑：8 个子代理并发时 `tsc --noEmit` 的统计会抖动（文件还在写），所以类型清理放在全部写完之后统一做。
 
 ### comfyui：已完成
+
 - 用例：`comfyui/**` 共 19 个文件 / 263 用例（本轮新增 16 个文件 / 236 用例），数据落在 16 个 fixture json（每个目录就近，另有原有的 `model-version.json`、`editor/prompt.pools.json`）。
 - 覆盖：`client` 的 proxy（含 `model.cache` 复用与回落）、5 个 store、feature 的提交流程、auto paint 工具（configureObject / schema 组装 / invoke / 模型查询工具）、`callback` 的四个入口、`editor` 的四个配置器（text/prompt/agentText/number）、`select` 的三个配置器、`civitai` 的 `extract` 递归解析与导入器；`server` 的 model/workflow 仓库（含 `param` 子仓库的 sequence 分配）、归档导入导出、importers（下载路径映射与设置回落链）、两个 api 路由、civitai server 的 curl 下载。
 - 16/16 全部完成，无剩余文件。
@@ -390,8 +394,9 @@ tests/
   - **既有用例 `editor/generator.test.ts:196`「概率门槛会让可选内容时有时无」是已知 flaky（约 50% 假失败）**：它不 mock `Math.random`，跑 50 次后断言「每个可选标记都出现过」+「至少一次缺 `optional[0]`」，两条都是概率断言（实测 4 次里 2 次失败）。用户确认**只记录、不改这条既有用例**；跑全量时若看到仅它失败，属于该 flake 而非回归。
 
 ### 已按确认的预期改动源码
+
 - `src/comfyui/editor/client/index.tsx`：`prompt` 配置器的 id 由 `main.text.name` 改为 `main.prompt.name`。原来与 `text` 配置器撞 id，而注册顺序是 text → prompt、`Registry.register` 按 id 覆盖 ⇒ `text` 被顶掉（它的 `configureObject` 会去读 text 表单里根本没有的 `pools`，保存时抛 `Json is invalid`），`prompt` 则永远 `record()` 不到、相关参数被静默跳过。用例改成断言「四个 id 一一对应」与「text/prompt 各自可寻址」。
-- `src/lorebooks/client/matchers/variable.tsx`：`String(current)` 改为 `String(current.item)`。`extract` 返回的是 `{item, key, pos}` 节点，原写法恒为 `'[object Object]'`，变量匹配器实际不可能命中（同文件 `patchOne` 的 test 分支、`tools/variables/client/index.tsx` 都是取 `current.item`）。
+- `src/matchers/client/variable.tsx`：`String(current)` 改为 `String(current.item)`。`extract` 返回的是 `{item, key, pos}` 节点，原写法恒为 `'[object Object]'`，变量匹配器实际不可能命中（同文件 `patchOne` 的 test 分支、`tools/variables/client/index.tsx` 都是取 `current.item`）。
 - `src/presets/regexes/server/storage.ts`：meta 写 `item`（原来传的是函数，序列化后内容丢失），正则条目现在可以正常归档往返。
 - `src/presets/server/storage.ts`：重建封面沿用 meta 里的原始 MIME（原来又拼了一次 `image/`）。
 - `src/presets/macros/client/realm.ts`：单选条件改 `&&`（没有选择时取第一个，已有选择时保留）；残留的已删除 code 跳过而不是抛错。
@@ -400,7 +405,7 @@ tests/
 ### 已确认为设计、不加断言
 
 - 同 code 的样式/脚本条目重复注入属既定软处理，重复 id 由页面报错暴露。
-- `lorebooks/client/matchers/vector.ts` 只有 `output` 阶段才读向量；`lorebooks/client/matchers/normal.tsx` 的 `keywordsLength` 为 0 时直接不匹配。
+- `matchers/client/vector.ts` 只有 `output` 阶段才读向量；`matchers/client/normal.tsx` 的 `keywordsLength` 为 0 时直接不匹配。
 - `comfyui/client/tool.tsx` 的 `painter.invoke` **不检查 `paintParam.disabled`**：禁用只表示「不让 ai 提供该参数」（建 schema 时会跳过它），提交时仍会按默认流程调用一次 `generateCalling`、用配置里的默认值构造（用户确认）。用例同时断言了这两面。
 - `comfyui/client/tool.tsx` 提交失败时用 `JSON.stringify(err)`：`Error` 的 `message` 不可枚举，因此返回 `{}`、错误信息丢失（用户确认为现状）。
 - `comfyui/select/client/index.tsx` 的 `modelSelect.configureInput` 写的是 `forms.str(data, 'model_<sequence>')` **原始表单字符串**，不经 `combobox.get`（与 `configureObject`/`generateCalling` 的取值方式不同；用户确认为现状）。
@@ -431,22 +436,22 @@ tests/
 
 改动清单（`git status -- src plugins` 可逐项核对，全部落在批准范围内）：
 
-| # | 位置 | 修法 | 验证 |
-| --- | --- | --- | --- |
-| 1 | `plugins/secyud-tavern-importer/server/silly-tavern.ts:140`（preset）、`:346`（chara） | `entries[1].length`→`entries.length`、`entries[1][i]`→`entries[i]` | 用例 16→**19** 绿（新增单次/同 key 两次赋值/正文片段摘除三条正向断言） |
-| 2 | `tools/{agents:58,fetchers:23,scripts:43}/client/index.tsx` | `merge(structuredClone(defaultConfig), data.config)` | agents 21→**23**、fetchers 13→**15**、scripts 10→**11**，各补「渲染带配置后 `*.default` 不变」 |
-| 3 | `tools/scripts/client/index.tsx:162-165` | `JSON.stringify(result) ?? ''` | 新增「无 return → 空串」 |
-| 4 | `tools/fetchers/client/index.tsx:129-130` | `u.content ?? u.error ?? 'no content'` | 新增「不出现字面量 undefined」 |
-| 5 | `tools/server/storage.ts:9-19` | 改抛 `BusinessError('error.tool.provider_not_registered')` + `.withValue('type')`；tools zh/en 语言包补文案 | storage 9→**11** |
-| 6 | `tools/variables/client/index.tsx:43-57` | 无本轮输出 → `'error: no output to operate.'` | variables 13→**14** |
-| 7 | `interceptors/index.ts:46-57,104-112` | 新增 `parseable()`（try/catch JSON.parse），`'0'/'false'/'null'` 变合法，错误 code/message/data 不变 | interceptors 28→**29** |
-| 8 | `stories/client/realms/index.ts:180-241` | create 阶段抛错时也复位 `generating`（错误仍上抛） | `tests/stories/realms.test.ts` 41 绿 |
-| 9 | `stories/client/realms/feature.tsx:275` | 补 `throw` | feature 8→**9** |
-| 10 | `files/server/api.ts:39-40` | `response.json(null)` | files api 12 绿 |
-| 11 | `database/server/factory.ts:148`、`comfyui/server/repository-workflow.ts:89` | 空数组直接返回 | database/factory 18→**19**、comfyui/repository-workflow 24→**25** |
-| 12 | `tasks/server/manager.ts:22-26` | 改抛 `BusinessError('error.task.provider_not_registered')` + tasks zh/en 补文案 | manager 8→**9** |
-| 13 | `comfyui/civitai/server/index.ts:14,20` | 校验提到 `mkdir` 之前；`new URL` 移入 try | civitai/server 7→**8** |
-| 14 | `src/tools/localization/{en,zh}.json`、`plugins/secyud-tavern-importer/localization/{en,zh}.json` | 两语言键集合对齐（含「代码引用但语言包缺失」的 code 排查） | `tests/generated/resources.test.ts` 6 绿 |
+| #   | 位置                                                                                              | 修法                                                                                                        | 验证                                                                                           |
+| --- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| 1   | `plugins/secyud-tavern-importer/server/silly-tavern.ts:140`（preset）、`:346`（chara）            | `entries[1].length`→`entries.length`、`entries[1][i]`→`entries[i]`                                          | 用例 16→**19** 绿（新增单次/同 key 两次赋值/正文片段摘除三条正向断言）                         |
+| 2   | `tools/{agents:58,fetchers:23,scripts:43}/client/index.tsx`                                       | `merge(structuredClone(defaultConfig), data.config)`                                                        | agents 21→**23**、fetchers 13→**15**、scripts 10→**11**，各补「渲染带配置后 `*.default` 不变」 |
+| 3   | `tools/scripts/client/index.tsx:162-165`                                                          | `JSON.stringify(result) ?? ''`                                                                              | 新增「无 return → 空串」                                                                       |
+| 4   | `tools/fetchers/client/index.tsx:129-130`                                                         | `u.content ?? u.error ?? 'no content'`                                                                      | 新增「不出现字面量 undefined」                                                                 |
+| 5   | `tools/server/storage.ts:9-19`                                                                    | 改抛 `BusinessError('error.tool.provider_not_registered')` + `.withValue('type')`；tools zh/en 语言包补文案 | storage 9→**11**                                                                               |
+| 6   | `tools/variables/client/index.tsx:43-57`                                                          | 无本轮输出 → `'error: no output to operate.'`                                                               | variables 13→**14**                                                                            |
+| 7   | `interceptors/index.ts:46-57,104-112`                                                             | 新增 `parseable()`（try/catch JSON.parse），`'0'/'false'/'null'` 变合法，错误 code/message/data 不变        | interceptors 28→**29**                                                                         |
+| 8   | `stories/client/realms/index.ts:180-241`                                                          | create 阶段抛错时也复位 `generating`（错误仍上抛）                                                          | `tests/stories/realms.test.ts` 41 绿                                                           |
+| 9   | `stories/client/realms/feature.tsx:275`                                                           | 补 `throw`                                                                                                  | feature 8→**9**                                                                                |
+| 10  | `files/server/api.ts:39-40`                                                                       | `response.json(null)`                                                                                       | files api 12 绿                                                                                |
+| 11  | `database/server/factory.ts:148`、`comfyui/server/repository-workflow.ts:89`                      | 空数组直接返回                                                                                              | database/factory 18→**19**、comfyui/repository-workflow 24→**25**                              |
+| 12  | `tasks/server/manager.ts:22-26`                                                                   | 改抛 `BusinessError('error.task.provider_not_registered')` + tasks zh/en 补文案                             | manager 8→**9**                                                                                |
+| 13  | `comfyui/civitai/server/index.ts:14,20`                                                           | 校验提到 `mkdir` 之前；`new URL` 移入 try                                                                   | civitai/server 7→**8**                                                                         |
+| 14  | `src/tools/localization/{en,zh}.json`、`plugins/secyud-tavern-importer/localization/{en,zh}.json` | 两语言键集合对齐（含「代码引用但语言包缺失」的 code 排查）                                                  | `tests/generated/resources.test.ts` 6 绿                                                       |
 
 - 连带修掉的一条：第 7 项让 `'null'` 变合法后，`tests/comfyui/editor/configurators.test.ts` 里原「字面量 null 应当拒绝」的硬编码用例必然失败 ⇒ 已改成**正向用例**（`expected: "null"`，因为 `configureObject` 对合法 JSON 是原样保留字符串），fixture `字面量 null 应当拒绝` 同步改为应当接受。该文件 19 绿。
 - 过程说明：A1 组完成并报告；**A2、A3 组在收尾前被中断（无报告）**，其可见产出经我 scoped 复核为完整：A2 相关 19 文件 / 278 用例全绿（含 manager 9、repository-workflow 25、database/factory 19、stories/feature 9），A3 的语言包改动使 `tests/generated` 6 条全绿。
@@ -455,7 +460,7 @@ tests/
 
 HEAD 现为 `b6a4933 Merge pull request #60 from laoxTu/develop/merge`，该合并动了 16 个文件（含 `tests` 子模块指针）与我们的工作重叠。核实结果：
 
-- **我们的修复仍在**：`comfyui/editor/client/index.tsx:219` 仍是 `id: main.prompt.name`；`lorebooks/client/matchers/variable.tsx:73` 仍是 `String(current.item)`；`models/openai/client/engine.tsx:437` 仍是 `arguments: ''`。
+- **我们的修复仍在**：`comfyui/editor/client/index.tsx:219` 仍是 `id: main.prompt.name`；`matchers/client/variable.tsx:73` 仍是 `String(current.item)`；`models/openai/client/engine.tsx:437` 仍是 `arguments: ''`。
 - **被上游覆盖的一条**：`src/models/deepseek/index.ts` 的模型列表变成 `['deepseek-flash','deepseek-pro']`（我们早先加的 `deepseek-v4-flash` 不在了）。对应用例仍绿（`tests/models/deepseek/index.test.ts` 9 绿），说明它以「上游列表为准」，无需回改。
 - **上游带来的新行为 + 一条测试失配**：合并把 `src/signal/client/proxy.ts` 改成把 id 塞进 **body**（`post(url, {...param, id})`），但服务端是从**路径参数**取 id 的（`signal/server/api.ts:29` 的 `record.params`）⇒ 请求路径仍是字面量 `sse/{id}/subscription`，**这个改法并不能修好「订阅落到幽灵连接」**，同时让 `tests/signal/client/proxy.test.ts` 断言失配（它按合并前的形状断言）。
   - 我**暂时把该文件还原成合并前的形状**（工作树改动，未做 git 操作），`tests/signal` 5 文件 52 用例随之恢复全绿。
@@ -464,16 +469,16 @@ HEAD 现为 `b6a4933 Merge pull request #60 from laoxTu/develop/merge`，该合�
 
 ### B 组：按用户定的语义处理（含 §2 的语义纠正）
 
-| 项 | 结论（用户拍板） | 改动 |
-| --- | --- | --- |
-| **tasks 的对象语义** | **`start`/`restart` 必须建新实例；`get`/`delete` 一律按 id 从 `running` 取当前实例；`create` 返回的是入队对象（状态停在 `pending`）——这是有意设计**，不是缺陷。我先前把它记成缺陷并让子代理「就地改」，方向错了，已纠正 | `src/tasks/index.ts`：`start` 恢复 `{...top, controller}` 新实例 + 回写 `running`；`restart` 建新实例后**回写 `this.running.set(id, task)`**（这才是真正的缺陷：原来只建新实例不回写，导致 `get`/`delete` 拿旧 controller，restart 后取消失效）；两处注释写明「运行态按 id 取」 |
-| **并发上限策略** | 「入队后只要 `running` 满就**不 start** 即可」——任务留在 `pending` 等空位，由 `finish()`/`delete()` 再次触发 `start()` 补位，**不向调用方抛错** | `start()` 里 `throw new BusinessError('running task over limit!')` → `return`。连带好处：`comfyui/server/api-models.ts:54` 的下载接口不再「报错但其实已入队」 |
-| **防御的归属** | 由 `Task` 及其子类做，调用层不做 | 撤掉我先前加在 `tools/client/task.ts` 调用循环里的 try/catch（它和子类 `Manager.execute` 里既有的 `error: ...` 兜底重复） |
-| **`finish` 的竞态**（子代理实测发现） | restart 后旧一轮迟到结束时，`finish` 只按 id 删会把**新一轮实例**踢出 `running`（`runningTasks.has(id)` 变 false，而新实例仍在 running 状态） | `finish` 加身份校验：`if (this.running.get(task.id) === task) this.running.delete(task.id)`；`TaskManager.finish` 随后的 `repository.update` 也不会再用旧一轮终态覆盖新一轮 |
-| **B2（stories clone）** | 用户否定「对齐 presets」：**故事的克隆是新存档，只复制本体、有意不复制条目、也不消费请求体**（源码里已有手写注释） | 保留用户的实现；把 S2 写的「复制条目 + 合并改名」测试**改成保护该决定**：断言 `entry.list`/`entry.make` 未被调用、请求体改名不生效、只换新 id |
-| **B6** | 超时统一成秒 | `src/tools/fetchers/client/index.tsx:17` `timeout: 10000 → 10`（`*1000` 保留） |
-| **B9** | 每行都加前缀 | `src/utils/str.ts:21` `replace → replaceAll`（src 下无调用点） |
-| **B1** | 由上面的上限策略 + 子类防御彻底解决 | 用例改为正向断言：9 个调用全部入队执行（先 8 后 1）、溢出项**不写 error**、`calling` 不抛错、`manager.wait()` 等到全部完成 |
+| 项                                    | 结论（用户拍板）                                                                                                                                                                                                        | 改动                                                                                                                                                                                                                                                                            |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **tasks 的对象语义**                  | **`start`/`restart` 必须建新实例；`get`/`delete` 一律按 id 从 `running` 取当前实例；`create` 返回的是入队对象（状态停在 `pending`）——这是有意设计**，不是缺陷。我先前把它记成缺陷并让子代理「就地改」，方向错了，已纠正 | `src/tasks/index.ts`：`start` 恢复 `{...top, controller}` 新实例 + 回写 `running`；`restart` 建新实例后**回写 `this.running.set(id, task)`**（这才是真正的缺陷：原来只建新实例不回写，导致 `get`/`delete` 拿旧 controller，restart 后取消失效）；两处注释写明「运行态按 id 取」 |
+| **并发上限策略**                      | 「入队后只要 `running` 满就**不 start** 即可」——任务留在 `pending` 等空位，由 `finish()`/`delete()` 再次触发 `start()` 补位，**不向调用方抛错**                                                                         | `start()` 里 `throw new BusinessError('running task over limit!')` → `return`。连带好处：`comfyui/server/api-models.ts:54` 的下载接口不再「报错但其实已入队」                                                                                                                   |
+| **防御的归属**                        | 由 `Task` 及其子类做，调用层不做                                                                                                                                                                                        | 撤掉我先前加在 `tools/client/task.ts` 调用循环里的 try/catch（它和子类 `Manager.execute` 里既有的 `error: ...` 兜底重复）                                                                                                                                                       |
+| **`finish` 的竞态**（子代理实测发现） | restart 后旧一轮迟到结束时，`finish` 只按 id 删会把**新一轮实例**踢出 `running`（`runningTasks.has(id)` 变 false，而新实例仍在 running 状态）                                                                           | `finish` 加身份校验：`if (this.running.get(task.id) === task) this.running.delete(task.id)`；`TaskManager.finish` 随后的 `repository.update` 也不会再用旧一轮终态覆盖新一轮                                                                                                     |
+| **B2（stories clone）**               | 用户否定「对齐 presets」：**故事的克隆是新存档，只复制本体、有意不复制条目、也不消费请求体**（源码里已有手写注释）                                                                                                      | 保留用户的实现；把 S2 写的「复制条目 + 合并改名」测试**改成保护该决定**：断言 `entry.list`/`entry.make` 未被调用、请求体改名不生效、只换新 id                                                                                                                                   |
+| **B6**                                | 超时统一成秒                                                                                                                                                                                                            | `src/tools/fetchers/client/index.tsx:17` `timeout: 10000 → 10`（`*1000` 保留）                                                                                                                                                                                                  |
+| **B9**                                | 每行都加前缀                                                                                                                                                                                                            | `src/utils/str.ts:21` `replace → replaceAll`（src 下无调用点）                                                                                                                                                                                                                  |
+| **B1**                                | 由上面的上限策略 + 子类防御彻底解决                                                                                                                                                                                     | 用例改为正向断言：9 个调用全部入队执行（先 8 后 1）、溢出项**不写 error**、`calling` 不抛错、`manager.wait()` 等到全部完成                                                                                                                                                      |
 
 **B 组剩余三条的最终处置（用户拍板，均只记录/仅一处描述改动）**：
 
@@ -489,7 +494,7 @@ HEAD 现为 `b6a4933 Merge pull request #60 from laoxTu/develop/merge`，该合�
 
 ```ts
 vi.mock('@/signal/client', async () => {
-  const { proxy } = await import('@/signal/client/proxy');  // ← 死锁点
+  const { proxy } = await import('@/signal/client/proxy'); // ← 死锁点
   return { signals: { proxy } };
 });
 ```
@@ -604,7 +609,7 @@ vi.mock('@/signal/client', async () => {
   - `src/comfyui/civitai/client/index.tsx:45`：`meta.images.length` 未判空，`images` 缺失时抛 `TypeError`。
   - `src/comfyui/editor/client/index.tsx:394-402`：`agentText.configureObject` 用 `{...param}` 浅拷贝出 agent/texts 两份，**两者的 `config` 仍指向同一对象**；当前两个上游 `configureObject` 都是整体替换 `config` 所以无害（用例已用「默认值不被污染」把该前提固化成回归保护），但任一处改成就地改字段就会互相串。
   - `src/comfyui/select/client/index.tsx:165`、`:276`：`args` 与 `config` 里的值都缺时会赋值 `undefined`，**把节点已有的输入覆盖成 undefined**（`generateCalling` 无返回值、只改 `input`）。
-- `src/utils/str.ts` 的 `wrap`：`text.replace('\n', ...)` 只替换**第一个**换行，pad 只补到第二行，第三行及以后没有前缀（实测 `wrap((t) => \`<${t}>\`, 'a\nb\nc', '> ')` → `'<> a\n> b\nc>'`）。用例只断言了单行与两行（两种读法下都成立），多行现象未写断言，疑似漏了 `/g`。
+- `src/utils/str.ts` 的 `wrap`：`text.replace('\n', ...)` 只替换**第一个**换行，pad 只补到第二行，第三行及以后没有前缀（实测 `wrap((t) => \`<${t}>\`, 'a\nb\nc', '> ')`→`'<> a\n> b\nc>'`）。用例只断言了单行与两行（两种读法下都成立），多行现象未写断言，疑似漏了 `/g`。
 - `src/models/openai/client/engine.tsx:262-288` 的 chat `caller` 与 deepseek 修前同形：`content` 非空且有 callings 时会先发一条 `assistant(content)`，再发一条 `assistant(content, tool_calls)`，正文重复。deepseek 已按确认修掉，openai 这条是否也要一并对齐未确认。
 - `src/models/anthropic/client/engine.tsx:201-208`：没有任何 system 注入时 `system` 就是 `''`，summaries 仍必定 unshift `{role:'system',content:''}`，`input.system=''` 也照发给 API。
 - `src/models/anthropic/client/engine.tsx:112`：`max_tokens` 用 `forms.float`，字段为空时 `parseFloat('')=NaN` 会进请求体（JSON 化后为 `null`），非整数也照发，而 Anthropic 要求整数。openai/deepseek 同样用 forms.float/int，更像统一约定。

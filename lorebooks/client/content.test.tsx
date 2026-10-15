@@ -1,5 +1,5 @@
-import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
+import React from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // content.tsx 只通过 barrel 取展示组件与 preset/条目状态，
@@ -131,11 +131,7 @@ vi.mock('@/presets/client', () => ({
   usePresetState: () => ({ item: mocks.preset }),
   presets: { proxy: { entry: { set: mocks.entrySet } } },
   PresetEntryList: ({ children }: any) =>
-    React.createElement(
-      'div',
-      { 'data-list': 'true' },
-      children(mocks.entry),
-    ),
+    React.createElement('div', { 'data-list': 'true' }, children(mocks.entry)),
   PresetEntryUpdate: ({ children }: any) =>
     React.createElement('div', { 'data-entry-update': 'true' }, children),
 }));
@@ -144,7 +140,7 @@ vi.mock('@/presets/client/factory', () => ({
   createPresetEntryState: () => () => ({ refresh: mocks.refresh }),
 }));
 
-vi.mock('@/lorebooks/client', () => ({
+vi.mock('@/presets/lorebooks/client', () => ({
   lorebooks: {
     matchers: {
       registry: {
@@ -155,7 +151,7 @@ vi.mock('@/lorebooks/client', () => ({
   },
 }));
 
-import { Content, tab } from '@/lorebooks/client/content';
+import { Content, tab } from '@/presets/lorebooks/client/content';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadCases() {
@@ -321,7 +317,8 @@ describe('lorebooks content / 表单提交', () => {
     await mocks.pending;
 
     expect(mocks.entrySet).toHaveBeenCalledTimes(1);
-    const [masterId, entryType, entryId, payload] = mocks.entrySet.mock.calls[0];
+    const [masterId, entryType, entryId, payload] =
+      mocks.entrySet.mock.calls[0];
     expect(masterId).toBe(data.entry.masterId);
     expect(entryType).toBe(data.entry.entryType);
     expect(entryId).toBe(data.entry.entryId);

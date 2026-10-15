@@ -1,10 +1,18 @@
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { validate } from 'uuid';
+import {
+  afterAll,
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vitest';
 
-import type { FileModel } from '@/files';
+import type { FileModel } from '@/database/files';
 import { config } from '@/global';
 import { BusinessError } from '@/interceptors';
 import { arrUtils } from '@/utils';
@@ -102,14 +110,16 @@ vi.mock('@/database/server', () => ({
 }));
 
 /** 真实落盘目录：整个文件共用一个临时目录，跑完清掉 */
-const root = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'files-repository-'));
+const root = await fs.promises.mkdtemp(
+  path.join(os.tmpdir(), 'files-repository-'),
+);
 
 // filesDir 在模块加载时由 config.dataDir 决定，所以要在 import 仓库之前改掉
 const originDataDir = config.dataDir;
 config.dataDir = root;
 
-const { repository } = await import('@/files/server/repository');
-const { fileSchema } = await import('@/files/server/schema');
+const { repository } = await import('@/database/files/server/repository');
+const { fileSchema } = await import('@/database/files/server/schema');
 
 /** 仓库认定的文件根目录（joinPath 已被替换为 path.resolve，因此就是临时目录） */
 const filesDir = arrUtils.joinPath(process.cwd(), config.dataDir);

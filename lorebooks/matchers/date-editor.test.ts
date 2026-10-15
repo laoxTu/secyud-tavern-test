@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { getDate } from '@/lorebooks/client/matchers/date-editor';
+import { getDate } from '@/presets/matchers/client/date-editor';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadCases() {

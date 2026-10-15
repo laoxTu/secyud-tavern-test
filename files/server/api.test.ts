@@ -12,7 +12,7 @@ const mocks = vi.hoisted(() => ({
 }));
 
 // 只把仓库层换掉，deserializeMimeType 等 files 上的真实实现保留
-vi.mock('@/files/server', async (importOriginal) => {
+vi.mock('@/database/files/server', async (importOriginal) => {
   const actual = await importOriginal<{ files: Record<string, any> }>();
   return { files: { ...actual.files, repository: mocks.repo } };
 });
@@ -40,7 +40,7 @@ vi.mock('@/interceptors/server', () => ({
   route: (handler: unknown) => handler,
 }));
 
-import api from '@/files/server/api';
+import api from '@/database/files/server/api';
 
 const handlers = api.files as any;
 

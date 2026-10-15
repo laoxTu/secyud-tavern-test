@@ -40,10 +40,14 @@ const mocks = vi.hoisted(() => {
 // 注册器只负责编排，这里把每个插件入口换成记录器
 vi.mock('@/database/client', () => ({ default: mocks.client.database }));
 vi.mock('@/comfyui/client', () => ({ default: mocks.client.comfyui }));
-vi.mock('@/files/client', () => ({ default: mocks.client.files }));
+vi.mock('@/database/files/client', () => ({ default: mocks.client.files }));
 vi.mock('@/global/client', () => ({ default: mocks.client.global }));
-vi.mock('@/lorebooks/client', () => ({ default: mocks.client.lorebooks }));
-vi.mock('@/memories/client', () => ({ default: mocks.client.memories }));
+vi.mock('@/presets/lorebooks/client', () => ({
+  default: mocks.client.lorebooks,
+}));
+vi.mock('@/stories/memories/client', () => ({
+  default: mocks.client.memories,
+}));
 vi.mock('@/models/client', () => ({ default: mocks.client.models }));
 vi.mock('@/presets/client', () => ({ default: mocks.client.presets }));
 vi.mock('@/signal/client', () => ({ default: mocks.client.signal }));
@@ -58,8 +62,12 @@ vi.mock('@/interceptors/server/register', () => ({
   default: mocks.server.interceptors,
 }));
 vi.mock('@/comfyui/server', () => ({ default: mocks.server.comfyui }));
-vi.mock('@/lorebooks/server', () => ({ default: mocks.server.lorebooks }));
-vi.mock('@/memories/server', () => ({ default: mocks.server.memories }));
+vi.mock('@/presets/lorebooks/server', () => ({
+  default: mocks.server.lorebooks,
+}));
+vi.mock('@/stories/memories/server', () => ({
+  default: mocks.server.memories,
+}));
 vi.mock('@/models/server', () => ({ default: mocks.server.models }));
 vi.mock('@/presets/server', () => ({ default: mocks.server.presets }));
 vi.mock('@/stories/server', () => ({ default: mocks.server.stories }));

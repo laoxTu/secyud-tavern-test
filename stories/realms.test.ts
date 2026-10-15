@@ -119,16 +119,16 @@ afterEach(() => {
 
 describe('stories realms / outputs 与 variables', () => {
   it('没有输出页时应当返回 null', () => {
-    expect(realms.outputs(null)).toBeNull();
-    expect(realms.outputs(undefined)).toBeNull();
-    expect(realms.outputs({ outputs: [] } as any)).toBeNull();
+    expect(realms.space(null)).toBeNull();
+    expect(realms.space(undefined)).toBeNull();
+    expect(realms.space({ outputs: [] } as any)).toBeNull();
   });
 
   it('output 越界时应当取最后一页', async () => {
     const data = await loadCases();
     const history = structuredClone(data.history) as any;
 
-    expect(realms.outputs({ ...history, output: 5 })).toBe(
+    expect(realms.space({ ...history, output: 5 })).toBe(
       history.outputs[history.outputs.length - 1],
     );
   });
@@ -149,15 +149,6 @@ describe('stories realms / outputs 与 variables', () => {
     realms.variables(history);
 
     expect(history.variables).toEqual(data.expected.variablesBefore);
-  });
-
-  it('output 为 false 时不叠加输出页变量', async () => {
-    const data = await loadCases();
-    const history = structuredClone(data.history) as any;
-
-    expect(realms.variables(history, false)).toEqual(
-      data.expected.variablesWithoutOutput,
-    );
   });
 
   it('output 指向不存在的一页时不叠加输出页变量', async () => {
@@ -298,7 +289,7 @@ describe('stories realms / history.get', () => {
     const data = await loadCases();
     const realm = setupRealm(data, [structuredClone(data.histories[0])]);
 
-    const history = await realms.history.get(0, realm);
+    const history = await realms.history(0, realm);
 
     expect(history).toBe(realms.opening(realm));
     expect(mocks.historyGet).not.toHaveBeenCalled();
@@ -308,22 +299,22 @@ describe('stories realms / history.get', () => {
     const data = await loadCases();
     const realm = setupRealm(data);
 
-    expect(await realms.history.get(null, realm)).toBe(realms.opening(realm));
+    expect(await realms.history(null, realm)).toBe(realms.opening(realm));
   });
 
   it('index 为空时取最后一段历史', async () => {
     const data = await loadCases();
     const realm = setupRealm(data, structuredClone(data.histories));
 
-    expect(await realms.history.get(null, realm)).toBe(realm.histories[1]);
+    expect(await realms.history(null, realm)).toBe(realm.histories[1]);
   });
 
   it('越界时钳到可用范围', async () => {
     const data = await loadCases();
     const realm = setupRealm(data, structuredClone(data.histories));
 
-    expect(await realms.history.get(99, realm)).toBe(realm.histories[1]);
-    expect(await realms.history.get(-5, realm)).toBe(realm.histories[0]);
+    expect(await realms.history(99, realm)).toBe(realm.histories[1]);
+    expect(await realms.history(-5, realm)).toBe(realm.histories[0]);
   });
 
   it('缺失的一段应当按 sequence 拉取并写回', async () => {
@@ -332,36 +323,11 @@ describe('stories realms / history.get', () => {
     realm.histories[1] = null;
     mocks.historyGet.mockResolvedValue(structuredClone(data.fetched));
 
-    const history = await realms.history.get(2, realm);
+    const history = await realms.history(2, realm);
 
     expect(mocks.historyGet).toHaveBeenCalledWith(realm.id, 1);
     expect(history).toEqual(data.fetched);
     expect(realm.histories[1]).toBe(history);
-  });
-});
-
-describe('stories realms / history.set', () => {
-  it('index 为 0 时不发请求', async () => {
-    const data = await loadCases();
-    const realm = setupRealm(data, structuredClone(data.histories));
-
-    await realms.history.set(0, realm);
-
-    expect(mocks.historyGet).not.toHaveBeenCalled();
-    expect(mocks.historySet).not.toHaveBeenCalled();
-  });
-
-  it('应当按 sequence 保存对应的一段历史', async () => {
-    const data = await loadCases();
-    const realm = setupRealm(data, structuredClone(data.histories));
-
-    await realms.history.set(1, realm);
-
-    expect(mocks.historySet).toHaveBeenCalledWith(
-      realm.id,
-      realm.histories[0]!.sequence,
-      realm.histories[0],
-    );
   });
 });
 
@@ -448,7 +414,7 @@ describe('stories realms / generate', () => {
     const realm = setupRealm(data, [structuredClone(data.emptyHistory)]);
     useRealmState.setState({ generating: true, content: '草稿' });
 
-    await realms.generate(true);
+    await realms.generate();
 
     expect(mocks.historyAdd).not.toHaveBeenCalled();
     expect(mocks.generate).not.toHaveBeenCalled();
@@ -472,7 +438,7 @@ describe('stories realms / generate', () => {
     });
     stubGenerate([data.generate.steps[0]]);
 
-    await realms.generate(true);
+    await realms.generate();
 
     expect(mocks.historyAdd).toHaveBeenCalledTimes(1);
     expect(mocks.historyAdd.mock.calls[0][0]).toBe(realm.id);
@@ -500,7 +466,7 @@ describe('stories realms / generate', () => {
     useRealmState.setState({ content: data.generate.input });
     stubGenerate([]);
 
-    await realms.generate(true);
+    await realms.generate();
 
     expect(mocks.historyAdd).not.toHaveBeenCalled();
     expect(realm.histories).toHaveLength(1);
@@ -521,7 +487,7 @@ describe('stories realms / generate', () => {
     });
     stubGenerate([]);
 
-    await realms.generate(true);
+    await realms.generate();
 
     expect(realm.histories).toHaveLength(2);
     expect(added).toMatchObject({
@@ -550,7 +516,7 @@ describe('stories realms / generate', () => {
     useRealmState.setState({ content: data.generate.input });
     stubGenerate([]);
 
-    await realms.generate(true);
+    await realms.generate();
 
     expect(realm.histories[0].prompts[0].content).toBe(
       data.generate.builtContent,
@@ -687,7 +653,7 @@ describe('stories realms / generate', () => {
     useRealmState.setState({ content: data.generate.content, summary: true });
     mocks.historyAdd.mockRejectedValue(new Error('add boom'));
 
-    await expect(realms.generate(true)).rejects.toThrow('add boom');
+    await expect(realms.generate()).rejects.toThrow('add boom');
 
     // create 阶段在收尾的 try/finally 之前，出错时生成态必须自己复位，
     // 否则会一直停在「生成中」，后续 generate 全部早退。

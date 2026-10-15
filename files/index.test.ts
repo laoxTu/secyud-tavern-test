@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { files } from '@/files';
+import { files } from '@/database/files';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadCases() {
@@ -74,10 +74,10 @@ describe('files / mime', () => {
     const data = await loadCases();
 
     for (const item of data.mime) {
-      expect(
-        files.deserializeMimeType(item.input),
-        item.title,
-      ).toEqual({ type: item.type, args: item.args });
+      expect(files.deserializeMimeType(item.input), item.title).toEqual({
+        type: item.type,
+        args: item.args,
+      });
     }
   });
 
@@ -124,8 +124,8 @@ describe('files / mime', () => {
   it('args 为空串时应当只留主类型', async () => {
     const data = await loadCases();
 
-    expect(
-      files.serializeMimeType({ type: data.mime[1].type, args: '' }),
-    ).toBe(data.mime[1].type);
+    expect(files.serializeMimeType({ type: data.mime[1].type, args: '' })).toBe(
+      data.mime[1].type,
+    );
   });
 });

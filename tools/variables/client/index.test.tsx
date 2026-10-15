@@ -27,11 +27,8 @@ async function createTools(realm: Realm) {
   return await variables.create(null as any, realm);
 }
 
-function lastOutput(realm: Realm) {
-  return realm
-    .histories!.at(-1)!
-    .outputs.at(-1)!
-    .at(-1)!;
+function lastSpace(realm: Realm) {
+  return realm.histories!.at(-1)!.spaces.at(-1)!;
 }
 
 beforeEach(() => {
@@ -65,15 +62,16 @@ describe('variables client / provider', () => {
     expect(get.parameters.additionalProperties).toBe(
       data.get.additionalProperties,
     );
-    expect(
-      (get.parameters.properties as Record<string, any>).path.type,
-    ).toBe(data.get.pathType);
+    expect((get.parameters.properties as Record<string, any>).path.type).toBe(
+      data.get.pathType,
+    );
 
     expect(set.parameters.required).toEqual(data.set.required);
     expect(
       (
-        (set.parameters.properties as Record<string, any>).value
-          .anyOf as { type: string }[]
+        (set.parameters.properties as Record<string, any>).value.anyOf as {
+          type: string;
+        }[]
       ).map((u) => u.type),
     ).toEqual(data.set.valueTypes);
 
@@ -168,7 +166,7 @@ describe('variables client / set_variable 与 del_variable', () => {
     });
 
     expect(result).toBe(data.expected.success);
-    expect(lastOutput(realm).variables).toEqual([
+    expect(lastSpace(realm)?.operations).toEqual([
       { ...data.patches.set, op: 'replace' },
     ]);
   });
@@ -184,7 +182,7 @@ describe('variables client / set_variable 与 del_variable', () => {
     });
 
     expect(result).toBe(data.expected.valueRequired);
-    expect(lastOutput(realm).variables).toEqual([]);
+    expect(lastSpace(realm)?.operations).toEqual([]);
   });
 
   it('del 应当把 remove 操作记进本轮输出', async () => {
@@ -198,7 +196,7 @@ describe('variables client / set_variable 与 del_variable', () => {
     });
 
     expect(result).toBe(data.expected.success);
-    expect(lastOutput(realm).variables).toEqual([
+    expect(lastSpace(realm).operations).toEqual([
       { ...data.patches.del, op: 'remove' },
     ]);
   });
@@ -214,7 +212,7 @@ describe('variables client / set_variable 与 del_variable', () => {
     });
 
     expect(result).toBe(data.expected.pathRequired);
-    expect(lastOutput(realm).variables).toEqual([]);
+    expect(lastSpace(realm).operations).toEqual([]);
   });
 
   it('没有本轮输出时应当报错而不是 success（修复前会静默返回 success）', async () => {

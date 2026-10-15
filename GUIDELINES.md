@@ -74,15 +74,15 @@ vi.mock('@/presets/server/repository', () => ({
 
 按被测目标选层，尽量只替换必要的一层：
 
-| 被测目标 | 需要 mock |
-| --- | --- |
-| factory / feature storage | `@/presets/server/repository`（绕开 sqlite） |
-| repository / api | `@/database/server`（整体）+ `@/database/server/provider`（避免真实 libsql）+ `@/presets/server/repository` |
-| schema 构造（`json`/`schemas`） | `@/database/server/factory` 要**部分 mock**：`{...await importOriginal(), repositories: ..., storages: ...}`；整体 mock 会让 `presets/server/schema.ts` 报 `No "json" export is defined` |
-| 路由 handler | `@/interceptors/server` 的 `route` mock 成直通（`route: (handler) => handler`），然后按 `(request, records)` 直接调用；`records.params` 是 Promise，`records.searchParams` 已经是对象（真实链路由 `route` 反序列化） |
-| 请求层 | `@/client`（`get/post/put/del/open`），不要真发请求 |
-| 归档 | `@/utils/archive` 导出的是 `archives` **容器对象**，mock 要覆盖容器内部字段：`archives: { ...actual.archives, zipToArchive: mock }`，只加顶层键无效 |
-| 文件仓库 | `@/files/server` 的 `files.repository.get/create` |
+| 被测目标                        | 需要 mock                                                                                                                                                                                                            |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| factory / feature storage       | `@/presets/server/repository`（绕开 sqlite）                                                                                                                                                                         |
+| repository / api                | `@/database/server`（整体）+ `@/database/server/provider`（避免真实 libsql）+ `@/presets/server/repository`                                                                                                          |
+| schema 构造（`json`/`schemas`） | `@/database/server/factory` 要**部分 mock**：`{...await importOriginal(), repositories: ..., storages: ...}`；整体 mock 会让 `presets/server/schema.ts` 报 `No "json" export is defined`                             |
+| 路由 handler                    | `@/interceptors/server` 的 `route` mock 成直通（`route: (handler) => handler`），然后按 `(request, records)` 直接调用；`records.params` 是 Promise，`records.searchParams` 已经是对象（真实链路由 `route` 反序列化） |
+| 请求层                          | `@/client`（`get/post/put/del/open`），不要真发请求                                                                                                                                                                  |
+| 归档                            | `@/utils/archive` 导出的是 `archives` **容器对象**，mock 要覆盖容器内部字段：`archives: { ...actual.archives, zipToArchive: mock }`，只加顶层键无效                                                                  |
+| 文件仓库                        | `@/database/files/server` 的 `files.repository.get/create`                                                                                                                                                           |
 
 其它注意：
 
