@@ -1,114 +1,114 @@
 {
+  "configure": {
+    "expected": {
+      "fitCount": 1,
+      "keywords": [["英雄"]],
+      "keywordsLength": 1,
+      "maxDate": { "day": 6, "month": 5, "year": 4 },
+      "minDate": { "day": 3, "month": 2, "year": 1 }
+    },
+    "fields": {
+      "fitCount": "1",
+      "keywordsLength": "1",
+      "max-date-day": "6",
+      "max-date-month": "5",
+      "max-date-year": "4",
+      "min-date-day": "3",
+      "min-date-month": "2",
+      "min-date-year": "1"
+    },
+    "keywords": { "keywords-0": ["英雄"] }
+  },
   "dateNumbers": [
-    { "date": { "year": 0, "month": 1, "day": 1 }, "expected": 0 },
-    { "date": { "year": 0, "month": 2, "day": 1 }, "expected": 31 },
-    { "date": { "year": 0, "month": 12, "day": 31 }, "expected": 371 },
-    { "date": { "year": 1, "month": 1, "day": 1 }, "expected": 372 },
-    { "date": { "year": 2, "month": 6, "day": 15 }, "expected": 913 }
+    { "date": { "day": 1, "month": 1, "year": 0 }, "expected": 0 },
+    { "date": { "day": 1, "month": 2, "year": 0 }, "expected": 31 },
+    { "date": { "day": 31, "month": 12, "year": 0 }, "expected": 371 },
+    { "date": { "day": 1, "month": 1, "year": 1 }, "expected": 372 },
+    { "date": { "day": 15, "month": 6, "year": 2 }, "expected": 913 }
   ],
   "match": [
     {
+      "content": "英雄登场",
+      "expected": true,
+      "expression": {
+        "fitCount": 1,
+        "keywords": [["英雄"]],
+        "keywordsLength": 1,
+        "maxDate": { "day": 31, "month": 1, "year": 0 },
+        "minDate": { "day": 1, "month": 1, "year": 0 }
+      },
       "name": "日期落在区间内且关键词命中",
-      "content": "英雄登场",
-      "expression": {
-        "minDate": { "year": 0, "month": 1, "day": 1 },
-        "maxDate": { "year": 0, "month": 1, "day": 31 },
-        "keywordsLength": 1,
-        "fitCount": 1,
-        "keywords": [["英雄"]]
-      },
-      "variables": { "relatedDates": [{ "year": 0, "month": 1, "day": 10 }] },
-      "expected": true
+      "variables": { "related_dates": [{ "day": 10, "month": 1, "year": 0 }] }
     },
     {
+      "content": "英雄登场",
+      "expected": true,
+      "expression": {
+        "fitCount": 1,
+        "keywords": [["英雄"]],
+        "keywordsLength": 1,
+        "maxDate": { "day": 31, "month": 1, "year": 0 },
+        "minDate": { "day": 1, "month": 1, "year": 0 }
+      },
       "name": "区间上下界都是闭区间",
-      "content": "英雄登场",
-      "expression": {
-        "minDate": { "year": 0, "month": 1, "day": 1 },
-        "maxDate": { "year": 0, "month": 1, "day": 31 },
-        "keywordsLength": 1,
-        "fitCount": 1,
-        "keywords": [["英雄"]]
-      },
       "variables": {
-        "relatedDates": [
-          { "year": 0, "month": 1, "day": 1 },
-          { "year": 0, "month": 1, "day": 31 }
+        "related_dates": [
+          { "day": 1, "month": 1, "year": 0 },
+          { "day": 31, "month": 1, "year": 0 }
         ]
-      },
-      "expected": true
+      }
     },
     {
+      "content": "英雄登场",
+      "expected": false,
+      "expression": {
+        "fitCount": 1,
+        "keywords": [["英雄"]],
+        "keywordsLength": 1,
+        "maxDate": { "day": 31, "month": 1, "year": 0 },
+        "minDate": { "day": 1, "month": 1, "year": 0 }
+      },
       "name": "日期全部落在区间外",
-      "content": "英雄登场",
-      "expression": {
-        "minDate": { "year": 0, "month": 1, "day": 1 },
-        "maxDate": { "year": 0, "month": 1, "day": 31 },
-        "keywordsLength": 1,
-        "fitCount": 1,
-        "keywords": [["英雄"]]
-      },
-      "variables": { "relatedDates": [{ "year": 0, "month": 2, "day": 1 }] },
-      "expected": false
+      "variables": { "related_dates": [{ "day": 1, "month": 2, "year": 0 }] }
     },
     {
-      "name": "日期命中但关键词不命中",
       "content": "路人经过",
+      "expected": false,
       "expression": {
-        "minDate": { "year": 0, "month": 1, "day": 1 },
-        "maxDate": { "year": 0, "month": 1, "day": 31 },
-        "keywordsLength": 1,
         "fitCount": 1,
-        "keywords": [["英雄"]]
+        "keywords": [["英雄"]],
+        "keywordsLength": 1,
+        "maxDate": { "day": 31, "month": 1, "year": 0 },
+        "minDate": { "day": 1, "month": 1, "year": 0 }
       },
-      "variables": { "relatedDates": [{ "year": 0, "month": 1, "day": 10 }] },
-      "expected": false
+      "name": "日期命中但关键词不命中",
+      "variables": { "related_dates": [{ "day": 10, "month": 1, "year": 0 }] }
     },
     {
+      "content": "英雄登场",
+      "expected": false,
+      "expression": {
+        "fitCount": 1,
+        "keywords": [["英雄"]],
+        "keywordsLength": 1,
+        "maxDate": { "day": 31, "month": 12, "year": 0 },
+        "minDate": { "day": 1, "month": 1, "year": 0 }
+      },
       "name": "没有相关日期时不匹配",
-      "content": "英雄登场",
-      "expression": {
-        "minDate": { "year": 0, "month": 1, "day": 1 },
-        "maxDate": { "year": 0, "month": 12, "day": 31 },
-        "keywordsLength": 1,
-        "fitCount": 1,
-        "keywords": [["英雄"]]
-      },
-      "variables": {},
-      "expected": false
+      "variables": {}
     },
     {
-      "name": "区间刚好反向时不应匹配",
       "content": "英雄登场",
+      "expected": false,
       "expression": {
-        "minDate": { "year": 0, "month": 2, "day": 1 },
-        "maxDate": { "year": 0, "month": 1, "day": 31 },
-        "keywordsLength": 1,
         "fitCount": 1,
-        "keywords": [["英雄"]]
+        "keywords": [["英雄"]],
+        "keywordsLength": 1,
+        "maxDate": { "day": 31, "month": 1, "year": 0 },
+        "minDate": { "day": 1, "month": 2, "year": 0 }
       },
-      "variables": { "relatedDates": [{ "year": 0, "month": 1, "day": 10 }] },
-      "expected": false
+      "name": "区间刚好反向时不应匹配",
+      "variables": { "related_dates": [{ "day": 10, "month": 1, "year": 0 }] }
     }
-  ],
-  "configure": {
-    "fields": {
-      "min-date-year": "1",
-      "min-date-month": "2",
-      "min-date-day": "3",
-      "max-date-year": "4",
-      "max-date-month": "5",
-      "max-date-day": "6",
-      "keywordsLength": "1",
-      "fitCount": "1"
-    },
-    "keywords": { "keywords-0": ["英雄"] },
-    "expected": {
-      "minDate": { "year": 1, "month": 2, "day": 3 },
-      "maxDate": { "year": 4, "month": 5, "day": 6 },
-      "keywordsLength": 1,
-      "fitCount": 1,
-      "keywords": [["英雄"]]
-    }
-  }
+  ]
 }
