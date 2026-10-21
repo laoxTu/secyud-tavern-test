@@ -15,7 +15,8 @@ vi.mock('@/comfyui/server/storage', () => ({
 }));
 
 import { provider } from '@/comfyui/server/tool';
-import { archives, type Archive, type ArchiveFolder } from '@/utils/archive';
+import type { Archive, ArchiveFolder } from '@/utils/archive';
+import { archives } from '@/utils/archive';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadCases() {
@@ -56,7 +57,7 @@ describe('comfyui server tool / loadArchive', () => {
     const entry = structuredClone(data.entry);
     const { ctx, folder } = entryContext(entry, 'entry');
 
-    await provider.loadArchive(ctx);
+    await provider.loadArchive?.(ctx);
 
     expect(await archives.get.text(folder.nodes, 'entry.desc.txt')).toBe(
       data.entry.config.description,
@@ -69,7 +70,7 @@ describe('comfyui server tool / loadArchive', () => {
     const entry = structuredClone(data.entry);
     const { ctx } = entryContext(entry, 'entry');
 
-    await provider.loadArchive(ctx);
+    await provider.loadArchive?.(ctx);
 
     expect(mocks.exportWorkflow).toHaveBeenCalledWith(
       ctx,
@@ -82,7 +83,7 @@ describe('comfyui server tool / loadArchive', () => {
     const entry = structuredClone(data.entryWithoutWorkflow);
     const { ctx } = entryContext(entry, 'entry');
 
-    await provider.loadArchive(ctx);
+    await provider.loadArchive?.(ctx);
 
     expect(mocks.exportWorkflow).toHaveBeenCalledWith(ctx, undefined);
   });
@@ -92,11 +93,13 @@ describe('comfyui server tool / loadArchive', () => {
     const entry = structuredClone(data.entryWithoutWorkflow);
     const { ctx, folder } = entryContext(entry, 'entry');
 
-    await provider.loadArchive(ctx);
+    await provider.loadArchive?.(ctx);
 
     // set.text 对空内容同样建节点，只是 content() 返回 undefined
     expect(folder.nodes['entry.desc.txt']).toBeDefined();
-    expect(await archives.get.text(folder.nodes, 'entry.desc.txt')).toBeUndefined();
+    expect(
+      await archives.get.text(folder.nodes, 'entry.desc.txt'),
+    ).toBeUndefined();
     expect(entry.config.description).toBeUndefined();
   });
 });
@@ -112,7 +115,7 @@ describe('comfyui server tool / saveArchive', () => {
       data.entry.config.description,
     );
 
-    await provider.saveArchive(ctx);
+    await provider.saveArchive?.(ctx);
 
     expect(entry.config.description).toBe(data.entry.config.description);
   });
@@ -122,7 +125,7 @@ describe('comfyui server tool / saveArchive', () => {
     const entry = structuredClone(data.entry);
     const { ctx } = entryContext(entry, 'entry');
 
-    await provider.saveArchive(ctx);
+    await provider.saveArchive?.(ctx);
 
     expect(mocks.importWorkflow).toHaveBeenCalledWith(
       ctx,
@@ -135,7 +138,7 @@ describe('comfyui server tool / saveArchive', () => {
     const entry = structuredClone(data.entry);
     const { ctx } = entryContext(entry, 'entry');
 
-    await provider.saveArchive(ctx);
+    await provider.saveArchive?.(ctx);
 
     expect(entry.config.description).toBeUndefined();
   });
@@ -145,7 +148,7 @@ describe('comfyui server tool / saveArchive', () => {
     const entry = structuredClone(data.entryWithoutWorkflow);
     const { ctx } = entryContext(entry, 'entry');
 
-    await provider.saveArchive(ctx);
+    await provider.saveArchive?.(ctx);
 
     expect(mocks.importWorkflow).toHaveBeenCalledWith(ctx, undefined);
   });

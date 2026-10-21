@@ -56,7 +56,7 @@ describe('agents server / loadArchive', () => {
     const { description, schema } = data.entry.config;
     const ctx = createContext(data.entry, data.name);
 
-    await agents.provider.loadArchive(ctx);
+    await agents.provider.loadArchive?.(ctx);
 
     // 只写这两个文件，名字带固定后缀，读取时靠 fuzzy 前缀匹配
     expect(Object.keys(ctx.cur).sort()).toEqual([
@@ -78,7 +78,7 @@ describe('agents server / loadArchive', () => {
     const data = await loadCases();
     const ctx = createContext(data.entry, data.name);
 
-    await agents.provider.loadArchive(ctx);
+    await agents.provider.loadArchive?.(ctx);
 
     expect(mocks.exportArchive).toHaveBeenCalledWith(
       ctx,
@@ -94,7 +94,7 @@ describe('agents server / loadArchive', () => {
     data.entry.config.presets = [];
     const ctx = createContext(data.entry, data.name);
 
-    await agents.provider.loadArchive(ctx);
+    await agents.provider.loadArchive?.(ctx);
 
     expect(mocks.append).not.toHaveBeenCalled();
     expect(mocks.exportArchive).toHaveBeenCalledWith(ctx, 'model-a');
@@ -105,7 +105,7 @@ describe('agents server / loadArchive', () => {
     (data.entry.config as AgentConfig).model = null;
     const ctx = createContext(data.entry, data.name);
 
-    await agents.provider.loadArchive(ctx);
+    await agents.provider.loadArchive?.(ctx);
 
     expect(mocks.exportArchive).toHaveBeenCalledWith(ctx, undefined);
   });
@@ -122,7 +122,7 @@ describe('agents server / saveArchive', () => {
       '{"type":"object","title":"恢复"}',
     );
 
-    await agents.provider.saveArchive(ctx);
+    await agents.provider.saveArchive?.(ctx);
 
     expect(data.entry.config.description).toBe('恢复的描述');
     expect(data.entry.config.schema).toBe('{"type":"object","title":"恢复"}');
@@ -133,7 +133,7 @@ describe('agents server / saveArchive', () => {
     const data = await loadCases();
     const ctx = createContext(data.entry, data.name);
 
-    await agents.provider.saveArchive(ctx);
+    await agents.provider.saveArchive?.(ctx);
 
     expect(data.entry.config.description).toBeUndefined();
     expect(data.entry.config.schema).toBeUndefined();
@@ -145,8 +145,8 @@ describe('agents server / saveArchive', () => {
     const { description, schema } = data.entry.config;
     const ctx = createContext(data.entry, data.name);
 
-    await agents.provider.loadArchive(ctx);
-    await agents.provider.saveArchive(ctx);
+    await agents.provider.loadArchive?.(ctx);
+    await agents.provider.saveArchive?.(ctx);
 
     expect(data.entry.config.description).toBe(description);
     expect(data.entry.config.schema).toBe(schema);

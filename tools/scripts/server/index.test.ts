@@ -77,7 +77,7 @@ describe('tools scripts server / loadArchive', () => {
     const entry = createEntry(data.entry.config);
     const cur: Archive = {};
 
-    await scripts.provider.loadArchive(createContext(cur, entry, data.name));
+    await scripts.provider.loadArchive?.(createContext(cur, entry, data.name));
 
     const names = archiveNames(data);
     expect(Object.keys(cur).sort()).toEqual([...names].sort());
@@ -104,7 +104,7 @@ describe('tools scripts server / loadArchive', () => {
     const entry = createEntry(data.emptyEntry.config);
     const cur: Archive = {};
 
-    await scripts.provider.loadArchive(createContext(cur, entry, data.name));
+    await scripts.provider.loadArchive?.(createContext(cur, entry, data.name));
 
     const names = archiveNames(data);
     expect(Object.keys(cur).sort()).toEqual([...names].sort());
@@ -127,12 +127,12 @@ describe('tools scripts server / saveArchive', () => {
     const data = await loadCases();
     const entry = createEntry(data.entry.config);
     const cur: Archive = {};
-    await scripts.provider.loadArchive(createContext(cur, entry, data.name));
+    await scripts.provider.loadArchive?.(createContext(cur, entry, data.name));
 
     const fuzzy = vi.spyOn(archives.get, 'fuzzy');
     const target = { id: 'e-2', type: 'script', config: {} } as any;
 
-    await scripts.provider.saveArchive(createContext(cur, target, data.name));
+    await scripts.provider.saveArchive?.(createContext(cur, target, data.name));
 
     expect(fuzzy.mock.calls.map((u) => u[1])).toEqual(fuzzyPrefixes(data));
     expect(target.config).toEqual({
@@ -146,10 +146,10 @@ describe('tools scripts server / saveArchive', () => {
     const data = await loadCases();
     const entry = createEntry(data.emptyEntry.config);
     const cur: Archive = {};
-    await scripts.provider.loadArchive(createContext(cur, entry, data.name));
+    await scripts.provider.loadArchive?.(createContext(cur, entry, data.name));
 
     const target = { id: 'e-2', type: 'script', config: {} } as any;
-    await scripts.provider.saveArchive(createContext(cur, target, data.name));
+    await scripts.provider.saveArchive?.(createContext(cur, target, data.name));
 
     for (const part of data.archiveParts) {
       expect(target.config[part.key], part.key).toBeUndefined();
