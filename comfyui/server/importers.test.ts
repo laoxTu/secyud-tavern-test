@@ -53,21 +53,19 @@ vi.mock('@/signal/server', () => ({
   },
 }));
 
-import {
-  getDownloadParams,
-  importers,
-  type ModelDownloadArgs,
-} from '@/comfyui/server/importers';
 import { comfyuis as main } from '@/comfyui';
+import type { ModelDownloadArgs } from '@/comfyui/server/importers';
+import { getDownloadParams, importers } from '@/comfyui/server/importers';
+import { TaskArgs } from '@/tasks/server/manager';
 
 /** 用例数据都在 json 里，动态 import 后克隆一份，避免用例之间互相污染 */
 async function loadCases() {
   return structuredClone((await import('./importers.cases.json')).default);
 }
 
-const IMPORT_ARGS: ModelDownloadArgs = {
+const IMPORT_ARGS: TaskArgs<ModelDownloadArgs> = {
   provider: 'comfyui-model-download',
-  id: '11111111-1111-4111-8111-111111111111',
+  value: { id: '11111111-1111-4111-8111-111111111111' },
 };
 
 beforeEach(() => {
@@ -139,9 +137,9 @@ describe('comfyui importers / getDownloadParams', () => {
 
     const result = await getDownloadParams(data.model.id);
 
-    expect(result.filename.startsWith(`${data.settingStates.custom.directory}/`)).toBe(
-      true,
-    );
+    expect(
+      result.filename.startsWith(`${data.settingStates.custom.directory}/`),
+    ).toBe(true);
     expect(mocks.settingGet).toHaveBeenCalledWith('comfyui-model-setting');
   });
 
@@ -163,7 +161,12 @@ describe('comfyui importers / getDownloadParams', () => {
     const data = await loadCases();
     mocks.modelGet.mockResolvedValue(structuredClone(data.model));
 
-    for (const empty of [null, { data: null }, { data: {} }, { data: { state: undefined } }]) {
+    for (const empty of [
+      null,
+      { data: null },
+      { data: {} },
+      { data: { state: undefined } },
+    ]) {
       mocks.settingGet.mockResolvedValue(empty);
 
       const result = await getDownloadParams(data.model.id);
@@ -179,9 +182,9 @@ describe('comfyui importers / getDownloadParams', () => {
     mocks.settingGet.mockResolvedValue({ data: { state: data.setting } });
     mocks.modelGet.mockResolvedValue(structuredClone(data.invalid.noDownload));
 
-    await expect(
-      getDownloadParams(data.invalid.noDownload.id),
-    ).rejects.toThrow(/No model.download provided/);
+    await expect(getDownloadParams(data.invalid.noDownload.id)).rejects.toThrow(
+      /No model.download provided/,
+    );
   });
 
   it('缺少模型路径时应当报错', async () => {
@@ -196,7 +199,9 @@ describe('comfyui importers / getDownloadParams', () => {
 
   it('设置里的目录为空时应当报错', async () => {
     const data = await loadCases();
-    mocks.settingGet.mockResolvedValue({ data: { state: { directory: '  ' } } });
+    mocks.settingGet.mockResolvedValue({
+      data: { state: { directory: '  ' } },
+    });
     mocks.modelGet.mockResolvedValue(structuredClone(data.model));
 
     await expect(getDownloadParams(data.model.id)).rejects.toThrow(
